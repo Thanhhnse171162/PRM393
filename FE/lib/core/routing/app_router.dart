@@ -5,6 +5,7 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
+import '../../features/customer/home/presentation/pages/customer_home_page.dart';
 import '../../features/location/presentation/pages/location_page.dart';
 import '../../shared/widgets/placeholder_page.dart';
 import '../../shared/widgets/role_shell.dart';
@@ -52,7 +53,7 @@ class AppRouter {
         GoRoute(path: RouteNames.register, builder: (_, _) => const RegisterPage()),
         GoRoute(path: RouteNames.location, builder: (_, _) => const LocationPage()),
         _shell(_customerTabs, [
-          (RouteNames.customerHome, const PlaceholderPage(title: 'Trang chủ', icon: Icons.home_outlined)),
+          (RouteNames.customerHome, const CustomerHomePage()),
           (RouteNames.customerExplore, const PlaceholderPage(title: 'Khám phá', icon: Icons.explore_outlined)),
           (RouteNames.customerBookings, const PlaceholderPage(title: 'Lịch đặt', icon: Icons.calendar_month_outlined)),
           (RouteNames.customerNotifications, const PlaceholderPage(title: 'Thông báo', icon: Icons.notifications_outlined)),
