@@ -1,0 +1,33 @@
+name: courtgo_mobile
+description: "CourtGo - Sport Court Booking (PRM393). One app for Customer, Staff and Admin."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.13.3
+
+dependencies:
+  dio: ^5.11.1
+  flutter:
+    sdk: flutter
+  flutter_secure_storage: ^11.2.0
+  go_router: ^18.0.2
+  provider: ^6.1.5+1
+  shared_preferences: ^2.5.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/auth/
+    - assets/images/banners/
+    - assets/images/sports/
+    - assets/images/courts/
+    - assets/images/common/
+    - assets/icons/
+    - assets/animations/
