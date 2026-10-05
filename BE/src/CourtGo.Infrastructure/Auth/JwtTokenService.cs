@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using System.Text;
 using CourtGo.Application.Interfaces;
 using CourtGo.Domain.Enums;
@@ -10,6 +10,9 @@ namespace CourtGo.Infrastructure.Auth;
 
 public class JwtTokenService : IJwtTokenService
 {
+    /// <summary>Short claim name used for the role (paired with RoleClaimType in JWT validation).</summary>
+    public const string RoleClaimType = "role";
+
     private readonly JwtSettings _settings;
 
     public JwtTokenService(IOptions<JwtSettings> settings) => _settings = settings.Value;
@@ -28,7 +31,7 @@ public class JwtTokenService : IJwtTokenService
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, email),
-                new Claim(ClaimTypes.Role, role.ToString())
+                new Claim(RoleClaimType, role.ToString())
             }),
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Key)),

@@ -1,6 +1,7 @@
-﻿using CourtGo.Application.Interfaces;
+using CourtGo.Application.Interfaces;
 using CourtGo.Infrastructure.Auth;
 using CourtGo.Infrastructure.Data;
+using CourtGo.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,7 @@ public static class DependencyInjection
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

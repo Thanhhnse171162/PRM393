@@ -1,8 +1,11 @@
-﻿using System.Text;
+using System.Text;
 using CourtGo.Api.Middleware;
+using CourtGo.Application.Auth;
 using CourtGo.Application.Interfaces;
 using CourtGo.Infrastructure;
 using CourtGo.Infrastructure.Auth;
+using CourtGo.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -37,13 +40,18 @@ builder.Services.AddSwaggerGen(c =>
 
 // Infrastructure: EF Core + SQL Server, JWT service, password hasher.
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddScoped<IAuthService, AuthService>();
 
-// JWT bearer authentication.
-var jwt = builder.Configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>() ?? new JwtSettings();
+// JWT bearer authentication. Options are bound lazily from JwtSettings (configuration/user-secrets).
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+    .AddJwtBearer();
+
+builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
+    .Configure<Microsoft.Extensions.Options.IOptions<JwtSettings>>((options, jwtOptions) =>
     {
+        var jwt = jwtOptions.Value;
+        options.MapInboundClaims = false; // keep short claim names: sub, email, role
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -52,6 +60,8 @@ builder.Services
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwt.Issuer,
             ValidAudience = jwt.Audience,
+            NameClaimType = "sub",
+            RoleClaimType = JwtTokenService.RoleClaimType,
             // Falls back to a throw-away random key so the app can start without secrets;
             // tokens are then simply not valid until Jwt:Key is configured.
             IssuerSigningKey = new SymmetricSecurityKey(
@@ -75,6 +85,24 @@ builder.Services.AddCors(options =>
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
+
+// Development only: apply migrations and insert demo accounts (Seed:Enabled=true).
+if (app.Configuration.GetValue<bool>("Seed:Enabled"))
+{
+    using var scope = app.Services.CreateScope();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<CourtGoDbContext>();
+        await db.Database.MigrateAsync();
+        await DbSeeder.SeedAsync(db, scope.ServiceProvider.GetRequiredService<IPasswordHasher>());
+        logger.LogInformation("Database migrated and demo accounts seeded.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Database migration/seed failed. Check ConnectionStrings:DefaultConnection.");
+    }
+}
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

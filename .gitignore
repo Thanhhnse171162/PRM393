@@ -22,9 +22,7 @@ Desktop.ini
 
 # ===== IDEs =====
 .vs/
-.vscode/*
-!.vscode/settings.json
-!.vscode/extensions.json
+.vscode/
 .idea/
 *.iml
 *.suo

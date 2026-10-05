@@ -40,9 +40,13 @@ class PlaceholderPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 child: AppButton(
                   label: auth.isAuthenticated ? 'Đăng xuất' : 'Đăng nhập',
-                  onPressed: () {
-                    auth.signOut();
-                    context.go(RouteNames.login);
+                  onPressed: () async {
+                    if (auth.isAuthenticated) {
+                      await auth.logout();
+                    }
+                    if (context.mounted) {
+                      context.go(RouteNames.login);
+                    }
                   },
                 ),
               ),

@@ -32,3 +32,9 @@ public class ConflictException : AppException
 {
     public ConflictException(string message) : base(message) { }
 }
+
+/// <summary>HTTP 401. Invalid credentials.</summary>
+public class UnauthorizedException : AppException
+{
+    public UnauthorizedException(string message = "Authentication failed.") : base(message) { }
+}

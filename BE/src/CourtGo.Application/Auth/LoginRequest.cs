@@ -1,5 +1,4 @@
 ﻿namespace CourtGo.Application.Auth;
 
-public record LoginRequest(string Email, string Password);
-
-public record AuthResponse(string AccessToken, Guid UserId, string FullName, string Role);
+/// <summary>Nullable so missing fields reach the validator and produce a clean 400.</summary>
+public record LoginRequest(string? EmailOrPhone, string? Password);

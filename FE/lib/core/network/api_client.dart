@@ -19,10 +19,18 @@ class ApiClient {
                 headers: {'Accept': 'application/json'},
               ),
             ) {
-    _dio.interceptors.add(AuthInterceptor(storage));
+    _dio.interceptors.add(
+      AuthInterceptor(
+        storage,
+        onUnauthorized: () => onUnauthorized?.call(),
+      ),
+    );
   }
 
   final Dio _dio;
+
+  /// Set by the app to react to expired/invalid tokens (e.g. force logout).
+  void Function()? onUnauthorized;
 
   Future<NetworkResult<T>> get<T>(
     String path, {

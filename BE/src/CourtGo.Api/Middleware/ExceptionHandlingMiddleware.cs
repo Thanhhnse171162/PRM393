@@ -1,4 +1,4 @@
-﻿using CourtGo.Application.Common.Exceptions;
+using CourtGo.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourtGo.Api.Middleware;
@@ -36,6 +36,7 @@ public class ExceptionHandlingMiddleware
         var (status, title) = ex switch
         {
             ValidationException => (StatusCodes.Status400BadRequest, "Validation failed"),
+            UnauthorizedException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
             ForbiddenException => (StatusCodes.Status403Forbidden, "Forbidden"),
             NotFoundException => (StatusCodes.Status404NotFound, "Not found"),
             ConflictException => (StatusCodes.Status409Conflict, "Conflict"),

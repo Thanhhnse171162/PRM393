@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\CourtGo.Api\CourtGo.Api.csproj" />
+    <ProjectReference Include="..\..\src\CourtGo.Infrastructure\CourtGo.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
