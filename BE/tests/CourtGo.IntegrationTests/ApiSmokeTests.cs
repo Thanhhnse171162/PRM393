@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace CourtGo.IntegrationTests;
@@ -7,7 +8,8 @@ public class ApiSmokeTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
 
-    public ApiSmokeTests(WebApplicationFactory<Program> factory) => _client = factory.CreateClient();
+    public ApiSmokeTests(WebApplicationFactory<Program> factory) =>
+        _client = factory.WithWebHostBuilder(b => b.UseContentRoot(AppContext.BaseDirectory)).CreateClient();
 
     [Fact]
     public async Task PublicEndpoint_IsReachable_WithoutToken()

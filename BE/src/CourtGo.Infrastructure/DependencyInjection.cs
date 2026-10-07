@@ -12,17 +12,33 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        // The connection string is NEVER hardcoded; it comes from configuration
-        // (appsettings.Development.json, user-secrets or environment variables).
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        // Connection string comes from configuration (ConnectionStrings:CourtGoDb with DefaultConnection fallback)
+        var connectionString = configuration.GetConnectionString("CourtGoDb")
+            ?? configuration.GetConnectionString("DefaultConnection");
 
-        services.AddDbContext<CourtGoDbContext>(options =>
-            options.UseSqlServer(connectionString ?? string.Empty));
+        if (!services.Any(s => s.ServiceType == typeof(CourtGoDbContext)))
+        {
+            services.AddDbContext<CourtGoDbContext>(options =>
+            {
+                if (!string.IsNullOrWhiteSpace(connectionString))
+                {
+                    options.UseSqlServer(connectionString);
+                }
+            });
+        }
 
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
+        services.AddSingleton(TimeProvider.System);
+        services.AddSingleton<IRefreshTokenService, RefreshTokenService>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IVerificationCodeService, VerificationCodeService>();
+        services.AddScoped<ISportRepository, SportRepository>();
+        services.AddScoped<ISportCenterRepository, SportCenterRepository>();
+        services.AddScoped<ICourtRepository, CourtRepository>();
+        services.AddScoped<IExpiredBookingHoldService, CourtGo.Infrastructure.Services.ExpiredBookingHoldService>();
 
         return services;
     }

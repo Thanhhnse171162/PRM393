@@ -1,12 +1,10 @@
 using CourtGo.Application.Common.Exceptions;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CourtGo.Api.Middleware;
 
 /// <summary>
-/// Converts exceptions to RFC 7807 problem responses:
-/// 400 validation, 403 forbidden, 404 not found, 409 conflict, 500 server error.
-/// (401 is produced by the authentication middleware.)
+/// Converts exceptions to RFC 7807 problem responses with a stable "code":
+/// 400 validation, 401, 403, 404, 409, 500. Stack traces are never returned.
 /// </summary>
 public class ExceptionHandlingMiddleware
 {
@@ -46,23 +44,13 @@ public class ExceptionHandlingMiddleware
         if (status == StatusCodes.Status500InternalServerError)
             _logger.LogError(ex, "Unhandled exception");
 
-        var problem = new ProblemDetails
-        {
-            Status = status,
-            Title = title,
-            // Never leak internal details for 500s.
-            Detail = status == StatusCodes.Status500InternalServerError
-                ? "An unexpected error occurred."
-                : ex.Message,
-            Instance = context.Request.Path
-        };
-
-        if (ex is ValidationException v && v.Errors.Count > 0)
-            problem.Extensions["errors"] = v.Errors;
-
         context.Response.Clear();
-        context.Response.StatusCode = status;
-        context.Response.ContentType = "application/problem+json";
-        await context.Response.WriteAsJsonAsync(problem);
+
+        var code = ex is AppException app ? app.Code : ErrorCodes.InternalError;
+        // Never leak internal details for 500s.
+        var detail = status == StatusCodes.Status500InternalServerError ? "An unexpected error occurred." : ex.Message;
+        var errors = ex is ValidationException v ? v.Errors : null;
+
+        await ApiProblem.WriteAsync(context, status, code, title, detail, errors);
     }
 }

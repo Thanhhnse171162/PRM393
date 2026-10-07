@@ -1,4 +1,4 @@
-﻿namespace CourtGo.Domain.Rules;
+namespace CourtGo.Domain.Rules;
 
 /// <summary>
 /// Pure business rules for fixed 1-hour slots. See docs/business-rules.md.
@@ -13,6 +13,22 @@ public static class SlotRules
     /// form one consecutive 1-hour chain (e.g. 17:00, 18:00, 19:00).
     /// </summary>
     public static bool AreConsecutive(IEnumerable<DateTime> slotStarts)
+    {
+        var ordered = slotStarts.OrderBy(s => s).ToList();
+        if (ordered.Count == 0) return false;
+        if (ordered.Any(s => s.Minute != 0 || s.Second != 0 || s.Millisecond != 0)) return false;
+
+        for (var i = 1; i < ordered.Count; i++)
+        {
+            if (ordered[i] - ordered[i - 1] != SlotLength) return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Overload for DateTimeOffset aligned to the hour.
+    /// </summary>
+    public static bool AreConsecutive(IEnumerable<DateTimeOffset> slotStarts)
     {
         var ordered = slotStarts.OrderBy(s => s).ToList();
         if (ordered.Count == 0) return false;

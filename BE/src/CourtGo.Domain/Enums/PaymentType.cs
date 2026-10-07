@@ -1,9 +1,8 @@
-﻿namespace CourtGo.Domain.Enums;
+namespace CourtGo.Domain.Enums;
 
-/// <summary>What a single Payment record represents.</summary>
-public enum PaymentType
+public enum PaymentType : byte
 {
-    Deposit = 0,
-    Remaining = 1,
-    Refund = 2
+    Deposit = 1,
+    Remaining = 2,
+    Refund = 3
 }

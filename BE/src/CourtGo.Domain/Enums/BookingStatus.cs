@@ -1,14 +1,13 @@
-﻿namespace CourtGo.Domain.Enums;
+namespace CourtGo.Domain.Enums;
 
-/// <summary>Lifecycle of a booking. Payment state is tracked separately in <see cref="PaymentStatus"/>.</summary>
-public enum BookingStatus
+public enum BookingStatus : byte
 {
-    PendingPayment = 0,
-    Confirmed = 1,
-    CheckedIn = 2,
-    InProgress = 3,
-    Completed = 4,
-    Cancelled = 5,
-    Expired = 6,
-    NoShow = 7
+    PendingPayment = 1,
+    Confirmed = 2,
+    CheckedIn = 3,
+    InProgress = 4,
+    Completed = 5,
+    Cancelled = 6,
+    Expired = 7,
+    NoShow = 8
 }

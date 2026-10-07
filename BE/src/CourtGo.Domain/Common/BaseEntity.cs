@@ -1,9 +1,9 @@
-﻿namespace CourtGo.Domain.Common;
+namespace CourtGo.Domain.Common;
 
-/// <summary>Base type with Guid key and audit timestamps.</summary>
+/// <summary>Base type with Guid key and audit timestamps for entities tracking creation and update.</summary>
 public abstract class BaseEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset? UpdatedAt { get; set; }
 }

@@ -1,8 +1,8 @@
-﻿namespace CourtGo.Domain.Enums;
+namespace CourtGo.Domain.Enums;
 
-public enum UserRole
+public enum UserRole : byte
 {
-    Customer = 0,
-    Staff = 1,
-    Admin = 2
+    Customer = 1,
+    Staff = 2,
+    Admin = 3
 }

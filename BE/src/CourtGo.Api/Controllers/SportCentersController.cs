@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using CourtGo.Application.Interfaces;
+using CourtGo.Application.SportCenters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourtGo.Api.Controllers;
@@ -8,7 +10,40 @@ namespace CourtGo.Api.Controllers;
 [AllowAnonymous]
 public class SportCentersController : ControllerBase
 {
-    /// <summary>Placeholder endpoint so the route is visible in Swagger.</summary>
+    private readonly ISportCenterService _sportCenterService;
+
+    public SportCentersController(ISportCenterService sportCenterService)
+    {
+        _sportCenterService = sportCenterService;
+    }
+
+    /// <summary>Lists and filters active sport centers.</summary>
+    [HttpGet]
+    [ProducesResponseType(typeof(IReadOnlyList<SportCenterSummaryDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IReadOnlyList<SportCenterSummaryDto>>> GetAll(
+        [FromQuery] Guid? sportId = null,
+        [FromQuery] string? city = null,
+        [FromQuery] string? district = null,
+        [FromQuery] string? search = null,
+        CancellationToken ct = default)
+    {
+        var centers = await _sportCenterService.GetAllAsync(sportId, city, district, search, ct);
+        return Ok(centers);
+    }
+
+    /// <summary>Gets sport center details including active courts and operating hours.</summary>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(SportCenterDetailDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<SportCenterDetailDto>> GetById(
+        [FromRoute] Guid id,
+        CancellationToken ct = default)
+    {
+        var center = await _sportCenterService.GetByIdAsync(id, ct);
+        return Ok(center);
+    }
+
+    /// <summary>Health check ping endpoint.</summary>
     [HttpGet("ping")]
-    public IActionResult Ping() => Ok(new { module = "sport-centers", status = "not-implemented" });
+    public IActionResult Ping() => Ok(new { module = "sport-centers", status = "ok" });
 }

@@ -1,9 +1,8 @@
-﻿namespace CourtGo.Domain.Enums;
+namespace CourtGo.Domain.Enums;
 
-public enum CourtStatus
+public enum CourtStatus : byte
 {
-    Active = 0,
-    TemporarilyBlocked = 1,
+    Active = 1,
     Maintenance = 2,
     Inactive = 3
 }

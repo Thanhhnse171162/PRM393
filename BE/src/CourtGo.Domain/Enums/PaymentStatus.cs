@@ -1,12 +1,11 @@
-﻿namespace CourtGo.Domain.Enums;
+namespace CourtGo.Domain.Enums;
 
-/// <summary>Money state of a booking. Never mixed into <see cref="BookingStatus"/>.</summary>
-public enum PaymentStatus
+public enum PaymentStatus : byte
 {
-    Unpaid = 0,
-    DepositPaid = 1,
-    FullyPaid = 2,
-    RefundPending = 3,
-    Refunded = 4,
-    Failed = 5
+    Unpaid = 1,
+    DepositPaid = 2,
+    FullyPaid = 3,
+    RefundPending = 4,
+    PartiallyRefunded = 5,
+    Refunded = 6
 }

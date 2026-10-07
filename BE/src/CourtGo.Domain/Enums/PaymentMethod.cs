@@ -1,10 +1,10 @@
-﻿namespace CourtGo.Domain.Enums;
+namespace CourtGo.Domain.Enums;
 
-public enum PaymentMethod
+public enum PaymentMethod : byte
 {
-    Cash = 0,
-    BankTransfer = 1,
-    MoMo = 2,
-    VNPay = 3,
-    Other = 4
+    Cash = 1,
+    BankTransfer = 2,
+    MoMo = 3,
+    VNPay = 4,
+    Other = 5
 }

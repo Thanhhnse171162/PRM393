@@ -15,7 +15,26 @@ var builder = WebApplication.CreateBuilder(args);
 // Optional local overrides (git-ignored). Real secrets: user-secrets or environment variables.
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(o =>
+    {
+        // Malformed JSON / model binding errors use the same error shape as business validation errors.
+        o.InvalidModelStateResponseFactory = ctx =>
+        {
+            var errors = ctx.ModelState
+                .Where(e => e.Value is { Errors.Count: > 0 })
+                .ToDictionary(e => e.Key, e => e.Value!.Errors.Select(x => string.IsNullOrEmpty(x.ErrorMessage) ? "Invalid value." : x.ErrorMessage).ToArray());
+            return new Microsoft.AspNetCore.Mvc.ObjectResult(new Microsoft.AspNetCore.Mvc.ProblemDetails
+            {
+                Status = 400,
+                Title = "Validation failed",
+                Detail = "One or more validation errors occurred.",
+                Instance = ctx.HttpContext.Request.Path,
+                Extensions = { ["code"] = "VALIDATION_ERROR", ["errors"] = errors }
+            })
+            { StatusCode = 400, ContentTypes = { "application/problem+json" } };
+        };
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -38,9 +57,25 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Infrastructure: EF Core + SQL Server, JWT service, password hasher.
+// Database connection string: ConnectionStrings:CourtGoDb (with DefaultConnection fallback)
+var connectionString = builder.Configuration.GetConnectionString("CourtGoDb")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<CourtGoDbContext>(options =>
+{
+    if (!string.IsNullOrWhiteSpace(connectionString))
+    {
+        options.UseSqlServer(connectionString);
+    }
+});
+
+// Infrastructure: EF Core + SQL Server, JWT service, password hasher, repositories.
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ISportService, CourtGo.Application.Sports.SportService>();
+builder.Services.AddScoped<ISportCenterService, CourtGo.Application.SportCenters.SportCenterService>();
+builder.Services.AddScoped<ICourtService, CourtGo.Application.Courts.CourtService>();
+builder.Services.AddScoped<IAvailabilityService, CourtGo.Infrastructure.Services.AvailabilityService>();
 
 // JWT bearer authentication. Options are bound lazily from JwtSettings (configuration/user-secrets).
 builder.Services
@@ -60,12 +95,27 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwt.Issuer,
             ValidAudience = jwt.Audience,
+            ClockSkew = TimeSpan.FromSeconds(30),
             NameClaimType = "sub",
+            // Role claim is "role" -> [Authorize(Roles = "Customer|Staff|Admin")] works.
             RoleClaimType = JwtTokenService.RoleClaimType,
             // Falls back to a throw-away random key so the app can start without secrets;
             // tokens are then simply not valid until Jwt:Key is configured.
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(string.IsNullOrWhiteSpace(jwt.Key) ? Guid.NewGuid().ToString("N") : jwt.Key))
+        };
+
+        // Same error shape for 401/403 produced by the authentication/authorization middleware.
+        options.Events = new JwtBearerEvents
+        {
+            OnChallenge = ctx =>
+            {
+                ctx.HandleResponse();
+                return CourtGo.Api.Middleware.ApiProblem.WriteAsync(ctx.HttpContext, StatusCodes.Status401Unauthorized,
+                    "UNAUTHORIZED", "Unauthorized", "Authentication is required or the access token is invalid/expired.");
+            },
+            OnForbidden = ctx => CourtGo.Api.Middleware.ApiProblem.WriteAsync(ctx.HttpContext, StatusCodes.Status403Forbidden,
+                "FORBIDDEN", "Forbidden", "You do not have permission to perform this action.")
         };
     });
 
@@ -86,21 +136,48 @@ builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
-// Development only: apply migrations and insert demo accounts (Seed:Enabled=true).
-if (app.Configuration.GetValue<bool>("Seed:Enabled"))
+// Safe development-only database connectivity check
+if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     try
     {
         var db = scope.ServiceProvider.GetRequiredService<CourtGoDbContext>();
-        await db.Database.MigrateAsync();
-        await DbSeeder.SeedAsync(db, scope.ServiceProvider.GetRequiredService<IPasswordHasher>());
-        logger.LogInformation("Database migrated and demo accounts seeded.");
+        if (!string.IsNullOrWhiteSpace(connectionString))
+        {
+            var canConnect = await db.Database.CanConnectAsync();
+            if (canConnect)
+            {
+                logger.LogInformation("Database connection check succeeded: connected to CourtGoDb.");
+            }
+            else
+            {
+                logger.LogWarning("Database connection check returned false for CourtGoDb.");
+            }
+        }
     }
     catch (Exception ex)
     {
-        logger.LogError(ex, "Database migration/seed failed. Check ConnectionStrings:DefaultConnection.");
+        logger.LogWarning("Database connection check failed: {Message}", ex.Message);
+    }
+}
+
+// Development-only demo accounts (Seed:Enabled=true). Never runs outside Development.
+if (app.Environment.IsDevelopment() && app.Configuration.GetValue<bool>("Seed:Enabled"))
+{
+    using var scope = app.Services.CreateScope();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<CourtGoDbContext>();
+        await DbSeeder.SeedAsync(db, scope.ServiceProvider.GetRequiredService<IPasswordHasher>(),
+            app.Configuration["Seed:DemoPassword"]);
+        logger.LogInformation("Demo accounts seeded successfully.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Database seeding failed.");
     }
 }
 
