@@ -309,22 +309,6 @@ public class AvailabilityService : IAvailabilityService
         );
     }
 
-    private static TimeZoneInfo ResolveTimeZone(string? timeZoneId)
-    {
-        if (string.IsNullOrWhiteSpace(timeZoneId))
-            timeZoneId = "Asia/Ho_Chi_Minh";
-
-        if (TimeZoneInfo.TryFindSystemTimeZoneById(timeZoneId, out var tz))
-            return tz;
-
-        if (string.Equals(timeZoneId, "Asia/Ho_Chi_Minh", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(timeZoneId, "Asia/Saigon", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(timeZoneId, "Asia/Bangkok", StringComparison.OrdinalIgnoreCase))
-        {
-            if (TimeZoneInfo.TryFindSystemTimeZoneById("SE Asia Standard Time", out var seAsia))
-                return seAsia;
-        }
-
-        return TimeZoneInfo.CreateCustomTimeZone(timeZoneId, TimeSpan.FromHours(7), timeZoneId, timeZoneId);
-    }
+    private static TimeZoneInfo ResolveTimeZone(string? timeZoneId) =>
+        TimeZoneHelper.ResolveTimeZone(timeZoneId);
 }

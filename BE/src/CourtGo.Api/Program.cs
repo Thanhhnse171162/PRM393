@@ -7,6 +7,7 @@ using CourtGo.Infrastructure.Auth;
 using CourtGo.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -16,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
 
 builder.Services.AddControllers()
+    .ConfigureApplicationPartManager(manager => manager.FeatureProviders.Add(
+        new CourtGo.Api.Controllers.DevelopmentPaymentControllerFeatureProvider(builder.Environment.IsDevelopment())))
     .ConfigureApiBehaviorOptions(o =>
     {
         // Malformed JSON / model binding errors use the same error shape as business validation errors.
@@ -71,6 +74,18 @@ builder.Services.AddDbContext<CourtGoDbContext>(options =>
 
 // Infrastructure: EF Core + SQL Server, JWT service, password hasher, repositories.
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddHostedService<CourtGo.Api.Workers.BookingLifecycleWorker>();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddSingleton<CourtGo.Infrastructure.Services.DevelopmentPaymentGateway>();
+    builder.Services.AddSingleton<IPaymentGateway>(sp => sp.GetRequiredService<CourtGo.Infrastructure.Services.DevelopmentPaymentGateway>());
+    builder.Services.AddSingleton<IDevelopmentPaymentGateway>(sp => sp.GetRequiredService<CourtGo.Infrastructure.Services.DevelopmentPaymentGateway>());
+    builder.Services.AddScoped<IDevelopmentPaymentSimulationService, CourtGo.Infrastructure.Services.DevelopmentPaymentSimulationService>();
+}
+else
+{
+    builder.Services.AddSingleton<IPaymentGateway, CourtGo.Infrastructure.Services.UnavailablePaymentGateway>();
+}
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISportService, CourtGo.Application.Sports.SportService>();
 builder.Services.AddScoped<ISportCenterService, CourtGo.Application.SportCenters.SportCenterService>();
@@ -130,6 +145,29 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Development", p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
+
+builder.Services.AddHealthChecks();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.OnRejected = async (context, token) =>
+    {
+        await CourtGo.Api.Middleware.ApiProblem.WriteAsync(
+            context.HttpContext,
+            StatusCodes.Status429TooManyRequests,
+            "TOO_MANY_REQUESTS",
+            "Too Many Requests",
+            "Rate limit exceeded. Please try again later.");
+    };
+    options.AddFixedWindowLimiter("AuthPolicy", opt =>
+    {
+        opt.PermitLimit = 60;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 0;
+    });
 });
 
 builder.Services.AddProblemDetails();
@@ -196,8 +234,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapHealthChecks("/health");
+app.MapHealthChecks("/healthz");
 
 app.MapControllers();
 

@@ -24,4 +24,14 @@ public class ApiSmokeTests : IClassFixture<WebApplicationFactory<Program>>
         var response = await _client.GetAsync("/api/bookings/ping");
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
+
+    [Fact]
+    public async Task HealthEndpoints_Return200()
+    {
+        var healthRes = await _client.GetAsync("/health");
+        Assert.Equal(HttpStatusCode.OK, healthRes.StatusCode);
+
+        var healthzRes = await _client.GetAsync("/healthz");
+        Assert.Equal(HttpStatusCode.OK, healthzRes.StatusCode);
+    }
 }

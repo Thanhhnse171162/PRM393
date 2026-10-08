@@ -1,4 +1,5 @@
 using CourtGo.Application.Interfaces;
+using CourtGo.Application.Reviews;
 using CourtGo.Application.SportCenters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,17 @@ public class SportCentersController : ControllerBase
     {
         var center = await _sportCenterService.GetByIdAsync(id, ct);
         return Ok(center);
+    }
+
+    /// <summary>Gets public reviews for a sport center.</summary>
+    [HttpGet("{centerId:guid}/reviews")]
+    public async Task<ActionResult<CenterReviewsResponse>> GetReviews(
+        [FromRoute] Guid centerId,
+        [FromServices] IReviewService reviewService,
+        [FromQuery] CenterReviewQuery query,
+        CancellationToken ct = default)
+    {
+        return Ok(await reviewService.GetCenterReviewsAsync(centerId, query, ct));
     }
 
     /// <summary>Health check ping endpoint.</summary>

@@ -1,0 +1,431 @@
+COLUMN dbo Bookings 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo Bookings 2 BookingCode nvarchar 60 0 0 0 0 
+COLUMN dbo Bookings 3 CustomerUserId uniqueidentifier 16 0 0 1 0 
+COLUMN dbo Bookings 4 CustomerNameSnapshot nvarchar 300 0 0 0 0 
+COLUMN dbo Bookings 5 CustomerPhoneSnapshot nvarchar 40 0 0 0 0 
+COLUMN dbo Bookings 6 CustomerEmailSnapshot nvarchar 510 0 0 1 0 
+COLUMN dbo Bookings 7 CourtId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo Bookings 8 CourtNameSnapshot nvarchar 200 0 0 0 0 
+COLUMN dbo Bookings 9 CenterNameSnapshot nvarchar 400 0 0 0 0 
+COLUMN dbo Bookings 10 SportNameSnapshot nvarchar 200 0 0 0 0 
+COLUMN dbo Bookings 11 Source tinyint 1 3 0 0 0 
+COLUMN dbo Bookings 12 StartAt datetimeoffset 10 34 7 0 0 
+COLUMN dbo Bookings 13 EndAt datetimeoffset 10 34 7 0 0 
+COLUMN dbo Bookings 14 DurationMinutes int 4 10 0 0 0 
+COLUMN dbo Bookings 15 TotalAmount decimal 9 18 2 0 0 
+COLUMN dbo Bookings 16 DepositPercentSnapshot decimal 5 5 2 0 0 
+COLUMN dbo Bookings 17 DepositAmount decimal 9 18 2 0 0 
+COLUMN dbo Bookings 18 BookingStatus tinyint 1 3 0 0 0 
+COLUMN dbo Bookings 19 PaymentStatus tinyint 1 3 0 0 0 
+COLUMN dbo Bookings 20 HoldExpiresAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo Bookings 21 QrToken nvarchar 300 0 0 1 0 
+COLUMN dbo Bookings 22 CancellationPolicyId uniqueidentifier 16 0 0 1 0 
+COLUMN dbo Bookings 23 CreatedByUserId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo Bookings 24 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo Bookings 25 UpdatedAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo BookingSlots 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo BookingSlots 2 BookingId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo BookingSlots 3 CourtId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo BookingSlots 4 StartAt datetimeoffset 10 34 7 0 0 
+COLUMN dbo BookingSlots 5 EndAt datetimeoffset 10 34 7 0 0 
+COLUMN dbo BookingSlots 6 UnitPrice decimal 9 18 2 0 0 
+COLUMN dbo BookingSlots 7 PriceRuleId uniqueidentifier 16 0 0 1 0 
+COLUMN dbo BookingSlots 8 ReservationState tinyint 1 3 0 0 0 
+COLUMN dbo BookingSlots 9 IsOccupying bit 1 1 0 0 0 
+COLUMN dbo BookingSlots 10 HoldExpiresAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo BookingSlots 11 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo BookingStatusHistories 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo BookingStatusHistories 2 BookingId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo BookingStatusHistories 3 FromStatus tinyint 1 3 0 1 0 
+COLUMN dbo BookingStatusHistories 4 ToStatus tinyint 1 3 0 0 0 
+COLUMN dbo BookingStatusHistories 5 ChangedByUserId uniqueidentifier 16 0 0 1 0 
+COLUMN dbo BookingStatusHistories 6 Reason nvarchar 1000 0 0 1 0 
+COLUMN dbo BookingStatusHistories 7 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo CancellationPolicies 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo CancellationPolicies 2 Name nvarchar 300 0 0 0 0 
+COLUMN dbo CancellationPolicies 3 Version int 4 10 0 0 0 
+COLUMN dbo CancellationPolicies 4 EffectiveFrom datetimeoffset 10 34 7 0 0 
+COLUMN dbo CancellationPolicies 5 EffectiveTo datetimeoffset 10 34 7 1 0 
+COLUMN dbo CancellationPolicies 6 IsActive bit 1 1 0 0 0 ((0))
+COLUMN dbo CancellationPolicies 7 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo CancellationPolicyRules 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo CancellationPolicyRules 2 CancellationPolicyId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo CancellationPolicyRules 3 MinHoursBeforeStart int 4 10 0 0 0 
+COLUMN dbo CancellationPolicyRules 4 MaxHoursBeforeStart int 4 10 0 1 0 
+COLUMN dbo CancellationPolicyRules 5 RefundPercent decimal 5 5 2 0 0 
+COLUMN dbo CancellationRequests 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo CancellationRequests 2 BookingId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo CancellationRequests 3 RequestedByUserId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo CancellationRequests 4 RequestSource tinyint 1 3 0 0 0 
+COLUMN dbo CancellationRequests 5 Reason nvarchar 1000 0 0 0 0 
+COLUMN dbo CancellationRequests 6 Status tinyint 1 3 0 0 0 ((1))
+COLUMN dbo CancellationRequests 7 CalculatedRefundAmount decimal 9 18 2 0 0 ((0))
+COLUMN dbo CancellationRequests 8 ApprovedRefundAmount decimal 9 18 2 1 0 
+COLUMN dbo CancellationRequests 9 ProcessedByUserId uniqueidentifier 16 0 0 1 0 
+COLUMN dbo CancellationRequests 10 ProcessedAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo CancellationRequests 11 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo CancellationRequests 12 UpdatedAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo CourtBlocks 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo CourtBlocks 2 CourtId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo CourtBlocks 3 StartAt datetimeoffset 10 34 7 0 0 
+COLUMN dbo CourtBlocks 4 EndAt datetimeoffset 10 34 7 0 0 
+COLUMN dbo CourtBlocks 5 Type tinyint 1 3 0 0 0 
+COLUMN dbo CourtBlocks 6 Reason nvarchar 1000 0 0 0 0 
+COLUMN dbo CourtBlocks 7 CreatedByUserId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo CourtBlocks 8 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo Courts 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo Courts 2 SportCenterId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo Courts 3 SportId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo Courts 4 Code nvarchar 100 0 0 0 0 
+COLUMN dbo Courts 5 Name nvarchar 200 0 0 0 0 
+COLUMN dbo Courts 6 SurfaceType nvarchar 200 0 0 1 0 
+COLUMN dbo Courts 7 Description nvarchar 1000 0 0 1 0 
+COLUMN dbo Courts 8 CoverImageUrl nvarchar 1000 0 0 1 0 
+COLUMN dbo Courts 9 BasePricePerHour decimal 9 18 2 0 0 
+COLUMN dbo Courts 10 Status tinyint 1 3 0 0 0 ((1))
+COLUMN dbo Courts 11 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo Courts 12 UpdatedAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo CheckIns 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo CheckIns 2 BookingId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo CheckIns 3 StaffUserId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo CheckIns 4 Method tinyint 1 3 0 0 0 
+COLUMN dbo CheckIns 5 CheckedInAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo CheckIns 6 OutstandingPaymentOverride bit 1 1 0 0 0 ((0))
+COLUMN dbo CheckIns 7 OverrideReason nvarchar 1000 0 0 1 0 
+COLUMN dbo CheckIns 8 Note nvarchar 1000 0 0 1 0 
+COLUMN dbo Notifications 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo Notifications 2 UserId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo Notifications 3 Type tinyint 1 3 0 0 0 
+COLUMN dbo Notifications 4 Title nvarchar 400 0 0 0 0 
+COLUMN dbo Notifications 5 Message nvarchar 2000 0 0 0 0 
+COLUMN dbo Notifications 6 ReferenceType nvarchar 100 0 0 1 0 
+COLUMN dbo Notifications 7 ReferenceId uniqueidentifier 16 0 0 1 0 
+COLUMN dbo Notifications 8 DeepLink nvarchar 600 0 0 1 0 
+COLUMN dbo Notifications 9 IsRead bit 1 1 0 0 0 ((0))
+COLUMN dbo Notifications 10 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo Notifications 11 ReadAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo OperatingHourExceptions 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo OperatingHourExceptions 2 SportCenterId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo OperatingHourExceptions 3 Date date 3 10 0 0 0 
+COLUMN dbo OperatingHourExceptions 4 IsClosed bit 1 1 0 0 0 ((0))
+COLUMN dbo OperatingHourExceptions 5 OpenTime time 5 16 7 1 0 
+COLUMN dbo OperatingHourExceptions 6 CloseTime time 5 16 7 1 0 
+COLUMN dbo OperatingHourExceptions 7 Reason nvarchar 600 0 0 1 0 
+COLUMN dbo OperatingHours 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo OperatingHours 2 SportCenterId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo OperatingHours 3 DayOfWeek tinyint 1 3 0 0 0 
+COLUMN dbo OperatingHours 4 OpenTime time 5 16 7 1 0 
+COLUMN dbo OperatingHours 5 CloseTime time 5 16 7 1 0 
+COLUMN dbo OperatingHours 6 IsClosed bit 1 1 0 0 0 ((0))
+COLUMN dbo Payments 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo Payments 2 BookingId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo Payments 3 PaymentKind tinyint 1 3 0 0 0 
+COLUMN dbo Payments 4 PaymentMethod tinyint 1 3 0 0 0 
+COLUMN dbo Payments 5 Amount decimal 9 18 2 0 0 
+COLUMN dbo Payments 6 TransactionStatus tinyint 1 3 0 0 0 
+COLUMN dbo Payments 7 ProviderTransactionId nvarchar 400 0 0 1 0 
+COLUMN dbo Payments 8 RelatedPaymentId uniqueidentifier 16 0 0 1 0 
+COLUMN dbo Payments 9 PaidByUserId uniqueidentifier 16 0 0 1 0 
+COLUMN dbo Payments 10 ConfirmedByUserId uniqueidentifier 16 0 0 1 0 
+COLUMN dbo Payments 11 PaidAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo Payments 12 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo PriceRules 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo PriceRules 2 CourtId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo PriceRules 3 DayOfWeek tinyint 1 3 0 0 0 
+COLUMN dbo PriceRules 4 StartTime time 5 16 7 0 0 
+COLUMN dbo PriceRules 5 EndTime time 5 16 7 0 0 
+COLUMN dbo PriceRules 6 PricePerHour decimal 9 18 2 0 0 
+COLUMN dbo PriceRules 7 EffectiveFrom date 3 10 0 1 0 
+COLUMN dbo PriceRules 8 EffectiveTo date 3 10 0 1 0 
+COLUMN dbo PriceRules 9 IsActive bit 1 1 0 0 0 ((1))
+COLUMN dbo PriceRules 10 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo RefreshTokens 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo RefreshTokens 2 UserId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo RefreshTokens 3 TokenHash nvarchar 1000 0 0 0 0 
+COLUMN dbo RefreshTokens 4 ExpiresAt datetimeoffset 10 34 7 0 0 
+COLUMN dbo RefreshTokens 5 RevokedAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo RefreshTokens 6 DeviceInfo nvarchar 500 0 0 1 0 
+COLUMN dbo RefreshTokens 7 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo Reviews 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo Reviews 2 BookingId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo Reviews 3 CustomerUserId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo Reviews 4 Rating tinyint 1 3 0 0 0 
+COLUMN dbo Reviews 5 Comment nvarchar 2000 0 0 1 0 
+COLUMN dbo Reviews 6 IsVisible bit 1 1 0 0 0 ((1))
+COLUMN dbo Reviews 7 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo SportCenters 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo SportCenters 2 Name nvarchar 400 0 0 0 0 
+COLUMN dbo SportCenters 3 AddressLine nvarchar 600 0 0 0 0 
+COLUMN dbo SportCenters 4 Ward nvarchar 200 0 0 1 0 
+COLUMN dbo SportCenters 5 District nvarchar 200 0 0 0 0 
+COLUMN dbo SportCenters 6 City nvarchar 200 0 0 0 0 
+COLUMN dbo SportCenters 7 Latitude decimal 5 9 6 1 0 
+COLUMN dbo SportCenters 8 Longitude decimal 5 9 6 1 0 
+COLUMN dbo SportCenters 9 TimeZoneId nvarchar 128 0 0 0 0 (N'Asia/Ho_Chi_Minh')
+COLUMN dbo SportCenters 10 PhoneNumber nvarchar 40 0 0 1 0 
+COLUMN dbo SportCenters 11 CoverImageUrl nvarchar 1000 0 0 1 0 
+COLUMN dbo SportCenters 12 Status tinyint 1 3 0 0 0 ((1))
+COLUMN dbo SportCenters 13 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo SportCenters 14 UpdatedAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo Sports 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo Sports 2 Code nvarchar 60 0 0 0 0 
+COLUMN dbo Sports 3 Name nvarchar 200 0 0 0 0 
+COLUMN dbo Sports 4 IconUrl nvarchar 1000 0 0 1 0 
+COLUMN dbo Sports 5 DisplayOrder int 4 10 0 0 0 ((0))
+COLUMN dbo Sports 6 IsActive bit 1 1 0 0 0 ((1))
+COLUMN dbo Sports 7 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo StaffAssignments 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo StaffAssignments 2 StaffUserId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo StaffAssignments 3 SportCenterId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo StaffAssignments 4 AssignedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo StaffAssignments 5 IsActive bit 1 1 0 0 0 ((1))
+COLUMN dbo SystemSettings 1 Id tinyint 1 3 0 0 0 
+COLUMN dbo SystemSettings 2 HoldDurationMinutes int 4 10 0 0 0 
+COLUMN dbo SystemSettings 3 MinBookingLeadMinutes int 4 10 0 0 0 
+COLUMN dbo SystemSettings 4 DefaultDepositPercent decimal 5 5 2 0 0 
+COLUMN dbo SystemSettings 5 AllowOutstandingCheckIn bit 1 1 0 0 0 ((0))
+COLUMN dbo SystemSettings 6 UpdatedByUserId uniqueidentifier 16 0 0 1 0 
+COLUMN dbo SystemSettings 7 UpdatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo UserDevices 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo UserDevices 2 UserId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo UserDevices 3 DeviceToken nvarchar 1000 0 0 0 0 
+COLUMN dbo UserDevices 4 Platform tinyint 1 3 0 0 0 
+COLUMN dbo UserDevices 5 DeviceName nvarchar 300 0 0 1 0 
+COLUMN dbo UserDevices 6 IsActive bit 1 1 0 0 0 ((1))
+COLUMN dbo UserDevices 7 LastSeenAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo UserDevices 8 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo UserPreferences 1 UserId uniqueidentifier 16 0 0 0 0 
+COLUMN dbo UserPreferences 2 PreferredAreaName nvarchar 300 0 0 1 0 
+COLUMN dbo UserPreferences 3 PreferredLatitude decimal 5 9 6 1 0 
+COLUMN dbo UserPreferences 4 PreferredLongitude decimal 5 9 6 1 0 
+COLUMN dbo UserPreferences 5 BookingNotifications bit 1 1 0 0 0 ((1))
+COLUMN dbo UserPreferences 6 PaymentNotifications bit 1 1 0 0 0 ((1))
+COLUMN dbo UserPreferences 7 ReminderNotifications bit 1 1 0 0 0 ((1))
+COLUMN dbo UserPreferences 8 UpdatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo Users 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo Users 2 FullName nvarchar 300 0 0 0 0 
+COLUMN dbo Users 3 Email nvarchar 510 0 0 1 0 
+COLUMN dbo Users 4 PhoneNumber nvarchar 40 0 0 0 0 
+COLUMN dbo Users 5 PasswordHash nvarchar -1 0 0 0 0 
+COLUMN dbo Users 6 Role tinyint 1 3 0 0 0 
+COLUMN dbo Users 7 AvatarUrl nvarchar 1000 0 0 1 0 
+COLUMN dbo Users 8 IsActive bit 1 1 0 0 0 ((1))
+COLUMN dbo Users 9 PhoneVerifiedAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo Users 10 EmailVerifiedAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo Users 11 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+COLUMN dbo Users 12 UpdatedAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo VerificationCodes 1 Id uniqueidentifier 16 0 0 0 0 (newsequentialid())
+COLUMN dbo VerificationCodes 2 UserId uniqueidentifier 16 0 0 1 0 
+COLUMN dbo VerificationCodes 3 Target nvarchar 510 0 0 0 0 
+COLUMN dbo VerificationCodes 4 Purpose tinyint 1 3 0 0 0 
+COLUMN dbo VerificationCodes 5 CodeHash nvarchar 1000 0 0 0 0 
+COLUMN dbo VerificationCodes 6 ExpiresAt datetimeoffset 10 34 7 0 0 
+COLUMN dbo VerificationCodes 7 ConsumedAt datetimeoffset 10 34 7 1 0 
+COLUMN dbo VerificationCodes 8 AttemptCount int 4 10 0 0 0 ((0))
+COLUMN dbo VerificationCodes 9 CreatedAt datetimeoffset 10 34 7 0 0 (sysutcdatetime())
+INDEX dbo Bookings IX_Bookings_Court_StartAt 0 0  1 0 CourtId
+INDEX dbo Bookings IX_Bookings_Court_StartAt 0 0  2 0 StartAt
+INDEX dbo Bookings IX_Bookings_CreatedByUser 0 0  1 0 CreatedByUserId
+INDEX dbo Bookings IX_Bookings_Customer_StartAt 0 0  1 0 CustomerUserId
+INDEX dbo Bookings IX_Bookings_Customer_StartAt 0 0  2 0 StartAt
+INDEX dbo Bookings IX_Bookings_Status_StartAt 0 0  1 0 BookingStatus
+INDEX dbo Bookings IX_Bookings_Status_StartAt 0 0  2 0 StartAt
+INDEX dbo Bookings PK_Bookings 1 1  1 0 Id
+INDEX dbo Bookings UQ_Bookings_BookingCode 1 0  1 0 BookingCode
+INDEX dbo Bookings UX_Bookings_QrToken 1 0 ([QrToken] IS NOT NULL) 1 0 QrToken
+INDEX dbo BookingSlots IX_BookingSlots_BookingId 0 0  1 0 BookingId
+INDEX dbo BookingSlots IX_BookingSlots_Court_StartAt_EndAt 0 0  1 0 CourtId
+INDEX dbo BookingSlots IX_BookingSlots_Court_StartAt_EndAt 0 0  2 0 StartAt
+INDEX dbo BookingSlots IX_BookingSlots_Court_StartAt_EndAt 0 0  3 0 EndAt
+INDEX dbo BookingSlots PK_BookingSlots 1 1  1 0 Id
+INDEX dbo BookingSlots UX_BookingSlots_ActiveCourtStart 1 0 ([IsOccupying]=(1)) 1 0 CourtId
+INDEX dbo BookingSlots UX_BookingSlots_ActiveCourtStart 1 0 ([IsOccupying]=(1)) 2 0 StartAt
+INDEX dbo BookingStatusHistories IX_BookingStatusHistories_Booking_CreatedAt 0 0  1 0 BookingId
+INDEX dbo BookingStatusHistories IX_BookingStatusHistories_Booking_CreatedAt 0 0  2 0 CreatedAt
+INDEX dbo BookingStatusHistories PK_BookingStatusHistories 1 1  1 0 Id
+INDEX dbo CancellationPolicies PK_CancellationPolicies 1 1  1 0 Id
+INDEX dbo CancellationPolicies UQ_CancellationPolicies_Name_Version 1 0  1 0 Name
+INDEX dbo CancellationPolicies UQ_CancellationPolicies_Name_Version 1 0  2 0 Version
+INDEX dbo CancellationPolicies UX_CancellationPolicies_OneActive 1 0 ([IsActive]=(1)) 1 0 IsActive
+INDEX dbo CancellationPolicyRules IX_CancellationPolicyRules_Policy_MinHours 0 0  1 0 CancellationPolicyId
+INDEX dbo CancellationPolicyRules IX_CancellationPolicyRules_Policy_MinHours 0 0  2 0 MinHoursBeforeStart
+INDEX dbo CancellationPolicyRules PK_CancellationPolicyRules 1 1  1 0 Id
+INDEX dbo CancellationRequests IX_CancellationRequests_Booking_Status 0 0  1 0 BookingId
+INDEX dbo CancellationRequests IX_CancellationRequests_Booking_Status 0 0  2 0 Status
+INDEX dbo CancellationRequests IX_CancellationRequests_Status_CreatedAt 0 0  1 0 Status
+INDEX dbo CancellationRequests IX_CancellationRequests_Status_CreatedAt 0 0  2 0 CreatedAt
+INDEX dbo CancellationRequests PK_CancellationRequests 1 1  1 0 Id
+INDEX dbo CourtBlocks IX_CourtBlocks_Court_Start_End 0 0  1 0 CourtId
+INDEX dbo CourtBlocks IX_CourtBlocks_Court_Start_End 0 0  2 0 StartAt
+INDEX dbo CourtBlocks IX_CourtBlocks_Court_Start_End 0 0  3 0 EndAt
+INDEX dbo CourtBlocks PK_CourtBlocks 1 1  1 0 Id
+INDEX dbo Courts IX_Courts_Center_Sport_Status 0 0  1 0 SportCenterId
+INDEX dbo Courts IX_Courts_Center_Sport_Status 0 0  2 0 SportId
+INDEX dbo Courts IX_Courts_Center_Sport_Status 0 0  3 0 Status
+INDEX dbo Courts IX_Courts_SportCenterId 0 0  1 0 SportCenterId
+INDEX dbo Courts IX_Courts_SportId 0 0  1 0 SportId
+INDEX dbo Courts PK_Courts 1 1  1 0 Id
+INDEX dbo Courts UQ_Courts_Center_Code 1 0  1 0 SportCenterId
+INDEX dbo Courts UQ_Courts_Center_Code 1 0  2 0 Code
+INDEX dbo CheckIns PK_CheckIns 1 1  1 0 Id
+INDEX dbo CheckIns UQ_CheckIns_BookingId 1 0  1 0 BookingId
+INDEX dbo Notifications IX_Notifications_User_Read_CreatedAt 0 0  1 0 UserId
+INDEX dbo Notifications IX_Notifications_User_Read_CreatedAt 0 0  2 0 IsRead
+INDEX dbo Notifications IX_Notifications_User_Read_CreatedAt 0 0  3 0 CreatedAt
+INDEX dbo Notifications PK_Notifications 1 1  1 0 Id
+INDEX dbo OperatingHourExceptions PK_OperatingHourExceptions 1 1  1 0 Id
+INDEX dbo OperatingHourExceptions UQ_OperatingHourExceptions_Center_Date 1 0  1 0 SportCenterId
+INDEX dbo OperatingHourExceptions UQ_OperatingHourExceptions_Center_Date 1 0  2 0 Date
+INDEX dbo OperatingHours PK_OperatingHours 1 1  1 0 Id
+INDEX dbo OperatingHours UQ_OperatingHours_Center_Day 1 0  1 0 SportCenterId
+INDEX dbo OperatingHours UQ_OperatingHours_Center_Day 1 0  2 0 DayOfWeek
+INDEX dbo Payments IX_Payments_BookingId 0 0  1 0 BookingId
+INDEX dbo Payments IX_Payments_Status_CreatedAt 0 0  1 0 TransactionStatus
+INDEX dbo Payments IX_Payments_Status_CreatedAt 0 0  2 0 CreatedAt
+INDEX dbo Payments PK_Payments 1 1  1 0 Id
+INDEX dbo Payments UX_Payments_ProviderTransactionId 1 0 ([ProviderTransactionId] IS NOT NULL) 1 0 ProviderTransactionId
+INDEX dbo PriceRules IX_PriceRules_Court_Day_Active 0 0  1 0 CourtId
+INDEX dbo PriceRules IX_PriceRules_Court_Day_Active 0 0  2 0 DayOfWeek
+INDEX dbo PriceRules IX_PriceRules_Court_Day_Active 0 0  3 0 IsActive
+INDEX dbo PriceRules PK_PriceRules 1 1  1 0 Id
+INDEX dbo RefreshTokens IX_RefreshTokens_UserId_ExpiresAt 0 0  1 0 UserId
+INDEX dbo RefreshTokens IX_RefreshTokens_UserId_ExpiresAt 0 0  2 0 ExpiresAt
+INDEX dbo RefreshTokens PK_RefreshTokens 1 1  1 0 Id
+INDEX dbo RefreshTokens UX_RefreshTokens_TokenHash 1 0  1 0 TokenHash
+INDEX dbo Reviews IX_Reviews_CustomerUserId 0 0  1 0 CustomerUserId
+INDEX dbo Reviews PK_Reviews 1 1  1 0 Id
+INDEX dbo Reviews UQ_Reviews_BookingId 1 0  1 0 BookingId
+INDEX dbo SportCenters IX_SportCenters_District_City 0 0  1 0 District
+INDEX dbo SportCenters IX_SportCenters_District_City 0 0  2 0 City
+INDEX dbo SportCenters IX_SportCenters_Status 0 0  1 0 Status
+INDEX dbo SportCenters PK_SportCenters 1 1  1 0 Id
+INDEX dbo Sports PK_Sports 1 1  1 0 Id
+INDEX dbo Sports UX_Sports_Code 1 0  1 0 Code
+INDEX dbo StaffAssignments IX_StaffAssignments_SportCenterId_IsActive 0 0  1 0 SportCenterId
+INDEX dbo StaffAssignments IX_StaffAssignments_SportCenterId_IsActive 0 0  2 0 IsActive
+INDEX dbo StaffAssignments PK_StaffAssignments 1 1  1 0 Id
+INDEX dbo StaffAssignments UX_StaffAssignments_OneActivePerStaff 1 0 ([IsActive]=(1)) 1 0 StaffUserId
+INDEX dbo SystemSettings PK_SystemSettings 1 1  1 0 Id
+INDEX dbo UserDevices IX_UserDevices_UserId_IsActive 0 0  1 0 UserId
+INDEX dbo UserDevices IX_UserDevices_UserId_IsActive 0 0  2 0 IsActive
+INDEX dbo UserDevices PK_UserDevices 1 1  1 0 Id
+INDEX dbo UserDevices UX_UserDevices_DeviceToken 1 0  1 0 DeviceToken
+INDEX dbo UserPreferences PK_UserPreferences 1 1  1 0 UserId
+INDEX dbo Users PK_Users 1 1  1 0 Id
+INDEX dbo Users UX_Users_Email 1 0 ([Email] IS NOT NULL) 1 0 Email
+INDEX dbo Users UX_Users_PhoneNumber 1 0  1 0 PhoneNumber
+INDEX dbo VerificationCodes IX_VerificationCodes_Target_Purpose_ExpiresAt 0 0  1 0 Target
+INDEX dbo VerificationCodes IX_VerificationCodes_Target_Purpose_ExpiresAt 0 0  2 0 Purpose
+INDEX dbo VerificationCodes IX_VerificationCodes_Target_Purpose_ExpiresAt 0 0  3 0 ExpiresAt
+INDEX dbo VerificationCodes PK_VerificationCodes 1 1  1 0 Id
+CHECK Bookings CK_Bookings_BookingStatus ([BookingStatus]=(8) OR [BookingStatus]=(7) OR [BookingStatus]=(6) OR [BookingStatus]=(5) OR [BookingStatus]=(4) OR [BookingStatus]=(3) OR [BookingStatus]=(2) OR [BookingStatus]=(1)) 0 0
+CHECK Bookings CK_Bookings_DepositAmount ([DepositAmount]>=(0) AND [DepositAmount]<=[TotalAmount]) 0 0
+CHECK Bookings CK_Bookings_DepositPercent ([DepositPercentSnapshot]>=(0) AND [DepositPercentSnapshot]<=(100)) 0 0
+CHECK Bookings CK_Bookings_Duration ([DurationMinutes]>(0) AND [DurationMinutes]%(60)=(0) AND datediff(minute,[StartAt],[EndAt])=[DurationMinutes]) 0 0
+CHECK Bookings CK_Bookings_PaymentStatus ([PaymentStatus]=(6) OR [PaymentStatus]=(5) OR [PaymentStatus]=(4) OR [PaymentStatus]=(3) OR [PaymentStatus]=(2) OR [PaymentStatus]=(1)) 0 0
+CHECK Bookings CK_Bookings_Source ([Source]=(3) OR [Source]=(2) OR [Source]=(1)) 0 0
+CHECK Bookings CK_Bookings_TimeRange ([EndAt]>[StartAt]) 0 0
+CHECK Bookings CK_Bookings_TotalAmount ([TotalAmount]>=(0)) 0 0
+CHECK BookingSlots CK_BookingSlots_ExactlyOneHour ([EndAt]>[StartAt] AND datediff(minute,[StartAt],[EndAt])=(60)) 0 0
+CHECK BookingSlots CK_BookingSlots_ReservationState ([ReservationState]=(3) OR [ReservationState]=(2) OR [ReservationState]=(1)) 0 0
+CHECK BookingSlots CK_BookingSlots_StateConsistency ([ReservationState]=(1) AND [IsOccupying]=(1) AND [HoldExpiresAt] IS NOT NULL OR [ReservationState]=(2) AND [IsOccupying]=(1) AND [HoldExpiresAt] IS NULL OR [ReservationState]=(3) AND [IsOccupying]=(0)) 0 0
+CHECK BookingSlots CK_BookingSlots_UnitPrice ([UnitPrice]>=(0)) 0 0
+CHECK BookingStatusHistories CK_BookingStatusHistories_FromStatus ([FromStatus] IS NULL OR ([FromStatus]=(8) OR [FromStatus]=(7) OR [FromStatus]=(6) OR [FromStatus]=(5) OR [FromStatus]=(4) OR [FromStatus]=(3) OR [FromStatus]=(2) OR [FromStatus]=(1))) 0 0
+CHECK BookingStatusHistories CK_BookingStatusHistories_ToStatus ([ToStatus]=(8) OR [ToStatus]=(7) OR [ToStatus]=(6) OR [ToStatus]=(5) OR [ToStatus]=(4) OR [ToStatus]=(3) OR [ToStatus]=(2) OR [ToStatus]=(1)) 0 0
+CHECK CancellationPolicies CK_CancellationPolicies_EffectiveRange ([EffectiveTo] IS NULL OR [EffectiveTo]>[EffectiveFrom]) 0 0
+CHECK CancellationPolicies CK_CancellationPolicies_Version ([Version]>(0)) 0 0
+CHECK CancellationPolicyRules CK_CancellationPolicyRules_MaxHours ([MaxHoursBeforeStart] IS NULL OR [MaxHoursBeforeStart]>=[MinHoursBeforeStart]) 0 0
+CHECK CancellationPolicyRules CK_CancellationPolicyRules_MinHours ([MinHoursBeforeStart]>=(0)) 0 0
+CHECK CancellationPolicyRules CK_CancellationPolicyRules_RefundPercent ([RefundPercent]>=(0) AND [RefundPercent]<=(100)) 0 0
+CHECK CancellationRequests CK_CancellationRequests_ApprovedRefund ([ApprovedRefundAmount] IS NULL OR [ApprovedRefundAmount]>=(0)) 0 0
+CHECK CancellationRequests CK_CancellationRequests_CalculatedRefund ([CalculatedRefundAmount]>=(0)) 0 0
+CHECK CancellationRequests CK_CancellationRequests_Source ([RequestSource]=(3) OR [RequestSource]=(2) OR [RequestSource]=(1)) 0 0
+CHECK CancellationRequests CK_CancellationRequests_Status ([Status]=(5) OR [Status]=(4) OR [Status]=(3) OR [Status]=(2) OR [Status]=(1)) 0 0
+CHECK CourtBlocks CK_CourtBlocks_TimeRange ([EndAt]>[StartAt]) 0 0
+CHECK CourtBlocks CK_CourtBlocks_Type ([Type]=(4) OR [Type]=(3) OR [Type]=(2) OR [Type]=(1)) 0 0
+CHECK Courts CK_Courts_BasePrice ([BasePricePerHour]>=(0)) 0 0
+CHECK Courts CK_Courts_Status ([Status]=(3) OR [Status]=(2) OR [Status]=(1)) 0 0
+CHECK CheckIns CK_CheckIns_Method ([Method]=(3) OR [Method]=(2) OR [Method]=(1)) 0 0
+CHECK CheckIns CK_CheckIns_OverrideReason ([OutstandingPaymentOverride]=(0) OR [OutstandingPaymentOverride]=(1) AND [OverrideReason] IS NOT NULL AND len(ltrim(rtrim([OverrideReason])))>(0)) 0 0
+CHECK Notifications CK_Notifications_ReadConsistency ([IsRead]=(0) AND [ReadAt] IS NULL OR [IsRead]=(1) AND [ReadAt] IS NOT NULL) 0 0
+CHECK Notifications CK_Notifications_Type ([Type]=(7) OR [Type]=(6) OR [Type]=(5) OR [Type]=(4) OR [Type]=(3) OR [Type]=(2) OR [Type]=(1)) 0 0
+CHECK OperatingHourExceptions CK_OperatingHourExceptions_Times ([IsClosed]=(1) AND [OpenTime] IS NULL AND [CloseTime] IS NULL OR [IsClosed]=(0) AND [OpenTime] IS NOT NULL AND [CloseTime] IS NOT NULL AND [CloseTime]>[OpenTime]) 0 0
+CHECK OperatingHours CK_OperatingHours_DayOfWeek ([DayOfWeek]>=(1) AND [DayOfWeek]<=(7)) 0 0
+CHECK OperatingHours CK_OperatingHours_Times ([IsClosed]=(1) AND [OpenTime] IS NULL AND [CloseTime] IS NULL OR [IsClosed]=(0) AND [OpenTime] IS NOT NULL AND [CloseTime] IS NOT NULL AND [CloseTime]>[OpenTime]) 0 0
+CHECK Payments CK_Payments_Amount ([Amount]>(0)) 0 0
+CHECK Payments CK_Payments_Kind ([PaymentKind]=(3) OR [PaymentKind]=(2) OR [PaymentKind]=(1)) 0 0
+CHECK Payments CK_Payments_Method ([PaymentMethod]=(5) OR [PaymentMethod]=(4) OR [PaymentMethod]=(3) OR [PaymentMethod]=(2) OR [PaymentMethod]=(1)) 0 0
+CHECK Payments CK_Payments_TransactionStatus ([TransactionStatus]=(4) OR [TransactionStatus]=(3) OR [TransactionStatus]=(2) OR [TransactionStatus]=(1)) 0 0
+CHECK PriceRules CK_PriceRules_DayOfWeek ([DayOfWeek]>=(1) AND [DayOfWeek]<=(7)) 0 0
+CHECK PriceRules CK_PriceRules_EffectiveRange ([EffectiveTo] IS NULL OR [EffectiveFrom] IS NULL OR [EffectiveTo]>=[EffectiveFrom]) 0 0
+CHECK PriceRules CK_PriceRules_Price ([PricePerHour]>=(0)) 0 0
+CHECK PriceRules CK_PriceRules_TimeRange ([EndTime]>[StartTime]) 0 0
+CHECK RefreshTokens CK_RefreshTokens_Expiry ([ExpiresAt]>[CreatedAt]) 0 0
+CHECK Reviews CK_Reviews_Rating ([Rating]>=(1) AND [Rating]<=(5)) 0 0
+CHECK SportCenters CK_SportCenters_Latitude ([Latitude] IS NULL OR [Latitude]>=(-90) AND [Latitude]<=(90)) 0 0
+CHECK SportCenters CK_SportCenters_Longitude ([Longitude] IS NULL OR [Longitude]>=(-180) AND [Longitude]<=(180)) 0 0
+CHECK SportCenters CK_SportCenters_Status ([Status]=(2) OR [Status]=(1)) 0 0
+CHECK Sports CK_Sports_DisplayOrder ([DisplayOrder]>=(0)) 0 0
+CHECK SystemSettings CK_SystemSettings_DepositPercent ([DefaultDepositPercent]>=(0) AND [DefaultDepositPercent]<=(100)) 0 0
+CHECK SystemSettings CK_SystemSettings_HoldDuration ([HoldDurationMinutes]>=(1) AND [HoldDurationMinutes]<=(60)) 0 0
+CHECK SystemSettings CK_SystemSettings_LeadTime ([MinBookingLeadMinutes]>=(0) AND [MinBookingLeadMinutes]<=(1440)) 0 0
+CHECK SystemSettings CK_SystemSettings_Singleton ([Id]=(1)) 0 0
+CHECK UserDevices CK_UserDevices_Platform ([Platform]=(2) OR [Platform]=(1)) 0 0
+CHECK UserPreferences CK_UserPreferences_Latitude ([PreferredLatitude] IS NULL OR [PreferredLatitude]>=(-90) AND [PreferredLatitude]<=(90)) 0 0
+CHECK UserPreferences CK_UserPreferences_Longitude ([PreferredLongitude] IS NULL OR [PreferredLongitude]>=(-180) AND [PreferredLongitude]<=(180)) 0 0
+CHECK Users CK_Users_Role ([Role]=(3) OR [Role]=(2) OR [Role]=(1)) 0 0
+CHECK VerificationCodes CK_VerificationCodes_AttemptCount ([AttemptCount]>=(0)) 0 0
+CHECK VerificationCodes CK_VerificationCodes_Expiry ([ExpiresAt]>[CreatedAt]) 0 0
+CHECK VerificationCodes CK_VerificationCodes_Purpose ([Purpose]=(4) OR [Purpose]=(3) OR [Purpose]=(2) OR [Purpose]=(1)) 0 0
+FK Bookings FK_Bookings_CancellationPolicy CancellationPolicyId CancellationPolicies Id 0 0 0 0
+FK Bookings FK_Bookings_Courts CourtId Courts Id 0 0 0 0
+FK Bookings FK_Bookings_CreatedByUser CreatedByUserId Users Id 0 0 0 0
+FK Bookings FK_Bookings_Customer CustomerUserId Users Id 0 0 0 0
+FK BookingSlots FK_BookingSlots_Bookings BookingId Bookings Id 0 0 0 0
+FK BookingSlots FK_BookingSlots_Courts CourtId Courts Id 0 0 0 0
+FK BookingSlots FK_BookingSlots_PriceRules PriceRuleId PriceRules Id 0 0 0 0
+FK BookingStatusHistories FK_BookingStatusHistories_Bookings BookingId Bookings Id 0 0 0 0
+FK BookingStatusHistories FK_BookingStatusHistories_ChangedByUser ChangedByUserId Users Id 0 0 0 0
+FK CancellationPolicyRules FK_CancellationPolicyRules_Policies CancellationPolicyId CancellationPolicies Id 1 0 0 0
+FK CancellationRequests FK_CancellationRequests_Bookings BookingId Bookings Id 0 0 0 0
+FK CancellationRequests FK_CancellationRequests_ProcessedBy ProcessedByUserId Users Id 0 0 0 0
+FK CancellationRequests FK_CancellationRequests_RequestedBy RequestedByUserId Users Id 0 0 0 0
+FK CourtBlocks FK_CourtBlocks_Courts CourtId Courts Id 0 0 0 0
+FK CourtBlocks FK_CourtBlocks_CreatedByUser CreatedByUserId Users Id 0 0 0 0
+FK Courts FK_Courts_SportCenters SportCenterId SportCenters Id 0 0 0 0
+FK Courts FK_Courts_Sports SportId Sports Id 0 0 0 0
+FK CheckIns FK_CheckIns_Bookings BookingId Bookings Id 0 0 0 0
+FK CheckIns FK_CheckIns_Staff StaffUserId Users Id 0 0 0 0
+FK Notifications FK_Notifications_Users UserId Users Id 1 0 0 0
+FK OperatingHourExceptions FK_OperatingHourExceptions_SportCenters SportCenterId SportCenters Id 0 0 0 0
+FK OperatingHours FK_OperatingHours_SportCenters SportCenterId SportCenters Id 0 0 0 0
+FK Payments FK_Payments_Bookings BookingId Bookings Id 0 0 0 0
+FK Payments FK_Payments_ConfirmedByUser ConfirmedByUserId Users Id 0 0 0 0
+FK Payments FK_Payments_PaidByUser PaidByUserId Users Id 0 0 0 0
+FK Payments FK_Payments_RelatedPayment RelatedPaymentId Payments Id 0 0 0 0
+FK PriceRules FK_PriceRules_Courts CourtId Courts Id 0 0 0 0
+FK RefreshTokens FK_RefreshTokens_Users UserId Users Id 1 0 0 0
+FK Reviews FK_Reviews_Bookings BookingId Bookings Id 0 0 0 0
+FK Reviews FK_Reviews_Customers CustomerUserId Users Id 0 0 0 0
+FK StaffAssignments FK_StaffAssignments_SportCenters SportCenterId SportCenters Id 0 0 0 0
+FK StaffAssignments FK_StaffAssignments_Users StaffUserId Users Id 0 0 0 0
+FK SystemSettings FK_SystemSettings_UpdatedByUser UpdatedByUserId Users Id 0 0 0 0
+FK UserDevices FK_UserDevices_Users UserId Users Id 1 0 0 0
+FK UserPreferences FK_UserPreferences_Users UserId Users Id 1 0 0 0
+FK VerificationCodes FK_VerificationCodes_Users UserId Users Id 2 0 0 0
+MODULE dbo usp_ReleaseExpiredBookingHolds 
+/* ============================================================
+   11. RELEASE EXPIRED HOLDS
+   Call periodically from the ASP.NET Core background service and/or
+   before availability/booking checks.
+   ===================================================
+MODULE dbo vw_BookingPaymentSummary 
+/* ============================================================
+   10. PAYMENT SUMMARY VIEW
+   ============================================================ */
+CREATE VIEW dbo.vw_BookingPaymentSummary
+AS
+SELECT
+    b.Id AS BookingId,
+    b.BookingCode,
+   

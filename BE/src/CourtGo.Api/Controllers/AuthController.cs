@@ -3,11 +3,13 @@ using CourtGo.Application.Interfaces;
 using CourtGo.Application.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace CourtGo.Api.Controllers;
 
 [ApiController]
 [Route("api/auth")]
+[EnableRateLimiting("AuthPolicy")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _auth;
