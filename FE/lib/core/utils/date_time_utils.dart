@@ -4,7 +4,8 @@ class DateTimeUtils {
   static String _two(int n) => n.toString().padLeft(2, '0');
 
   /// "17:00"
-  static String formatTime(DateTime dt) => '${_two(dt.hour)}:${_two(dt.minute)}';
+  static String formatTime(DateTime dt) =>
+      '${_two(dt.hour)}:${_two(dt.minute)}';
 
   /// "05/10/2026"
   static String formatDate(DateTime dt) =>

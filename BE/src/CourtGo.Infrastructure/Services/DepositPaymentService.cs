@@ -28,7 +28,7 @@ public sealed class DepositPaymentService(CourtGoDbContext dbContext, BookingCom
             b => b.Id == bookingId && b.CustomerUserId == customerUserId, cancellationToken))
             throw BookingNotFound();
         await _expiredHoldService.ReleaseExpiredHoldsAsync(cancellationToken);
-        return await WithUniqueConflictHandlingAsync(() => _commands.ExecuteAsync(bookingId, async (booking, ct) =>
+        var intent = await WithUniqueConflictHandlingAsync(() => _commands.ExecuteAsync(bookingId, async (booking, ct) =>
         {
             ValidateOwner(booking, customerUserId);
             var attempts = await _dbContext.Payments.AsNoTracking()
@@ -38,6 +38,7 @@ public sealed class DepositPaymentService(CourtGoDbContext dbContext, BookingCom
             var slots = await _commands.ReloadSlotsAsync(booking.Id, ct);
             ValidateHold(booking, slots, _timeProvider.GetUtcNow(), ErrorCodes.BookingHoldExpired);
             var method = ParseMethod(request.PaymentMethod);
+            _gateway.ValidateConfiguration(method);
             if (!_gateway.Supports(method))
                 throw new ValidationException("The configured gateway does not support this payment method.", ErrorCodes.UnsupportedPaymentMethod);
             if (booking.DepositAmount <= 0 || booking.DepositAmount > booking.TotalAmount)
@@ -51,11 +52,9 @@ public sealed class DepositPaymentService(CourtGoDbContext dbContext, BookingCom
                 var existing = pending[0];
                 if (existing.Amount != booking.DepositAmount)
                     throw new ConflictException("Pending payment amount differs from the booking snapshot.", ErrorCodes.PaymentAmountMismatch);
-                var attempt = await _gateway.CreateDepositAsync(
-                    new(existing.Id, booking.Id, existing.PaymentMethod, existing.Amount), ct);
-                if (!string.Equals(existing.ProviderTransactionId, attempt.ProviderTransactionId, StringComparison.Ordinal))
-                    throw new ConflictException("Pending payment reference is inconsistent.", ErrorCodes.PaymentStateConflict);
-                return ToStartResponse(booking, existing, attempt);
+                if (existing.PaymentMethod != method)
+                    throw new ConflictException("Finish the existing pending payment before changing payment method.", ErrorCodes.PaymentStateConflict);
+                return (Payment: existing, ExpiresAt: booking.HoldExpiresAt);
             }
 
             var payment = new Payment
@@ -64,9 +63,26 @@ public sealed class DepositPaymentService(CourtGoDbContext dbContext, BookingCom
                 Amount = booking.DepositAmount, TransactionStatus = PaymentTransactionStatus.Pending,
                 PaidByUserId = customerUserId, CreatedAt = _timeProvider.GetUtcNow()
             };
-            var created = await _gateway.CreateDepositAsync(new(payment.Id, booking.Id, method, payment.Amount), ct);
-            payment.ProviderTransactionId = created.ProviderTransactionId;
+            payment.ProviderTransactionId = _gateway.GetReference(new(payment.Id, booking.Id, method, payment.Amount));
+            payment.GatewayName = _gateway.Name;
             _dbContext.Payments.Add(payment);
+            return (Payment: payment, ExpiresAt: booking.HoldExpiresAt);
+        }, cancellationToken));
+        // Commit intent before contacting the provider. Retries always reuse this PaymentId.
+        var pendingPayment = intent.Payment;
+        var created = pendingPayment.CheckoutUrl is not null
+            ? new GatewayPaymentAttempt(pendingPayment.ProviderTransactionId!, pendingPayment.CheckoutUrl, pendingPayment.GatewayName!)
+            : await _gateway.CreateDepositAsync(new(pendingPayment.Id, bookingId, pendingPayment.PaymentMethod,
+                pendingPayment.Amount, pendingPayment.CreatedAt, intent.ExpiresAt), cancellationToken);
+        return await WithUniqueConflictHandlingAsync(() => _commands.ExecuteAsync(bookingId, async (booking, ct) =>
+        {
+            var payment = await _dbContext.Payments.SingleAsync(p => p.Id == pendingPayment.Id, ct);
+            await _dbContext.Entry(payment).ReloadAsync(ct);
+            if (payment.ProviderTransactionId is not null && payment.ProviderTransactionId != created.ProviderTransactionId)
+                throw new ConflictException("Pending payment reference is inconsistent.", ErrorCodes.PaymentStateConflict);
+            payment.ProviderTransactionId = created.ProviderTransactionId;
+            payment.CheckoutUrl = created.PaymentUrl;
+            payment.GatewayName = created.Gateway;
             return ToStartResponse(booking, payment, created);
         }, cancellationToken));
     }
@@ -101,6 +117,17 @@ public sealed class DepositPaymentService(CourtGoDbContext dbContext, BookingCom
             if (result.TransactionStatus is not (PaymentTransactionStatus.Succeeded or PaymentTransactionStatus.Failed or PaymentTransactionStatus.Cancelled))
                 throw new ValidationException("Provider result is invalid.", ErrorCodes.PaymentVerificationFailed);
 
+            if (result.Gateway is not null)
+            {
+                if (result.Gateway != payment.PaymentMethod.ToString() || payment.ProviderTransactionId != payment.Id.ToString("N") ||
+                    (result.TransactionStatus == PaymentTransactionStatus.Succeeded && string.IsNullOrWhiteSpace(result.ProviderReceiptId)))
+                    throw new ValidationException("Payment provider does not match the attempt.", ErrorCodes.PaymentVerificationFailed);
+                if (result.ProviderReceiptId is not null &&
+                    ((payment.ProviderReceiptId is not null && payment.ProviderReceiptId != result.ProviderReceiptId) ||
+                     await _dbContext.Payments.AnyAsync(p => p.Id != payment.Id && p.ProviderReceiptId == result.ProviderReceiptId, ct)))
+                    throw new ConflictException("Provider receipt already belongs to another transaction.", ErrorCodes.PaymentStateConflict);
+            }
+
             if (payment.TransactionStatus != PaymentTransactionStatus.Pending)
             {
                 if (payment.TransactionStatus == result.TransactionStatus)
@@ -113,6 +140,36 @@ public sealed class DepositPaymentService(CourtGoDbContext dbContext, BookingCom
                 if (result.TransactionStatus == PaymentTransactionStatus.Succeeded)
                 {
                     var slots = await _commands.ReloadSlotsAsync(booking.Id, ct);
+                    if (result.Gateway is not null && (booking.BookingStatus != BookingStatus.PendingPayment ||
+                        booking.HoldExpiresAt is null || booking.HoldExpiresAt <= _timeProvider.GetUtcNow() ||
+                        slots.Count == 0 || slots.Any(s => !s.IsOccupying || s.ReservationState != ReservationState.Held || s.HoldExpiresAt <= _timeProvider.GetUtcNow())))
+                    {
+                        // A verified charge is money received even when the hold has expired. Never resurrect slots.
+                        var lateNow = _timeProvider.GetUtcNow();
+                        payment.TransactionStatus = PaymentTransactionStatus.Succeeded;
+                        payment.ProviderReceiptId = result.ProviderReceiptId;
+                        payment.PaidAt = lateNow;
+                        booking.PaymentStatus = BookingPaymentStatus.RefundPending;
+                        if (booking.BookingStatus == BookingStatus.PendingPayment)
+                        {
+                            booking.BookingStatus = BookingStatus.Expired;
+                            booking.HoldExpiresAt = null;
+                            foreach (var slot in slots)
+                            { slot.ReservationState = ReservationState.Released; slot.IsOccupying = false; slot.HoldExpiresAt = null; }
+                            _dbContext.BookingStatusHistories.Add(new BookingStatusHistory { BookingId = booking.Id,
+                                FromStatus = BookingStatus.PendingPayment, ToStatus = BookingStatus.Expired,
+                                Reason = "Verified payment arrived after hold expiry; refund reconciliation required", CreatedAt = lateNow });
+                        }
+                        _dbContext.Payments.Add(new Payment { BookingId = booking.Id, PaymentKind = PaymentKind.Refund,
+                            PaymentMethod = payment.PaymentMethod, Amount = payment.Amount, RelatedPaymentId = payment.Id,
+                            GatewayName = "ManualReconciliation", CreatedAt = lateNow });
+                        if (booking.CustomerUserId is Guid lateRecipient)
+                            _dbContext.Notifications.Add(new Notification { UserId = lateRecipient, Type = NotificationType.Payment,
+                                Title = "Thanh toán cần đối soát", Message = "Tiền đã được nhận sau khi lượt giữ sân kết thúc. Yêu cầu hoàn tiền đang chờ xử lý.",
+                                ReferenceType = "Booking", ReferenceId = booking.Id, CreatedAt = lateNow });
+                        await _dbContext.SaveChangesAsync(ct);
+                        return await ToConfirmationResponseAsync(booking, payment, ct);
+                    }
                     ValidateHold(booking, slots, _timeProvider.GetUtcNow(), ErrorCodes.PaymentAfterHoldExpired);
                     if (await _dbContext.Payments.AsNoTracking().AnyAsync(p => p.BookingId == booking.Id &&
                         p.PaymentKind == PaymentKind.Deposit && p.TransactionStatus == PaymentTransactionStatus.Succeeded, ct))
@@ -191,6 +248,7 @@ public sealed class DepositPaymentService(CourtGoDbContext dbContext, BookingCom
                 }
             }
             payment.ProviderTransactionId = result.ProviderTransactionId;
+            payment.ProviderReceiptId = result.ProviderReceiptId ?? payment.ProviderReceiptId;
             // All writes and response aggregates are inside BookingCommandExecutor's transaction.
             await _dbContext.SaveChangesAsync(ct);
             return await ToConfirmationResponseAsync(booking, payment, ct);

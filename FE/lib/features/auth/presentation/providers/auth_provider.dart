@@ -1,4 +1,4 @@
-﻿import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../core/network/api_exception.dart';
 import '../../../../core/network/network_result.dart';
@@ -30,7 +30,15 @@ class AuthProvider extends ChangeNotifier {
 
   /// Called by Splash: reads the stored token and restores the session.
   Future<void> restoreSession() async {
-    final user = await _repository.restoreSession();
+    _errorMessage = null;
+    UserModel? user;
+    try {
+      user = await _repository.restoreSession();
+    } on ApiException catch (error) {
+      _errorMessage = error.message;
+      notifyListeners();
+      return;
+    }
     if (user == null) {
       _user = null;
       _status = AuthStatus.unauthenticated;
@@ -43,6 +51,7 @@ class AuthProvider extends ChangeNotifier {
 
   /// Returns true on success; otherwise [errorMessage] is set.
   Future<bool> login(String emailOrPhone, String password) async {
+    if (_isLoading) return false;
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -83,7 +92,10 @@ class AuthProvider extends ChangeNotifier {
   /// (token expired/invalid): clears the session so the router shows Login.
   Future<void> handleUnauthorized() async {
     if (_status != AuthStatus.authenticated) return;
-    await logout();
+    await _repository.clearSession();
+    _user = null;
+    _status = AuthStatus.unauthenticated;
+    notifyListeners();
   }
 
   void clearError() {
@@ -102,6 +114,8 @@ class AuthProvider extends ChangeNotifier {
         return 'Tài khoản đã bị vô hiệu hóa. Vui lòng liên hệ quản trị viên.';
       case 400:
         return 'Thông tin đăng nhập không hợp lệ.';
+      case 429:
+        return 'Bạn thao tác quá nhanh. Vui lòng thử lại sau.';
       case null:
         return 'Không thể kết nối máy chủ. Vui lòng kiểm tra mạng.';
       default:

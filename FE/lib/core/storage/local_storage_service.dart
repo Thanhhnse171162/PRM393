@@ -13,6 +13,19 @@ class LocalStorageService {
 
   String? get selectedArea => _prefs.getString(StorageKeys.selectedArea);
 
-  Future<void> saveSelectedArea(String area) =>
-      _prefs.setString(StorageKeys.selectedArea, area);
+  List<String> get recentAreas => _prefs.getStringList('recent_areas') ?? [];
+  Future<void> saveSelectedArea(String area) async {
+    await _prefs.setString(StorageKeys.selectedArea, area);
+    if (area.isNotEmpty) {
+      await _prefs.setStringList(
+        'recent_areas',
+        [area, ...recentAreas.where((a) => a != area)].take(5).toList(),
+      );
+    }
+  }
+
+  bool reviewed(String userId, String bookingId) =>
+      _prefs.getBool('reviewed_${userId}_$bookingId') ?? false;
+  Future<void> saveReviewed(String userId, String bookingId) =>
+      _prefs.setBool('reviewed_${userId}_$bookingId', true);
 }

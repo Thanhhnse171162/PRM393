@@ -20,6 +20,11 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         builder.Property(p => p.Amount).HasPrecision(18, 2).IsRequired();
         builder.Property(p => p.TransactionStatus).HasConversion<byte>().HasColumnType("tinyint").IsRequired();
         builder.Property(p => p.ProviderTransactionId).HasMaxLength(200).IsRequired(false);
+        builder.Property(p => p.ProviderReceiptId).HasMaxLength(200);
+        builder.Property(p => p.CheckoutUrl).HasMaxLength(4096);
+        builder.Property(p => p.GatewayName).HasMaxLength(32);
+        builder.HasIndex(p => p.ProviderReceiptId).IsUnique()
+            .HasFilter("([ProviderReceiptId] IS NOT NULL)").HasDatabaseName("UX_Payments_ProviderReceiptId");
         builder.Property(p => p.RelatedPaymentId).IsRequired(false);
         builder.Property(p => p.PaidByUserId).IsRequired(false);
         builder.Property(p => p.ConfirmedByUserId).IsRequired(false);

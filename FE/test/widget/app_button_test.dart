@@ -17,7 +17,9 @@ void main() {
   testWidgets('AppButton is disabled while loading', (tester) async {
     var taps = 0;
     await tester.pumpWidget(
-      _wrap(AppButton(label: 'Đặt sân', isLoading: true, onPressed: () => taps++)),
+      _wrap(
+        AppButton(label: 'Đặt sân', isLoading: true, onPressed: () => taps++),
+      ),
     );
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
     await tester.tap(find.byType(ElevatedButton), warnIfMissed: false);
@@ -25,7 +27,9 @@ void main() {
   });
 
   testWidgets('AppButton is disabled when onPressed is null', (tester) async {
-    await tester.pumpWidget(_wrap(const AppButton(label: 'Tiếp tục', onPressed: null)));
+    await tester.pumpWidget(
+      _wrap(const AppButton(label: 'Tiếp tục', onPressed: null)),
+    );
     final button = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
     expect(button.onPressed, isNull);
   });

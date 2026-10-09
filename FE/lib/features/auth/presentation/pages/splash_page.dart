@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -6,6 +7,7 @@ import '../../../../core/routing/route_guard.dart';
 import '../../../../core/routing/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../shared/widgets/customer_widgets.dart';
 import '../providers/auth_provider.dart';
 
 class SplashPage extends StatefulWidget {
@@ -16,6 +18,8 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  bool busy = false;
+
   @override
   void initState() {
     super.initState();
@@ -23,6 +27,8 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _bootstrap() async {
+    if (busy) return;
+    setState(() => busy = true);
     final auth = context.read<AuthProvider>();
 
     // Brief splash delay for branding
@@ -31,6 +37,8 @@ class _SplashPageState extends State<SplashPage> {
 
     await auth.restoreSession();
     if (!mounted) return;
+    setState(() => busy = false);
+    if (auth.errorMessage != null) return;
 
     if (auth.isAuthenticated) {
       context.go(RouteGuard.homeFor(auth.role));
@@ -41,25 +49,62 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primary,
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.sports_tennis, size: 72, color: AppColors.white),
-              const SizedBox(height: 12),
-              Text(
-                'CourtGo',
-                style: AppTextStyles.h1.copyWith(color: AppColors.white),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Sport Court Booking',
-                style: AppTextStyles.body.copyWith(color: AppColors.mint),
-              ),
-            ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+        systemNavigationBarColor: AppColors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/images/common/courtgo_badge.png',
+                  width: 88,
+                  height: 88,
+                  errorBuilder: (_, _, _) => const BrandMark(size: 88),
+                ),
+                const SizedBox(height: 18),
+                Text(
+                  'CourtGo',
+                  style: AppTextStyles.h1.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Sport Court Booking',
+                  style: AppTextStyles.body.copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                if (context.watch<AuthProvider>().errorMessage != null) ...[
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      context.read<AuthProvider>().errorMessage!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: AppColors.error),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  FilledButton.tonal(
+                    onPressed: busy ? null : _bootstrap,
+                    child: Text(busy ? 'Đang kết nối…' : 'Thử lại'),
+                  ),
+                ],
+              ],
+            ),
           ),
         ),
       ),

@@ -93,5 +93,6 @@ coverage/
 **/ios/Runner/GeneratedPluginRegistrant.*
 
 # ===== Temp =====
+.local-build/
 *.tmp
 *.bak

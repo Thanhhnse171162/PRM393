@@ -14,8 +14,10 @@ import 'environment.dart';
 class AppConfig {
   const AppConfig._();
 
-  static const String _envName =
-      String.fromEnvironment('APP_ENV', defaultValue: 'dev');
+  static const String _envName = String.fromEnvironment(
+    'APP_ENV',
+    defaultValue: 'dev',
+  );
 
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',

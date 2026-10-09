@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#faf8ff;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-tertiary-container": "#ffe6cc", "surface-dim": "#d2d9f4", "on-secondary-fixed": "#002113", "surface-container-high": "#e2e7ff", "primary-fixed": "#9cf2e8", "on-surface-variant": "#3e4947", "inverse-surface": "#283044", "surface-container-low": "#f2f3ff", "inverse-primary": "#80d5cb", "on-tertiary": "#ffffff", "secondary-fixed-dim": "#4edea3", "on-error": "#ffffff", "on-primary-fixed": "#00201d", "error": "#ba1a1a", "background": "#faf8ff", "on-background": "#131b2e", "primary-fixed-dim": "#80d5cb", "outline-variant": "#bdc9c6", "secondary": "#006c49", "on-surface": "#131b2e", "outline": "#6e7977", "surface-container-lowest": "#ffffff", "tertiary": "#734700", "on-tertiary-fixed-variant": "#653e00", "secondary-fixed": "#6ffbbe", "on-error-container": "#93000a", "tertiary-container": "#945d00", "surface-container": "#eaedff", "surface-bright": "#faf8ff", "tertiary-fixed-dim": "#ffb95f", "surface-container-highest": "#dae2fd", "secondary-container": "#6cf8bb", "surface": "#faf8ff", "error-container": "#ffdad6", "on-secondary-fixed-variant": "#005236", "on-secondary": "#ffffff", "on-primary-container": "#a3faef", "surface-tint": "#006a63", "on-primary-fixed-variant": "#00504a", "tertiary-fixed": "#ffddb8", "on-primary": "#ffffff", "surface-variant": "#dae2fd", "on-secondary-container": "#00714d", "inverse-on-surface": "#eef0ff", "primary-container": "#0f766e", "primary": "#005c55", "on-tertiary-fixed": "#2a1700" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-lg": "1.5rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "gutter": "0.75rem", "margin": "1rem", "margin-md": "1.25rem", "space-md": "1rem", "gutter-md": "1rem", "space-xl": "2rem" }, fontFamily: { "currency-display": ["Inter"], "headline-lg": ["Inter"], "display-lg": ["Inter"], "display-sm": ["Inter"], "label-lg": ["Inter"], "headline-sm": ["Inter"], "label-md": ["Inter"], "body-sm": ["Inter"], "body-lg": ["Inter"], "title-md": ["Inter"], "body-md": ["Inter"], "label-sm": ["Inter"] }, fontSize: { "currency-display": ["22px", { lineHeight: "28px", letterSpacing: "-0.02em", fontWeight: "700" }], "headline-lg": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }], "display-sm": ["24px", { lineHeight: "32px", letterSpacing: "-0.015em", fontWeight: "700" }], "label-lg": ["14px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }], "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }], "title-md": ["16px", { lineHeight: "22px", letterSpacing: "-0.005em", fontWeight: "600" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.03em", fontWeight: "600" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Brand logo. - Primary color: #0f766e
+- Font: inter
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UTENmNemTE1wi6bxckDmWojGAxlANShs35ipUR_2aU13AFyajjReKmZKtue0iwo5z43ztMoOykMmTlMIyhlYQTr9eYiaVz4OnXZiaYR112HlPCS7ijaJfTY5pw1pVakcXqdkNXL29wCxgpLhKyfA01FRytSuGJx7iu99bOZ8i-IOMtwtD9pSMmiJ7coO-jcc8_hemOfYLgeJfjiS0A2IRx8ntCz2nkG86kdunkUo7EU_Flk1gnL07TwJLr"/><span class="font-headline-lg text-headline-lg text-primary-container tracking-tight">CourtGo</span><span class="font-title-md text-title-md text-on-surface ml-space-xs hidden min-[360px]:inline">Thông Báo</span></div><div class="flex items-center gap-space-sm"><button class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary-container hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[24px]">search</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover shadow-[0_2px_6px_rgba(0,0,0,0.08)]" src="https://lh3.googleusercontent.com/aida/AEtjO1U213DiuzLYVsQ3jlod5PuqwnTZ0juBtKJvx6J8MHS4Fv00Ed8b3c1NCdRElwWSASSpTIagtKooKl0H9n8cFfbHKJ_MfXb8uZIEyFXVDFlhkiMSWyrJOSQEmW1MJ4cYaDYKpc1Gks11H0656g1p1gEdw08zi7J2kfXSvheqrGHpeIJ3imwlMlk_SJ8DAQYLZHAp9jnp5g-ac8BiGoevFLtryH5R3ymLC7QOr5FkfkChWJamqSjETUqPjxTG"/></div></div></header><main class="flex-1 w-full bg-surface pt-16 pb-24 px-margin"><div class="flex flex-col w-full pb-8">
+<!-- Header Notification Bar -->
+<div class="flex items-center justify-between py-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">Thông báo</h1>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold" id="unread-pill-badge">3 mới</span>
+</div>
+<button class="flex items-center gap-1 text-primary hover:text-primary-container active:scale-95 transition-all text-label-md font-label-md font-semibold py-1 px-2 rounded-lg hover:bg-surface-container" id="mark-all-read-btn">
+<span class="material-symbols-outlined text-[16px]">done_all</span>
+<span>Đọc tất cả</span>
+</button>
+</div>
+<!-- Interactive Filter Tabs -->
+<div class="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl mb-space-md">
+<button class="flex-1 py-2 px-3 rounded-lg text-center font-label-md text-label-md font-semibold transition-all bg-surface-container-lowest text-primary shadow-sm flex items-center justify-center gap-1.5" id="tab-all" onclick="switchTab('all')">
+<span>Tất cả</span>
+<span class="text-[11px] px-1.5 py-0.2 rounded-full bg-surface-container text-primary font-bold" id="total-count-pill">5</span>
+</button>
+<button class="flex-1 py-2 px-3 rounded-lg text-center font-label-md text-label-md font-semibold text-on-surface-variant transition-all hover:text-on-surface flex items-center justify-center gap-1.5" id="tab-unread" onclick="switchTab('unread')">
+<span>Chưa đọc</span>
+<span class="text-[11px] px-1.5 py-0.2 rounded-full bg-secondary-container text-on-secondary-container font-bold" id="tab-unread-badge">3</span>
+</button>
+</div>
+<!-- Notifications Timeline Flow -->
+<div class="flex flex-col gap-space-md" id="notifications-stream">
+<!-- Group 1: HÔM NAY -->
+<div class="timeline-group flex flex-col gap-space-sm" data-group="today">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Hôm nay</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+</div>
+<!-- Card 1 (Unread) -->
+<div class="notif-card group relative p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden unread" data-id="notif-1" data-status="unread" onclick="handleCardClick('notif-1', 'modal-booking-detail')">
+<div class="unread-indicator absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-l-2xl"></div>
+<div class="flex items-start gap-3 pl-1">
+<div class="w-11 h-11 shrink-0 rounded-xl bg-surface-container-high text-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[24px]">alarm_on</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<div class="flex items-center gap-1.5 min-w-0">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface truncate">Nhắc lịch sắp tới</h3>
+<span class="unread-dot w-2 h-2 rounded-full bg-secondary shrink-0"></span>
+</div>
+<span class="font-label-sm text-label-sm text-outline shrink-0">30 phút trước</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-snug line-clamp-2">
+              Bạn có lịch Cầu lông tại <strong class="text-on-surface font-semibold">CourtGo Sports Arena</strong> lúc 19:00 hôm nay.
+            </p>
+<div class="mt-2.5 flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-surface-container text-primary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">sports_tennis</span> Sân A1
+              </span>
+<span class="font-label-sm text-label-sm text-primary flex items-center font-semibold group-hover:translate-x-0.5 transition-transform">
+                Chi tiết <span class="material-symbols-outlined text-[14px] ml-0.5">chevron_right</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2 (Unread) -->
+<div class="notif-card group relative p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden unread" data-id="notif-2" data-status="unread" onclick="handleCardClick('notif-2', 'modal-payment-detail')">
+<div class="unread-indicator absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-l-2xl"></div>
+<div class="flex items-start gap-3 pl-1">
+<div class="w-11 h-11 shrink-0 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[24px]">payments</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<div class="flex items-center gap-1.5 min-w-0">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface truncate">Thanh toán thành công</h3>
+<span class="unread-dot w-2 h-2 rounded-full bg-secondary shrink-0"></span>
+</div>
+<span class="font-label-sm text-label-sm text-outline shrink-0">2 giờ trước</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-snug line-clamp-2">
+              Đã nhận <strong class="text-secondary font-semibold">60.000 ₫</strong> tiền đặt cọc cho Sân A1 · Cầu lông (BK-250925-A1).
+            </p>
+<div class="mt-2.5 flex items-center justify-between">
+<span class="inline-flex items-center gap-1 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-[14px] text-secondary">check_circle</span> Ví MoMo Pay
+              </span>
+<span class="font-label-sm text-label-sm text-primary font-semibold flex items-center">
+                Biên nhận <span class="material-symbols-outlined text-[14px] ml-0.5">receipt_long</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3 (Read) -->
+<div class="notif-card group relative p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden read opacity-90 hover:opacity-100" data-id="notif-3" data-status="read" onclick="handleCardClick('notif-3', 'modal-booking-detail')">
+<div class="flex items-start gap-3 pl-1">
+<div class="w-11 h-11 shrink-0 rounded-xl bg-surface-container text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">event_available</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface truncate">Đặt sân thành công</h3>
+<span class="font-label-sm text-label-sm text-outline shrink-0">3 giờ trước</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-snug line-clamp-2">
+              Sân A1 · Cầu lông đã được xác nhận cho ngày 25/09, khung giờ 19:00 – 21:00.
+            </p>
+<div class="mt-2 flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-outline">Mã đặt: #CG-8921</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Group 2: HÔM QUA -->
+<div class="timeline-group flex flex-col gap-space-sm" data-group="yesterday">
+<div class="flex items-center justify-between px-1 pt-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Hôm qua</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+</div>
+<!-- Card 4 (Read / Review invitation) -->
+<div class="notif-card group relative p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden read" data-id="notif-4" data-status="read" onclick="openReviewSheet()">
+<div class="flex items-start gap-3 pl-1">
+<div class="w-11 h-11 shrink-0 rounded-xl bg-tertiary-fixed text-tertiary-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface truncate">Đánh giá trải nghiệm</h3>
+<span class="font-label-sm text-label-sm text-outline shrink-0">Hôm qua</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-snug line-clamp-2">
+              Hãy chia sẻ cảm nhận về trận đấu gần nhất tại <span class="font-semibold text-on-surface">GreenField Sports Complex</span> để nhận +50 điểm thưởng.
+            </p>
+<div class="mt-2.5 flex items-center gap-1.5">
+<div class="flex text-tertiary-container">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]">star</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-semibold ml-2">Đánh giá ngay</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Group 3: TRƯỚC ĐÓ -->
+<div class="timeline-group flex flex-col gap-space-sm" data-group="earlier">
+<div class="flex items-center justify-between px-1 pt-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Trước đó</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+</div>
+<!-- Card 5 (Read / Refund) -->
+<div class="notif-card group relative p-3.5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden read" data-id="notif-5" data-status="read" onclick="handleCardClick('notif-5', 'modal-refund-detail')">
+<div class="flex items-start gap-3 pl-1">
+<div class="w-11 h-11 shrink-0 rounded-xl bg-surface-container text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">currency_exchange</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface truncate">Hoàn tiền hoàn tất</h3>
+<span class="font-label-sm text-label-sm text-outline shrink-0">3 ngày trước</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-snug line-clamp-2">
+              Khoản hoàn tiền <strong class="text-on-surface font-semibold">60.000 ₫</strong> cho lượt đặt BK-1809 đã được chuyển về phương thức ban đầu.
+            </p>
+<div class="mt-2 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline">Ví ShopeePay</span>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">Đã hoàn trả</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Empty State for Filter (hidden by default) -->
+<div class="hidden flex-col items-center justify-center py-12 px-4 text-center" id="unread-empty-state">
+<div class="w-20 h-20 rounded-full bg-secondary-container/50 flex items-center justify-center mb-4 text-secondary">
+<span class="material-symbols-outlined text-[44px]">mark_email_read</span>
+</div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface mb-1">Bạn đã cập nhật hết thông báo!</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs mb-5">
+      Không còn thông báo chưa đọc nào. CourtGo sẽ báo ngay khi có cập nhật sân hoặc trận đấu mới.
+    </p>
+<button class="px-5 py-2.5 rounded-xl bg-surface-container-high text-primary font-label-md text-label-md font-semibold active:scale-95 transition-transform" onclick="switchTab('all')">
+      Xem tất cả thông báo
+    </button>
+</div>
+<!-- Quick Action Drawer: Modal / BottomSheet for Rating (Delight element) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 flex items-end justify-center" id="review-sheet">
+<div class="w-full max-w-md bg-surface-container-lowest rounded-t-3xl p-6 transform translate-y-full transition-transform duration-300 shadow-2xl" id="review-sheet-content">
+<div class="w-10 h-1 bg-outline-variant rounded-full mx-auto mb-4"></div>
+<div class="flex items-center justify-between mb-4">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wide text-primary font-bold">Chia sẻ trải nghiệm</span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">GreenField Sports Complex</h2>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant" onclick="closeReviewSheet()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="p-3 rounded-2xl bg-surface-container-low flex items-center gap-3 mb-5">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[28px]">sports_soccer</span>
+</div>
+<div class="min-w-0 flex-1">
+<p class="font-title-md text-title-md font-semibold text-on-surface truncate">Sân 7 người · Khung 20:00</p>
+<p class="font-body-sm text-body-sm text-outline">Đã chơi vào Thứ Tư, 24/09</p>
+</div>
+</div>
+<p class="text-center font-label-md text-label-md text-on-surface-variant mb-2">Chất lượng mặt sân &amp; dịch vụ thế nào?</p>
+<!-- Interactive Stars -->
+<div class="flex justify-center gap-2 mb-6" id="star-rating-box">
+<button class="star-btn text-tertiary-container hover:scale-110 active:scale-95 transition-transform" onclick="setRating(1)" type="button">
+<span class="material-symbols-outlined text-[34px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button class="star-btn text-tertiary-container hover:scale-110 active:scale-95 transition-transform" onclick="setRating(2)" type="button">
+<span class="material-symbols-outlined text-[34px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button class="star-btn text-tertiary-container hover:scale-110 active:scale-95 transition-transform" onclick="setRating(3)" type="button">
+<span class="material-symbols-outlined text-[34px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button class="star-btn text-tertiary-container hover:scale-110 active:scale-95 transition-transform" onclick="setRating(4)" type="button">
+<span class="material-symbols-outlined text-[34px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button class="star-btn text-tertiary-container hover:scale-110 active:scale-95 transition-transform" onclick="setRating(5)" type="button">
+<span class="material-symbols-outlined text-[34px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex-1 py-3.5 rounded-xl bg-surface-container font-label-lg text-label-lg text-on-surface font-semibold active:scale-95 transition-transform" onclick="closeReviewSheet()">
+          Để sau
+        </button>
+<button class="flex-1 py-3.5 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-semibold shadow-md active:scale-95 transition-transform" onclick="submitReview()">
+          Gửi đánh giá
+        </button>
+</div>
+</div>
+</div>
+<!-- Booking Quick Detail Toast / Feedback Snack -->
+<div class="fixed bottom-20 left-4 right-4 z-50 bg-inverse-surface text-inverse-on-surface py-3 px-4 rounded-xl shadow-xl flex items-center justify-between transform translate-y-16 opacity-0 pointer-events-none transition-all duration-300" id="toast-message">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-secondary-fixed">check_circle</span>
+<span class="font-body-md text-body-md font-medium" id="toast-text">Tất cả thông báo đã được đánh dấu đã đọc.</span>
+</div>
+<button class="text-inverse-on-surface/70 hover:text-inverse-on-surface text-[14px]" onclick="hideToast()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<script>
+  let activeTab = 'all';
+
+  function updateUnreadCount() {
+    const unreadCards = document.querySelectorAll('.notif-card.unread');
+    const count = unreadCards.length;
+    
+    // Update badge in header
+    const headerBadge = document.getElementById('unread-pill-badge');
+    const tabBadge = document.getElementById('tab-unread-badge');
+    
+    // Global shell notification badge update if exists
+    const shellBadge = document.querySelector('[data-path="thong-bao"] .rounded-full');
+    if (shellBadge) {
+      if (count > 0) {
+        shellBadge.textContent = count;
+        shellBadge.classList.remove('hidden');
+      } else {
+        shellBadge.classList.add('hidden');
+      }
+    }
+
+    if (count > 0) {
+      if (headerBadge) {
+        headerBadge.textContent = `${count} mới`;
+        headerBadge.classList.remove('hidden');
+      }
+      if (tabBadge) {
+        tabBadge.textContent = count;
+        tabBadge.classList.remove('hidden');
+      }
+    } else {
+      if (headerBadge) headerBadge.classList.add('hidden');
+      if (tabBadge) tabBadge.classList.add('hidden');
+    }
+
+    // Handle empty state visibility when unread tab is active
+    if (activeTab === 'unread') {
+      applyFilter();
+    }
+  }
+
+  function markCardAsRead(card) {
+    if (!card || !card.classList.contains('unread')) return;
+
+    card.classList.remove('unread');
+    card.classList.add('read');
+    card.setAttribute('data-status', 'read');
+
+    // Remove unread bar indicator
+    const indicator = card.querySelector('.unread-indicator');
+    if (indicator) indicator.remove();
+
+    // Remove unread green dot
+    const dot = card.querySelector('.unread-dot');
+    if (dot) dot.remove();
+
+    updateUnreadCount();
+  }
+
+  function handleCardClick(cardId, actionType) {
+    const card = document.querySelector(`[data-id="${cardId}"]`);
+    if (card) {
+      markCardAsRead(card);
+    }
+
+    if (actionType === 'modal-booking-detail') {
+      showToast('Đang mở thông tin chi tiết lịch đặt Sân A1...');
+    } else if (actionType === 'modal-payment-detail') {
+      showToast('Biên lai 60.000 ₫ đã lưu vào hồ sơ thanh toán');
+    } else if (actionType === 'modal-refund-detail') {
+      showToast('Xem chi tiết hoàn tiền: Mã giao dịch #CG-1809');
+    }
+  }
+
+  function switchTab(tab) {
+    activeTab = tab;
+    const tabAll = document.getElementById('tab-all');
+    const tabUnread = document.getElementById('tab-unread');
+
+    if (tab === 'all') {
+      tabAll.className = 'flex-1 py-2 px-3 rounded-lg text-center font-label-md text-label-md font-semibold transition-all bg-surface-container-lowest text-primary shadow-sm flex items-center justify-center gap-1.5';
+      tabUnread.className = 'flex-1 py-2 px-3 rounded-lg text-center font-label-md text-label-md font-semibold text-on-surface-variant transition-all hover:text-on-surface flex items-center justify-center gap-1.5';
+    } else {
+      tabUnread.className = 'flex-1 py-2 px-3 rounded-lg text-center font-label-md text-label-md font-semibold transition-all bg-surface-container-lowest text-primary shadow-sm flex items-center justify-center gap-1.5';
+      tabAll.className = 'flex-1 py-2 px-3 rounded-lg text-center font-label-md text-label-md font-semibold text-on-surface-variant transition-all hover:text-on-surface flex items-center justify-center gap-1.5';
+    }
+
+    applyFilter();
+  }
+
+  function applyFilter() {
+    const allCards = document.querySelectorAll('.notif-card');
+    const groups = document.querySelectorAll('.timeline-group');
+    const emptyState = document.getElementById('unread-empty-state');
+    let visibleCount = 0;
+
+    if (activeTab === 'unread') {
+      allCards.forEach(card => {
+        if (card.classList.contains('unread')) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      // Hide group headers if no visible cards in group
+      groups.forEach(group => {
+        const visibleInGroup = group.querySelectorAll('.notif-card:not(.hidden)').length;
+        if (visibleInGroup === 0) {
+          group.classList.add('hidden');
+        } else {
+          group.classList.remove('hidden');
+        }
+      });
+
+      if (visibleCount === 0) {
+        emptyState.classList.remove('hidden');
+        emptyState.classList.add('flex');
+      } else {
+        emptyState.classList.add('hidden');
+        emptyState.classList.remove('flex');
+      }
+    } else {
+      // Show all
+      allCards.forEach(card => card.classList.remove('hidden'));
+      groups.forEach(group => group.classList.remove('hidden'));
+      emptyState.classList.add('hidden');
+      emptyState.classList.remove('flex');
+    }
+  }
+
+  // Mark all read button handler
+  document.getElementById('mark-all-read-btn').addEventListener('click', () => {
+    const unreadCards = document.querySelectorAll('.notif-card.unread');
+    if (unreadCards.length === 0) {
+      showToast('Bạn không có thông báo nào chưa đọc.');
+      return;
+    }
+
+    unreadCards.forEach(card => {
+      markCardAsRead(card);
+    });
+
+    showToast('Đã đánh dấu tất cả thông báo là đã đọc!');
+  });
+
+  // Review Sheet Controls
+  function openReviewSheet() {
+    const sheet = document.getElementById('review-sheet');
+    const content = document.getElementById('review-sheet-content');
+    sheet.classList.remove('opacity-0', 'pointer-events-none');
+    sheet.classList.add('opacity-100');
+    content.classList.remove('translate-y-full');
+    content.classList.add('translate-y-0');
+  }
+
+  function closeReviewSheet() {
+    const sheet = document.getElementById('review-sheet');
+    const content = document.getElementById('review-sheet-content');
+    sheet.classList.add('opacity-0', 'pointer-events-none');
+    sheet.classList.remove('opacity-100');
+    content.classList.add('translate-y-full');
+    content.classList.remove('translate-y-0');
+  }
+
+  function setRating(rating) {
+    const buttons = document.querySelectorAll('#star-rating-box .star-btn');
+    buttons.forEach((btn, index) => {
+      const star = btn.querySelector('.material-symbols-outlined');
+      if (index < rating) {
+        star.style.fontVariationSettings = "'FILL' 1";
+        btn.classList.add('text-tertiary-container');
+        btn.classList.remove('text-outline-variant');
+      } else {
+        star.style.fontVariationSettings = "'FILL' 0";
+        btn.classList.remove('text-tertiary-container');
+        btn.classList.add('text-outline-variant');
+      }
+    });
+  }
+
+  function submitReview() {
+    closeReviewSheet();
+    showToast('Cảm ơn bạn! +50 điểm đã được cộng vào ví CourtGo.');
+  }
+
+  // Toast message controller
+  let toastTimer = null;
+  function showToast(text) {
+    const toast = document.getElementById('toast-message');
+    const toastText = document.getElementById('toast-text');
+    if (!toast || !toastText) return;
+
+    toastText.textContent = text;
+    toast.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
+    toast.classList.add('translate-y-0', 'opacity-100');
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      hideToast();
+    }, 3200);
+  }
+
+  function hideToast() {
+    const toast = document.getElementById('toast-message');
+    if (toast) {
+      toast.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
+      toast.classList.remove('translate-y-0', 'opacity-100');
+    }
+  }
+
+  // Set initial navigation highlight to "Thông báo"
+  document.addEventListener('DOMContentLoaded', () => {
+    const navItems = document.querySelectorAll('nav a');
+    navItems.forEach(item => {
+      if (item.getAttribute('data-path') === 'thong-bao') {
+        item.classList.add('text-primary-container', 'font-semibold');
+        item.classList.remove('text-on-surface-variant');
+      }
+    });
+    updateUnreadCount();
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_-4px_20px_rgba(15,23,42,0.06)]" data-active-classes="text-primary-container font-semibold"><div class="h-16 px-gutter flex items-center justify-around"><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant transition-colors hover:text-primary-container" data-path="trang-chu" href="#"><span class="material-symbols-outlined text-[24px]">home</span><span class="font-label-sm text-label-sm mt-0.5">Trang chủ</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant transition-colors hover:text-primary-container" data-path="kham-pha" href="#"><span class="material-symbols-outlined text-[24px]">explore</span><span class="font-label-sm text-label-sm mt-0.5">Khám phá</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant transition-colors hover:text-primary-container" data-path="lich-dat" href="#"><span class="material-symbols-outlined text-[24px]">calendar_month</span><span class="font-label-sm text-label-sm mt-0.5">Lịch đặt</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant transition-colors hover:text-primary-container relative" data-path="thong-bao" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">notifications</span><span class="absolute -top-1 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-error text-on-error font-label-sm text-[10px] leading-none flex items-center justify-center">3</span></div><span class="font-label-sm text-label-sm mt-0.5">Thông báo</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant transition-colors hover:text-primary-container" data-path="tai-khoan" href="#"><span class="material-symbols-outlined text-[24px]">person</span><span class="font-label-sm text-label-sm mt-0.5">Tài khoản</span></a></div></nav></body></html>

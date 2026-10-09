@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CourtGo.Infrastructure.Services;
 
-public partial class CancellationService(CourtGoDbContext db, BookingCommandExecutor commands, TimeProvider clock) : ICancellationService
+public partial class CancellationService(CourtGoDbContext db, BookingCommandExecutor commands, TimeProvider clock, IPaymentGateway gateway) : ICancellationService
 {
     private static readonly Expression<Func<CancellationRequest, CancellationRequestDto>> Projection = r =>
         new(r.Id, r.BookingId, r.Status.ToString(), r.Reason, r.CalculatedRefundAmount, r.ApprovedRefundAmount, r.CreatedAt, r.ProcessedAt);
@@ -399,7 +399,9 @@ public partial class CancellationService(CourtGoDbContext db, BookingCommandExec
                     PaidByUserId = adminUserId,
                     CreatedAt = now
                 };
-                refundPayment.ProviderTransactionId = $"dev-{method}-{refundPayment.Id:N}";
+                refundPayment.ProviderTransactionId = gateway.Name == "Development"
+                    ? $"dev-{method}-{refundPayment.Id:N}" : $"refund-{refundPayment.Id:N}";
+                refundPayment.GatewayName = gateway.Name == "Development" ? "Development" : "ManualReconciliation";
                 db.Payments.Add(refundPayment);
 
                 booking.PaymentStatus = BookingPaymentStatus.RefundPending;

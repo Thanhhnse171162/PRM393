@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-high": "#e2e7ff", "on-secondary-container": "#00714d", "on-primary": "#ffffff", "on-primary-fixed": "#00201d", "tertiary-fixed-dim": "#ffb95f", "secondary-container": "#6cf8bb", "surface-tint": "#006a63", "primary-fixed-dim": "#80d5cb", "on-tertiary": "#ffffff", "on-primary-container": "#a3faef", "tertiary-fixed": "#ffddb8", "on-secondary-fixed-variant": "#005236", "surface-container-low": "#f2f3ff", "inverse-surface": "#283044", "surface-container": "#eaedff", "on-primary-fixed-variant": "#00504a", "secondary": "#006c49", "surface-container-highest": "#dae2fd", "primary-container": "#0f766e", "error": "#ba1a1a", "surface": "#faf8ff", "outline-variant": "#bdc9c6", "on-background": "#131b2e", "on-surface-variant": "#3e4947", "outline": "#6e7977", "on-surface": "#131b2e", "on-tertiary-container": "#ffe6cc", "error-container": "#ffdad6", "on-tertiary-fixed": "#2a1700", "on-secondary": "#ffffff", "primary": "#005c55", "inverse-on-surface": "#eef0ff", "primary-fixed": "#9cf2e8", "secondary-fixed": "#6ffbbe", "on-error-container": "#93000a", "surface-container-lowest": "#ffffff", "on-error": "#ffffff", "on-tertiary-fixed-variant": "#653e00", "background": "#faf8ff", "tertiary": "#734700", "surface-bright": "#faf8ff", "inverse-primary": "#80d5cb", "surface-dim": "#d2d9f4", "secondary-fixed-dim": "#4edea3", "surface-variant": "#dae2fd", "tertiary-container": "#945d00", "on-secondary-fixed": "#002113" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter-md": "1rem", "space-md": "1rem", "gutter": "0.75rem", "space-xs": "0.25rem", "space-xl": "2rem", "margin-md": "1.25rem", "space-lg": "1.5rem", "margin": "1rem", "space-sm": "0.5rem" }, "fontFamily": { "headline-lg": ["Inter"], "currency-display": ["Inter"], "label-lg": ["Inter"], "display-sm": ["Inter"], "label-md": ["Inter"], "headline-sm": ["Inter"], "body-md": ["Inter"], "body-lg": ["Inter"], "label-sm": ["Inter"], "display-lg": ["Inter"], "body-sm": ["Inter"], "title-md": ["Inter"] }, "fontSize": { "headline-lg": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "currency-display": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }], "display-sm": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.03em", "fontWeight": "600" }], "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "title-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.005em", "fontWeight": "600" }] } } } }</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#faf8ff;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style></head><body class="bg-[#faf8ff] font-sans text-body-md text-[#0f172a] flex flex-col min-h-screen">
+<!-- 1. Header -->
+<header class="fixed top-0 w-full z-40 pt-safe bg-[#faf8ff]/90 backdrop-blur-md border-b border-slate-200/50"><div class="h-14 px-4 flex items-center justify-between"><div class="flex items-center gap-2"><button aria-label="Quay lại" class="w-9 h-9 -ml-1 flex items-center justify-center text-[#0f172a] active:opacity-60 transition-opacity" onclick="history.back()"><span class="material-symbols-outlined text-[22px]">arrow_back_ios_new</span></button><h1 class="text-[20px] font-bold text-[#0f172a] tracking-tight">Chi tiết lịch đặt</h1></div><div class="flex items-center gap-1"><button aria-label="Chia sẻ" class="w-9 h-9 flex items-center justify-center text-slate-600 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">share</span></button><button aria-label="Trợ giúp" class="w-9 h-9 flex items-center justify-center text-slate-600 hover:text-primary transition-colors" onclick="alert('Hotline hỗ trợ CourtGo: 1900 6868')"><span class="material-symbols-outlined text-[20px]">help_outline</span></button></div></div></header>
+<main class="flex-1 flex flex-col relative w-full pt-[calc(3.5rem+env(safe-area-inset-top,0px))] pb-safe bg-[#faf8ff]"><div class="flex flex-col w-full px-4 py-3 space-y-3 max-w-lg mx-auto">
+<!-- Status Pill (Under Header) -->
+<div class="flex items-center">
+<div class="bg-emerald-50 text-emerald-700 border border-emerald-200/60 font-semibold text-xs px-3 py-1 rounded-full inline-flex items-center gap-1.5 shadow-xs">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Đã xác nhận</span>
+</div>
+</div>
+<!-- 3. Court Summary Hero Card (Compact) -->
+<div class="w-full bg-white rounded-2xl p-3 border border-slate-100 shadow-sm flex flex-col">
+<div class="relative w-full h-[115px] rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover" data-alt="Sân cầu lông Yonex sàn gỗ cao cấp CourtGo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGBtmZ7R5g9ST6cJpP66eYJBr3Vumjr9MbYOCX1IRyPkCQs-ced-LnhDq4Wa_DRyBIanJCREfsKfLhHCkxWAtU-poOpvQ5OdoSfXIEVvUzvJSH60cDEHL-5k0DxWLificAtBtaPuFW5Jrxr3r1nerv4FBLeYZtt6zN89Q8iLaFwaMmXTeSmE7b5sPNAOvC_9agkTTJvNfO60-Tv1HvZaN8vKoiGqFDu1bXhUbGMPdz_fV9MmKv3HKdSg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/50 backdrop-blur-sm flex items-center gap-1 text-white text-[12px] font-semibold">
+<span class="material-symbols-outlined text-amber-400 text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.8</span>
+</div>
+<div class="absolute bottom-2 left-2.5">
+<span class="px-2 py-0.5 rounded bg-teal-900/80 backdrop-blur-xs text-white font-medium text-[11px] inline-flex items-center gap-1">🏸 Cầu lông</span>
+</div>
+</div>
+<div class="flex items-start justify-between gap-2">
+<div class="min-w-0">
+<h2 class="text-[16px] font-bold text-[#0f172a] leading-snug truncate">Sân A1 · Cầu lông</h2>
+<p class="text-[13px] text-slate-500 truncate mt-0.5">CourtGo Sports Arena</p>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="text-[13px] text-slate-600 font-medium">📍 Quận 7</span>
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-50 text-[#0f766e] text-xs font-semibold hover:bg-teal-100 transition-colors" onclick="handleNavigationMap()">
+<span class="material-symbols-outlined text-[14px]">near_me</span>
+<span>Chỉ đường</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 4. Date & Time Card (Compact merged ~80px) -->
+<div class="w-full bg-white rounded-2xl px-4 py-3 border border-slate-100 shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-teal-50 text-[#0f766e] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">calendar_month</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[14px] font-semibold text-[#0f172a]">Thứ Sáu, 25/09/2026</span>
+<div class="flex items-center gap-1.5 text-[13px] text-slate-500 mt-0.5">
+<span class="font-bold text-[#0f766e]">19:00 – 21:00</span>
+<span>·</span>
+<span>2 giờ</span>
+</div>
+</div>
+</div>
+<span class="text-xs font-semibold px-2 py-1 rounded bg-slate-100 text-slate-700">Ca tối</span>
+</div>
+<!-- 5. QR Check-in Card (Key Action) -->
+<div class="w-full bg-white rounded-2xl p-3.5 border border-slate-100 shadow-sm flex items-center justify-between gap-3">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-11 h-11 rounded-xl bg-emerald-50 text-[#0f766e] flex items-center justify-center shrink-0 border border-emerald-100">
+<span class="material-symbols-outlined text-[26px]">qr_code_2</span>
+</div>
+<div class="min-w-0">
+<h3 class="text-[15px] font-bold text-[#0f172a] leading-tight">Check-in tại sân</h3>
+<p class="text-[12px] text-slate-500 truncate mt-0.5">Xuất trình mã khi đến sân</p>
+</div>
+</div>
+<button class="shrink-0 px-3.5 py-2 rounded-xl bg-[#0f766e] hover:bg-teal-800 text-white font-semibold text-xs shadow-xs flex items-center gap-1.5 active:scale-95 transition-all" onclick="openQrModal()">
+<span class="material-symbols-outlined text-[16px]">qr_code_scanner</span>
+<span>Hiện QR</span>
+</button>
+</div>
+<!-- 6. Payment Summary (Clean 3 rows) -->
+<div class="w-full bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+<h3 class="text-[14px] font-semibold text-[#0f172a] mb-2.5">Thanh toán</h3>
+<div class="space-y-2 text-[13px]">
+<div class="flex justify-between items-center text-slate-600">
+<span>Tổng cộng</span>
+<span class="text-slate-800 font-medium">200.000đ</span>
+</div>
+<div class="flex justify-between items-center text-slate-600">
+<div class="flex items-center gap-1.5">
+<span>Đã thanh toán</span>
+<span class="text-[11px] px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200/50">Đã cọc</span>
+</div>
+<span class="text-emerald-700 font-semibold">-60.000đ</span>
+</div>
+<div class="pt-2 border-t border-slate-100 flex justify-between items-center">
+<span class="text-slate-800 font-medium">Còn lại</span>
+<span class="text-[16px] font-bold text-[#0f766e]">140.000đ</span>
+</div>
+</div>
+</div>
+<!-- 7. Progressive Disclosure - "Xem thêm thông tin" (Accordion) -->
+<div class="w-full bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden transition-all">
+<button class="w-full px-4 py-3 flex items-center justify-between text-left text-slate-700 hover:text-slate-900 transition-colors" id="detailsAccordionBtn" onclick="toggleDetails()">
+<span class="text-[14px] font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">info</span>
+<span>Xem thêm thông tin</span>
+</span>
+<span class="material-symbols-outlined text-slate-400 text-[20px] transition-transform duration-300" id="accordionArrow">keyboard_arrow_down</span>
+</button>
+<div class="hidden border-t border-slate-100 px-4 py-3 space-y-3.5 bg-slate-50/50 text-[13px]" id="detailsAccordionContent">
+<!-- Booking Code -->
+<div class="flex items-center justify-between">
+<div>
+<span class="text-slate-500 block text-xs">Mã đặt sân:</span>
+<span class="font-mono font-bold text-[#0f172a] text-sm" id="bookingIdText">BK-250925-A1</span>
+</div>
+<button class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-[#0f766e] text-xs font-semibold hover:bg-slate-50 flex items-center gap-1 transition-colors" onclick="copyBookingCode()">
+<span class="material-symbols-outlined text-[15px]" id="copyIcon">content_copy</span>
+<span id="copyLabel">Sao chép</span>
+</button>
+</div>
+<!-- Full Address -->
+<div class="pt-2 border-t border-slate-100">
+<span class="text-slate-500 block text-xs mb-0.5">Địa chỉ đầy đủ:</span>
+<p class="text-slate-800 leading-snug">32 Huỳnh Tấn Phát, P. Tân Thuận Đông, Quận 7, TP.HCM</p>
+</div>
+<!-- Court Specs & Amenities -->
+<div class="pt-2 border-t border-slate-100">
+<span class="text-slate-500 block text-xs mb-1">Tiện ích sân:</span>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-700 text-xs">Thảm Yonex VIP</span>
+<span class="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-700 text-xs">Máy lạnh âm trần</span>
+<span class="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-700 text-xs">Đèn LED chống lóa</span>
+<span class="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-700 text-xs">Giữ xe miễn phí</span>
+</div>
+</div>
+<!-- Detailed Calculation Breakdown -->
+<div class="pt-2 border-t border-slate-100">
+<span class="text-slate-500 block text-xs mb-0.5">Chi tiết thanh toán:</span>
+<p class="text-slate-700">Giá thuê sân: 200.000đ · Cọc 30%: 60.000đ · Thanh toán tại sân: 140.000đ</p>
+</div>
+<!-- Compact Progress Status Tracker -->
+<div class="pt-2 border-t border-slate-100">
+<span class="text-slate-500 block text-xs mb-1.5">Trạng thái tiến trình:</span>
+<div class="flex items-center gap-2 text-xs flex-wrap">
+<span class="text-emerald-700 font-semibold flex items-center gap-0.5"><span class="material-symbols-outlined text-[13px]">check_circle</span> Đặt sân</span>
+<span class="text-slate-300">→</span>
+<span class="text-emerald-700 font-semibold flex items-center gap-0.5"><span class="material-symbols-outlined text-[13px]">check_circle</span> Thanh toán cọc</span>
+<span class="text-slate-300">→</span>
+<span class="text-[#0f766e] font-bold flex items-center gap-0.5"><span class="material-symbols-outlined text-[13px]">check_circle</span> Đã xác nhận</span>
+<span class="text-slate-300">→</span>
+<span class="text-slate-400 flex items-center gap-0.5">○ Check-in</span>
+<span class="text-slate-300">→</span>
+<span class="text-slate-400 flex items-center gap-0.5">○ Hoàn thành</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 8. Cancellation Action Area -->
+<div class="w-full flex flex-col items-center pt-3 pb-4">
+<button class="text-rose-600 hover:text-rose-700 font-medium text-sm inline-flex items-center gap-1.5 py-2 px-3 rounded-lg hover:bg-rose-50 transition-colors active:scale-95" onclick="openCancelModal()">
+<span class="material-symbols-outlined text-[18px]">cancel</span>
+<span>Hủy lịch đặt</span>
+</button>
+<p class="text-[12px] text-slate-400 mt-0.5 text-center">Áp dụng chính sách hủy và hoàn tiền của CourtGo.</p>
+</div>
+</div>
+<!-- Fullscreen QR Check-in Modal -->
+<div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex-col justify-center items-center p-4 transition-opacity duration-200" id="qrModal">
+<div class="w-full max-w-xs bg-white rounded-3xl p-6 shadow-2xl flex flex-col items-center relative animate-in fade-in zoom-in-95">
+<button class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors" onclick="closeQrModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+<div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/50 text-[11px] font-semibold mb-3">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>Mã check-in hợp lệ</span>
+</div>
+<h3 class="text-base font-bold text-[#0f172a] text-center">CourtGo Sports Arena</h3>
+<p class="text-xs text-slate-500 mb-4 text-center">Sân A1 · 19:00 - 21:00 (25/09)</p>
+<!-- Large QR Code Box -->
+<div class="relative w-48 h-48 bg-white p-3 rounded-2xl shadow-inner border border-teal-200 flex items-center justify-center">
+<svg class="w-full h-full text-slate-900" fill="currentColor" viewbox="0 0 24 24">
+<path d="M2 2h9v9H2V2zm2 2v5h5V4H4zm9-2h9v9h-9V2zm2 2v5h5V4h-5zM2 13h9v9H2v-9zm2 2v5h5v-5H4zm13-2h2v2h-2v-2zm-4 2h2v4h-2v-4zm4 2h2v2h-2v-2zm-2 2h2v2h-2v-2zm4-4h2v6h-2v-6zm-8 4h2v2h-2v-2z"></path>
+</svg>
+</div>
+<div class="mt-4 text-center">
+<div class="text-[15px] font-mono font-bold text-[#0f766e] tracking-wider">BK-250925-A1</div>
+<p class="text-[11px] text-slate-400 mt-1">Xuất trình tại quầy lễ tân hoặc cửa tự động</p>
+</div>
+<button class="w-full mt-5 py-2.5 rounded-xl bg-[#0f766e] text-white font-semibold text-sm hover:bg-teal-800 transition-colors shadow-sm active:scale-95" onclick="closeQrModal()">
+      Đã hiểu và Đóng
+    </button>
+</div>
+</div>
+<!-- Cancellation Bottom Sheet Modal -->
+<div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex flex-col justify-end transition-opacity" id="cancelModal">
+<div class="w-full bg-white rounded-t-3xl p-5 shadow-2xl flex flex-col max-h-[85vh] overflow-y-auto max-w-lg mx-auto">
+<div class="w-10 h-1.5 rounded-full bg-slate-200 mx-auto mb-3"></div>
+<div class="flex items-center justify-between pb-3 border-b border-slate-100">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</div>
+<h3 class="text-[16px] font-bold text-[#0f172a]">Xác nhận hủy đặt sân</h3>
+</div>
+<button class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800" onclick="closeCancelModal()">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Booking Summary Badge -->
+<div class="p-3 rounded-xl bg-slate-50 my-3 text-xs space-y-1">
+<div class="flex justify-between font-semibold text-slate-800">
+<span>Sân A1 · Cầu lông</span>
+<span class="text-rose-600">BK-250925-A1</span>
+</div>
+<div class="flex justify-between text-slate-500">
+<span>19:00 - 21:00 · 25/09/2026</span>
+<span>CourtGo Arena</span>
+</div>
+<div class="pt-2 border-t border-slate-200/60 flex justify-between font-semibold text-emerald-700 text-[13px]">
+<span>Hoàn tiền dự kiến (100% cọc):</span>
+<span class="font-bold">60.000đ</span>
+</div>
+</div>
+<div class="space-y-2 mb-4">
+<span class="text-xs font-semibold text-slate-700">Lý do hủy lịch:</span>
+<div class="space-y-1.5">
+<label class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors text-xs text-slate-800">
+<input checked="" class="w-4 h-4 text-[#0f766e] accent-[#0f766e]" name="cancel_reason" type="radio" value="change_plan"/>
+<span>Thay đổi kế hoạch cá nhân / bận việc</span>
+</label>
+<label class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors text-xs text-slate-800">
+<input class="w-4 h-4 text-[#0f766e] accent-[#0f766e]" name="cancel_reason" type="radio" value="weather"/>
+<span>Thời tiết không thuận lợi</span>
+</label>
+<label class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors text-xs text-slate-800">
+<input class="w-4 h-4 text-[#0f766e] accent-[#0f766e]" name="cancel_reason" type="radio" value="wrong_booking"/>
+<span>Đặt nhầm sân hoặc nhầm khung giờ</span>
+</label>
+<label class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors text-xs text-slate-800">
+<input class="w-4 h-4 text-[#0f766e] accent-[#0f766e]" name="cancel_reason" type="radio" value="other"/>
+<span>Lý do khác</span>
+</label>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2.5 pt-1">
+<button class="py-2.5 rounded-xl bg-slate-100 text-slate-700 font-semibold text-xs active:scale-95 transition-all" onclick="closeCancelModal()">
+        Giữ lịch đặt
+      </button>
+<button class="py-2.5 rounded-xl bg-rose-600 text-white font-semibold text-xs active:scale-95 transition-all shadow-xs hover:bg-rose-700" onclick="confirmCancellation()">
+        Xác nhận hủy
+      </button>
+</div>
+</div>
+</div>
+<script>
+  function toggleDetails() {
+    const content = document.getElementById('detailsAccordionContent');
+    const arrow = document.getElementById('accordionArrow');
+    if (content.classList.contains('hidden')) {
+      content.classList.remove('hidden');
+      arrow.style.transform = 'rotate(180deg)';
+    } else {
+      content.classList.add('hidden');
+      arrow.style.transform = 'rotate(0deg)';
+    }
+  }
+
+  function openQrModal() {
+    const modal = document.getElementById('qrModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function closeQrModal() {
+    const modal = document.getElementById('qrModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function openCancelModal() {
+    const modal = document.getElementById('cancelModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function closeCancelModal() {
+    const modal = document.getElementById('cancelModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function copyBookingCode() {
+    const text = document.getElementById('bookingIdText').innerText;
+    navigator.clipboard?.writeText(text);
+    const label = document.getElementById('copyLabel');
+    const icon = document.getElementById('copyIcon');
+    label.innerText = 'Đã chép!';
+    icon.innerText = 'check';
+    setTimeout(() => {
+      label.innerText = 'Sao chép';
+      icon.innerText = 'content_copy';
+    }, 2000);
+  }
+
+  function handleNavigationMap() {
+    window.open('https://maps.google.com/?q=CourtGo+Sports+Arena+32+Huynh+Tan+Phat+Quan+7', '_blank');
+  }
+
+  function confirmCancellation() {
+    closeCancelModal();
+    alert('Yêu cầu hủy lịch đã được tiếp nhận. Số tiền hoàn 60.000đ sẽ được chuyển vào ví CourtGo trong vòng 2 giờ.');
+  }
+</script>
+</main>
+</body></html>

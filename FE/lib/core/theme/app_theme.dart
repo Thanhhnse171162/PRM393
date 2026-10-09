@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'app_colors.dart';
 import 'app_spacing.dart';
@@ -9,20 +10,21 @@ class AppTheme {
   const AppTheme._();
 
   static ThemeData get light {
-    final scheme = ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
-      brightness: Brightness.light,
-    ).copyWith(
-      primary: AppColors.primary,
-      onPrimary: AppColors.white,
-      primaryContainer: AppColors.mint,
-      onPrimaryContainer: AppColors.primaryDark,
-      secondary: AppColors.primaryDark,
-      surface: AppColors.white,
-      onSurface: AppColors.textPrimary,
-      error: AppColors.error,
-      outline: AppColors.border,
-    );
+    final scheme =
+        ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          brightness: Brightness.light,
+        ).copyWith(
+          primary: AppColors.primary,
+          onPrimary: AppColors.white,
+          primaryContainer: AppColors.mint,
+          onPrimaryContainer: AppColors.primaryDark,
+          secondary: AppColors.primaryDark,
+          surface: AppColors.white,
+          onSurface: AppColors.textPrimary,
+          error: AppColors.error,
+          outline: AppColors.border,
+        );
 
     final cardShape = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppSpacing.radiusCard),
@@ -30,9 +32,9 @@ class AppTheme {
     );
 
     OutlineInputBorder inputBorder(Color color) => OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.radiusButton),
-          borderSide: BorderSide(color: color),
-        );
+      borderRadius: BorderRadius.circular(AppSpacing.radiusButton),
+      borderSide: BorderSide(color: color),
+    );
 
     return ThemeData(
       useMaterial3: true,
@@ -45,6 +47,13 @@ class AppTheme {
         elevation: 0,
         scrolledUnderElevation: 1,
         centerTitle: false,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+          systemNavigationBarColor: AppColors.white,
+          systemNavigationBarIconBrightness: Brightness.dark,
+        ),
       ),
       cardTheme: CardThemeData(
         color: AppColors.white,
@@ -78,8 +87,10 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.white,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
         border: inputBorder(AppColors.border),
         enabledBorder: inputBorder(AppColors.border),
         focusedBorder: inputBorder(AppColors.primary),

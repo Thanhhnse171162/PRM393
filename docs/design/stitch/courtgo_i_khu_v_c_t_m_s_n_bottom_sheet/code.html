@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_blank" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary": "#ffffff", "surface-container-lowest": "#ffffff", "surface": "#faf8ff", "on-error": "#ffffff", "on-primary-container": "#a3faef", "primary-fixed": "#9cf2e8", "outline": "#6e7977", "primary-container": "#0f766e", "error": "#ba1a1a", "on-primary-fixed-variant": "#00504a", "secondary-fixed-dim": "#4edea3", "on-surface-variant": "#3e4947", "outline-variant": "#bdc9c6", "on-surface": "#131b2e", "on-tertiary-fixed-variant": "#653e00", "on-secondary-container": "#00714d", "tertiary-fixed-dim": "#ffb95f", "primary-fixed-dim": "#80d5cb", "on-primary": "#ffffff", "inverse-surface": "#283044", "surface-container-low": "#f2f3ff", "secondary-fixed": "#6ffbbe", "tertiary-fixed": "#ffddb8", "on-primary-fixed": "#00201d", "surface-bright": "#faf8ff", "primary": "#005c55", "surface-variant": "#dae2fd", "on-secondary-fixed-variant": "#005236", "on-secondary": "#ffffff", "background": "#faf8ff", "secondary": "#006c49", "tertiary-container": "#945d00", "secondary-container": "#6cf8bb", "on-tertiary-fixed": "#2a1700", "surface-dim": "#d2d9f4", "on-background": "#131b2e", "on-secondary-fixed": "#002113", "inverse-on-surface": "#eef0ff", "error-container": "#ffdad6", "tertiary": "#734700", "surface-tint": "#006a63", "on-tertiary-container": "#ffe6cc", "surface-container-highest": "#dae2fd", "inverse-primary": "#80d5cb", "surface-container-high": "#e2e7ff", "surface-container": "#eaedff", "on-error-container": "#93000a" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "space-sm": "0.5rem", "space-xl": "2rem", "margin": "1rem", "margin-md": "1.25rem", "space-xs": "0.25rem", "space-lg": "1.5rem", "gutter": "0.75rem", "gutter-md": "1rem" }, "fontFamily": { "headline-lg": ["Inter"], "body-sm": ["Inter"], "currency-display": ["Inter"], "body-md": ["Inter"], "display-lg": ["Inter"], "body-lg": ["Inter"], "label-lg": ["Inter"], "label-md": ["Inter"], "label-sm": ["Inter"], "headline-sm": ["Inter"], "title-md": ["Inter"], "display-sm": ["Inter"] }, "fontSize": { "headline-lg": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}], "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}], "currency-display": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}], "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "label-lg": ["14px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600"}], "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}], "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.03em", "fontWeight": "600"}], "headline-sm": ["18px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}], "title-md": ["16px", {"lineHeight": "22px", "letterSpacing": "-0.005em", "fontWeight": "600"}], "display-sm": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700"}] } } } }</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-body-md text-on-surface pt-safe pb-safe flex flex-col min-h-screen"><main class="flex flex-col relative w-full bg-surface flex-1"><div class="flex flex-col w-full relative select-none">
+<!-- DIMMED BACKGROUND HOME SCREEN -->
+<div class="w-full flex flex-col pointer-events-none opacity-80 filter blur-[1px] transition-all duration-300" id="home-underlay">
+<!-- Header with user greeting & location trigger -->
+<div class="px-space-md pt-space-md pb-space-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[16px]">location_on</span>
+<span class="font-label-md text-label-md text-on-surface" id="header-loc-label">Quận 7, TP.HCM</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+</span>
+<h1 class="font-headline-sm text-headline-sm text-on-surface mt-space-xs">Xin chào, Minh Quân 👋</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center relative shadow-sm">
+<span class="material-symbols-outlined text-on-surface text-[22px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error"></span>
+</div>
+</div>
+<!-- Quick Booking Hero Card -->
+<div class="px-space-md mt-space-sm">
+<div class="w-full bg-primary-container text-on-primary rounded-xl p-space-md relative overflow-hidden shadow-md">
+<div class="relative z-10 max-w-[65%]">
+<span class="inline-block px-space-sm py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm mb-space-xs">Ưu đãi giờ vàng</span>
+<h2 class="font-headline-sm text-headline-sm text-on-primary">Đặt sân Cầu lông &amp; Pickleball</h2>
+<p class="font-body-sm text-body-sm text-on-primary-container mt-space-xs">Giảm đến 25% các khung giờ 09:00 - 16:00</p>
+<div class="mt-space-md inline-flex items-center gap-space-xs bg-surface-container-lowest text-primary px-space-md py-space-xs rounded-lg font-label-md text-label-md shadow-sm">
+<span>Đặt ngay</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</div>
+</div>
+<div class="absolute -right-4 -bottom-6 w-36 h-36 opacity-30 flex items-center justify-center">
+<span class="material-symbols-outlined text-[140px] text-on-primary">sports_tennis</span>
+</div>
+</div>
+</div>
+<!-- Sports Category Horizontal List -->
+<div class="mt-space-lg px-space-md">
+<div class="flex items-center justify-between mb-space-sm">
+<h3 class="font-title-md text-title-md text-on-surface">Bộ môn yêu thích</h3>
+<span class="font-label-md text-label-md text-primary">Tất cả</span>
+</div>
+<div class="grid grid-cols-4 gap-space-sm">
+<div class="flex flex-col items-center bg-surface-container-low p-space-sm rounded-xl">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-space-xs">
+<span class="material-symbols-outlined text-[26px]">sports_tennis</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Cầu lông</span>
+</div>
+<div class="flex flex-col items-center bg-surface-container-low p-space-sm rounded-xl">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary mb-space-xs">
+<span class="material-symbols-outlined text-[26px]">sports_baseball</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Pickleball</span>
+</div>
+<div class="flex flex-col items-center bg-surface-container-low p-space-sm rounded-xl">
+<div class="w-12 h-12 rounded-xl bg-tertiary-container/15 flex items-center justify-center text-tertiary mb-space-xs">
+<span class="material-symbols-outlined text-[26px]">sports_soccer</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Bóng đá</span>
+</div>
+<div class="flex flex-col items-center bg-surface-container-low p-space-sm rounded-xl">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-on-surface-variant mb-space-xs">
+<span class="material-symbols-outlined text-[26px]">sports_basketball</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Bóng rổ</span>
+</div>
+</div>
+</div>
+<!-- Recommended Venues -->
+<div class="mt-space-lg px-space-md pb-24">
+<div class="flex items-center justify-between mb-space-sm">
+<h3 class="font-title-md text-title-md text-on-surface">Cơ sở nổi bật gần bạn</h3>
+<span class="font-label-md text-label-md text-primary">Xem thêm</span>
+</div>
+<div class="space-y-space-md">
+<!-- Venue Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="relative w-full h-36 rounded-lg overflow-hidden mb-space-sm bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Modern indoor badminton and sports arena hall in Ho Chi Minh City with vibrant blue court turf, clean court lines, bright stadium LED overhead lighting, players rallying in background, high contrast architectural athletic style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjLm6Hw5E4Xt1JmBluH1Dl5RVyTsMJrp9d9-N0ipVzQ4tocJVzxEtrz7NT8iRTXFuNMdJCA9BFSIbDvMF8aAkR6h8u46XWr-2kVqmpn6fZvWusThFnhDvNO1d6iNy2XDDyiEOMlfKJxkK-lPalAQZjWlc4gPrDY8E7XQ5YEQdFipDamFaVgoacAGaaTfRQpyNpM05GyV4wSyNFImxr92XU_mnZWL212Gf0qpqR8huI1MhbTzLKOwFN0g"/>
+<div class="absolute top-2 right-2 px-space-xs py-0.5 rounded bg-inverse-surface/80 text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.9</span>
+</div>
+<div class="absolute bottom-2 left-2 px-space-sm py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm">
+              Cầu lông • 8 sân
+            </div>
+</div>
+<div class="flex items-start justify-between">
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">CourtGo Sports Arena</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">distance</span>
+<span>1.2 km • Huỳnh Tấn Phát, Quận 7</span>
+</p>
+</div>
+<div class="text-right">
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Từ</span>
+<span class="font-title-md text-title-md text-primary">120.000 ₫<span class="font-body-sm text-body-sm text-on-surface-variant">/h</span></span>
+</div>
+</div>
+</div>
+<!-- Venue Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="relative w-full h-36 rounded-lg overflow-hidden mb-space-sm bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="High quality outdoor pickleball venue with pristine teal and green acrylic court floor, sunlit morning sports atmosphere in Vietnam with modern court fence and benches." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7aymTa-h-YddQzvx0xPpDPjJNLlsCpMMYy_uoOgsvSkuLey4_gPDFsT9A8H6O6Dz1bEfEf-AnwplZ5Td-o19Q9pz69727nELDZbSqAmf4IE_K4R5mlEk0VwHDOgr0_knwaQWIyNWi31l5xjxXdKDEKYf9PcU8u9NqoIcoTmdLJuSYySDrFCptJm2hrd1GEDMsSY6mV1tNUudDFoPHyG_-irMU4uOErARnpfw-y_7cKX6Zb3bakzZaHA"/>
+<div class="absolute top-2 right-2 px-space-xs py-0.5 rounded bg-inverse-surface/80 text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.8</span>
+</div>
+<div class="absolute bottom-2 left-2 px-space-sm py-0.5 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm">
+              Pickleball • 4 sân
+            </div>
+</div>
+<div class="flex items-start justify-between">
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">GreenField Sports Complex</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">distance</span>
+<span>2.5 km • Tân Phong, Quận 7</span>
+</p>
+</div>
+<div class="text-right">
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Từ</span>
+<span class="font-title-md text-title-md text-primary">150.000 ₫<span class="font-body-sm text-body-sm text-on-surface-variant">/h</span></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BACKDROP OVERLAY -->
+<div class="fixed inset-0 bg-inverse-surface/60 backdrop-blur-[2px] z-40 transition-opacity duration-300" id="modal-backdrop" onclick="closeSheet()"></div>
+<!-- LOCATION BOTTOM SHEET MODAL -->
+<div class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-surface-container-lowest rounded-t-[28px] shadow-2xl z-50 flex flex-col max-h-[742px] transition-transform duration-300 transform translate-y-0" id="bottom-sheet">
+<!-- Sheet Drag Handle -->
+<div class="pt-space-sm pb-space-xs flex justify-center cursor-grab active:cursor-grabbing">
+<div class="w-12 h-1.5 bg-outline-variant/60 rounded-full"></div>
+</div>
+<!-- Sheet Header -->
+<div class="px-space-md pt-space-xs pb-space-sm flex items-start justify-between">
+<div class="pr-space-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Chọn khu vực tìm sân</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">CourtGo sẽ ưu tiên đề xuất các cơ sở thể thao gần khu vực bạn chọn.</p>
+</div>
+<button aria-label="Đóng" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-colors flex-shrink-0" onclick="closeSheet()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Search Input Area -->
+<div class="px-space-md py-space-xs">
+<div class="relative w-full flex items-center bg-surface-container-low rounded-xl px-space-md h-12 shadow-sm">
+<span class="material-symbols-outlined text-outline text-[20px] mr-space-xs">search</span>
+<input class="w-full bg-transparent font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none" id="search-input" oninput="handleSearch(this.value)" placeholder="Tìm quận, huyện hoặc thành phố..." type="text" value="Quận"/>
+<button aria-label="Xoá tìm kiếm" class="w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center text-[14px]" id="clear-search-btn" onclick="clearSearch()">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+</div>
+<!-- Scrollable Location Options Area -->
+<div class="px-space-md pt-space-sm pb-space-md overflow-y-auto flex-1 space-y-space-md">
+<!-- Quick Location Trigger Card -->
+<div class="bg-secondary-fixed/30 hover:bg-secondary-fixed/40 transition-colors p-space-md rounded-xl flex items-center justify-between cursor-pointer" onclick="selectLocation('Quận 7, TP.HCM', 'Vị trí hiện tại (Quận 7)')">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">my_location</span>
+</div>
+<div class="truncate">
+<div class="font-label-md text-label-md text-on-surface flex items-center gap-1">
+<span>Sử dụng vị trí hiện tại</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+</div>
+<div class="font-body-sm text-body-sm text-secondary truncate">Tự động định vị sân thể thao gần nhất</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[20px]">chevron_right</span>
+</div>
+<!-- Section: Recent Locations -->
+<div>
+<div class="flex items-center justify-between px-space-xs mb-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Khu vực gần đây</span>
+<span class="material-symbols-outlined text-outline text-[16px]">history</span>
+</div>
+<div class="space-y-1" id="recent-locations-list">
+<!-- Item 1: Active by default (Quận 7) -->
+<div class="loc-item group flex items-center justify-between p-space-sm rounded-xl cursor-pointer transition-all bg-primary-fixed/30" id="loc-item-quan7" onclick="selectLocation('Quận 7, TP.HCM', 'Quận 7')">
+<div class="flex items-center gap-space-sm">
+<span class="loc-radio w-5 h-5 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+<div>
+<span class="font-label-md text-label-md text-on-surface block">Quận 7, TP.HCM</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">18 sân đang mở đặt chỗ</span>
+</div>
+</div>
+<span class="loc-badge px-space-sm py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm">Đang chọn</span>
+</div>
+<!-- Item 2: TP. Thủ Đức -->
+<div class="loc-item group flex items-center justify-between p-space-sm rounded-xl cursor-pointer transition-all hover:bg-surface-container-low" id="loc-item-thuduc" onclick="selectLocation('TP. Thủ Đức, TP.HCM', 'Thủ Đức')">
+<div class="flex items-center gap-space-sm">
+<span class="loc-radio w-5 h-5 rounded-full bg-surface-container-high flex items-center justify-center text-transparent">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+<div>
+<span class="font-label-md text-label-md text-on-surface block">TP. Thủ Đức, TP.HCM</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">42 sân đang mở đặt chỗ</span>
+</div>
+</div>
+<span class="loc-badge hidden px-space-sm py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm">Đang chọn</span>
+</div>
+<!-- Item 3: Bình Thạnh -->
+<div class="loc-item group flex items-center justify-between p-space-sm rounded-xl cursor-pointer transition-all hover:bg-surface-container-low" id="loc-item-binhthanh" onclick="selectLocation('Bình Thạnh, TP.HCM', 'Bình Thạnh')">
+<div class="flex items-center gap-space-sm">
+<span class="loc-radio w-5 h-5 rounded-full bg-surface-container-high flex items-center justify-center text-transparent">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+<div>
+<span class="font-label-md text-label-md text-on-surface block">Bình Thạnh, TP.HCM</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">26 sân đang mở đặt chỗ</span>
+</div>
+</div>
+<span class="loc-badge hidden px-space-sm py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm">Đang chọn</span>
+</div>
+</div>
+</div>
+<!-- Section: Popular Locations -->
+<div>
+<div class="flex items-center justify-between px-space-xs mb-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Khu vực phổ biến</span>
+<span class="material-symbols-outlined text-outline text-[16px]">trending_up</span>
+</div>
+<div class="space-y-1" id="popular-locations-list">
+<!-- Item 4: Quận 1 -->
+<div class="loc-item group flex items-center justify-between p-space-sm rounded-xl cursor-pointer transition-all hover:bg-surface-container-low" id="loc-item-quan1" onclick="selectLocation('Quận 1, TP.HCM', 'Quận 1')">
+<div class="flex items-center gap-space-sm">
+<span class="loc-radio w-5 h-5 rounded-full bg-surface-container-high flex items-center justify-center text-transparent">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+<div>
+<span class="font-label-md text-label-md text-on-surface block">Quận 1, TP.HCM</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">12 sân trung tâm</span>
+</div>
+</div>
+<span class="loc-badge hidden px-space-sm py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm">Đang chọn</span>
+</div>
+<!-- Item 5: Quận 3 -->
+<div class="loc-item group flex items-center justify-between p-space-sm rounded-xl cursor-pointer transition-all hover:bg-surface-container-low" id="loc-item-quan3" onclick="selectLocation('Quận 3, TP.HCM', 'Quận 3')">
+<div class="flex items-center gap-space-sm">
+<span class="loc-radio w-5 h-5 rounded-full bg-surface-container-high flex items-center justify-center text-transparent">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+<div>
+<span class="font-label-md text-label-md text-on-surface block">Quận 3, TP.HCM</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">15 sân đang mở đặt chỗ</span>
+</div>
+</div>
+<span class="loc-badge hidden px-space-sm py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm">Đang chọn</span>
+</div>
+<!-- Item 6: Tân Bình -->
+<div class="loc-item group flex items-center justify-between p-space-sm rounded-xl cursor-pointer transition-all hover:bg-surface-container-low" id="loc-item-tanbinh" onclick="selectLocation('Tân Bình, TP.HCM', 'Tân Bình')">
+<div class="flex items-center gap-space-sm">
+<span class="loc-radio w-5 h-5 rounded-full bg-surface-container-high flex items-center justify-center text-transparent">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+<div>
+<span class="font-label-md text-label-md text-on-surface block">Tân Bình, TP.HCM</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">31 sân đang mở đặt chỗ</span>
+</div>
+</div>
+<span class="loc-badge hidden px-space-sm py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm">Đang chọn</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom CTA Footer -->
+<div class="p-space-md bg-surface-container-lowest shadow-[0_-4px_16px_rgba(15,23,42,0.06)] rounded-b-none">
+<button class="w-full h-[52px] bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg rounded-xl flex items-center justify-center gap-space-xs transition-colors shadow-md active:scale-[0.99]" id="confirm-btn" onclick="confirmLocation()">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span id="confirm-text">Xác nhận khu vực (Quận 7)</span>
+</button>
+</div>
+</div>
+<!-- FLOATING FEEDBACK TOAST (Hidden by default) -->
+<div class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-inverse-surface text-inverse-on-surface px-space-md py-space-sm rounded-full shadow-xl font-label-md text-label-md flex items-center gap-space-xs opacity-0 pointer-events-none transition-all duration-300" id="toast-msg">
+<span class="material-symbols-outlined text-secondary-fixed text-[18px]">verified</span>
+<span id="toast-text">Đã đổi khu vực tìm sân!</span>
+</div>
+</div>
+<script>
+  let currentSelectionFull = "Quận 7, TP.HCM";
+  let currentSelectionShort = "Quận 7";
+
+  function selectLocation(fullName, shortName) {
+    currentSelectionFull = fullName;
+    currentSelectionShort = shortName;
+
+    // Reset all list item states
+    document.querySelectorAll('.loc-item').forEach(item => {
+      item.classList.remove('bg-primary-fixed/30');
+      const radio = item.querySelector('.loc-radio');
+      if (radio) {
+        radio.classList.remove('bg-primary', 'text-on-primary');
+        radio.classList.add('bg-surface-container-high', 'text-transparent');
+      }
+      const badge = item.querySelector('.loc-badge');
+      if (badge) {
+        badge.classList.add('hidden');
+      }
+    });
+
+    // Determine target element
+    let targetId = '';
+    if (fullName.includes('Quận 7')) targetId = 'loc-item-quan7';
+    else if (fullName.includes('Thủ Đức')) targetId = 'loc-item-thuduc';
+    else if (fullName.includes('Bình Thạnh')) targetId = 'loc-item-binhthanh';
+    else if (fullName.includes('Quận 1')) targetId = 'loc-item-quan1';
+    else if (fullName.includes('Quận 3')) targetId = 'loc-item-quan3';
+    else if (fullName.includes('Tân Bình')) targetId = 'loc-item-tanbinh';
+
+    const activeEl = document.getElementById(targetId);
+    if (activeEl) {
+      activeEl.classList.add('bg-primary-fixed/30');
+      const radio = activeEl.querySelector('.loc-radio');
+      if (radio) {
+        radio.classList.remove('bg-surface-container-high', 'text-transparent');
+        radio.classList.add('bg-primary', 'text-on-primary');
+      }
+      const badge = activeEl.querySelector('.loc-badge');
+      if (badge) {
+        badge.classList.remove('hidden');
+      }
+    }
+
+    // Update CTA text dynamically
+    const confirmBtnText = document.getElementById('confirm-text');
+    if (confirmBtnText) {
+      confirmBtnText.innerText = 'Xác nhận khu vực (' + shortName + ')';
+    }
+  }
+
+  function confirmLocation() {
+    // Update main page header
+    const headerLoc = document.getElementById('header-loc-label');
+    if (headerLoc) {
+      headerLoc.innerText = currentSelectionFull;
+    }
+
+    showToast('Đã đổi khu vực tìm sân sang ' + currentSelectionShort);
+    closeSheet();
+  }
+
+  function closeSheet() {
+    const sheet = document.getElementById('bottom-sheet');
+    const backdrop = document.getElementById('modal-backdrop');
+    const underlay = document.getElementById('home-underlay');
+
+    if (sheet) {
+      sheet.classList.add('translate-y-full');
+    }
+    if (backdrop) {
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+    }
+    if (underlay) {
+      underlay.classList.remove('filter', 'blur-[1px]', 'opacity-80', 'pointer-events-none');
+    }
+  }
+
+  function clearSearch() {
+    const input = document.getElementById('search-input');
+    if (input) {
+      input.value = '';
+      input.focus();
+      handleSearch('');
+    }
+  }
+
+  function handleSearch(query) {
+    const normalized = query.toLowerCase().trim();
+    const items = document.querySelectorAll('.loc-item');
+    items.forEach(el => {
+      const text = el.innerText.toLowerCase();
+      if (!normalized || text.includes(normalized)) {
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
+    });
+  }
+
+  function showToast(message) {
+    const toast = document.getElementById('toast-msg');
+    const toastText = document.getElementById('toast-text');
+    if (toast && toastText) {
+      toastText.innerText = message;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2500);
+    }
+  }
+</script></main></body></html>

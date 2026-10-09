@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Nhân viên CourtGo quét mã QR để xác minh lượt đặt sân của khách.</string>
+    <key>FlutterDeepLinkingEnabled</key>
+    <false/>
+    <key>CFBundleURLTypes</key>
+    <array><dict><key>CFBundleURLSchemes</key><array><string>courtgo</string></array></dict></array>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Tìm chi nhánh CourtGo gần vị trí của bạn khi bạn yêu cầu.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

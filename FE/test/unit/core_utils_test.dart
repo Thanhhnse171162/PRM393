@@ -34,26 +34,38 @@ void main() {
 
   group('RouteGuard', () {
     test('guest cannot open staff or admin areas', () {
-      expect(RouteGuard.redirect(location: RouteNames.staffHome, role: null),
-          RouteNames.login);
-      expect(RouteGuard.redirect(location: RouteNames.adminHome, role: null),
-          RouteNames.login);
+      expect(
+        RouteGuard.redirect(location: RouteNames.staffHome, role: null),
+        RouteNames.login,
+      );
+      expect(
+        RouteGuard.redirect(location: RouteNames.adminHome, role: null),
+        RouteNames.login,
+      );
     });
 
     test('staff is kept out of customer and admin areas', () {
       expect(
-          RouteGuard.redirect(
-              location: RouteNames.adminHome, role: UserRole.staff),
-          RouteNames.staffHome);
+        RouteGuard.redirect(
+          location: RouteNames.adminHome,
+          role: UserRole.staff,
+        ),
+        RouteNames.staffHome,
+      );
       expect(
-          RouteGuard.redirect(
-              location: RouteNames.customerHome, role: UserRole.staff),
-          RouteNames.staffHome);
+        RouteGuard.redirect(
+          location: RouteNames.customerHome,
+          role: UserRole.staff,
+        ),
+        RouteNames.staffHome,
+      );
     });
 
     test('guest may browse customer area', () {
-      expect(RouteGuard.redirect(location: RouteNames.customerHome, role: null),
-          isNull);
+      expect(
+        RouteGuard.redirect(location: RouteNames.customerHome, role: null),
+        isNull,
+      );
     });
   });
 }

@@ -24,6 +24,24 @@ void main() {
   });
 
   group('AuthProvider login flow', () {
+    test('offline startup retains credentials and offers a retry', () async {
+      await fakeStorage.saveAccessToken('saved-access');
+      await fakeStorage.saveRefreshToken('saved-refresh');
+      fakeService.nextMeResult = const NetworkFailure(
+        ApiException(message: 'Không thể kết nối máy chủ.'),
+      );
+      await provider.restoreSession();
+      expect(provider.status, AuthStatus.unknown);
+      expect(provider.errorMessage, contains('kết nối'));
+      expect(await fakeStorage.readAccessToken(), 'saved-access');
+      fakeService.nextMeResult = const NetworkFailure(
+        ApiException(message: 'Expired', statusCode: 401),
+      );
+      await provider.restoreSession();
+      expect(provider.status, AuthStatus.unauthenticated);
+      expect(provider.errorMessage, isNull);
+      expect(await fakeStorage.readAccessToken(), isNull);
+    });
     test('successful login sets authenticated status, user role, and persists token', () async {
       fakeService.nextLoginResult = const NetworkSuccess(
         AuthResponse(
@@ -46,18 +64,21 @@ void main() {
       expect(await fakeStorage.readAccessToken(), 'jwt-token-123');
     });
 
-    test('failed login sets error message and leaves user unauthenticated', () async {
-      fakeService.nextLoginResult = const NetworkFailure(
-        ApiException(message: 'Unauthorized', statusCode: 401),
-      );
+    test(
+      'failed login sets error message and leaves user unauthenticated',
+      () async {
+        fakeService.nextLoginResult = const NetworkFailure(
+          ApiException(message: 'Unauthorized', statusCode: 401),
+        );
 
-      final success = await provider.login('bad@login.com', 'wrong');
+        final success = await provider.login('bad@login.com', 'wrong');
 
-      expect(success, isFalse);
-      expect(provider.isAuthenticated, isFalse);
-      expect(provider.errorMessage, contains('không đúng'));
-      expect(await fakeStorage.readAccessToken(), isNull);
-    });
+        expect(success, isFalse);
+        expect(provider.isAuthenticated, isFalse);
+        expect(provider.errorMessage, contains('không đúng'));
+        expect(await fakeStorage.readAccessToken(), isNull);
+      },
+    );
 
     test('guest action sets guest status without credentials', () {
       provider.continueAsGuest();
@@ -98,23 +119,48 @@ void main() {
 }
 
 class FakeAuthService implements AuthService {
+  @override
+  Future<NetworkResult<dynamic>> register({
+    required String fullName,
+    required String phoneNumber,
+    required String email,
+    required String password,
+  }) async => const NetworkSuccess(null);
+  @override
+  Future<NetworkResult<dynamic>> logout(String token) async =>
+      const NetworkSuccess(null);
   NetworkResult<AuthResponse>? nextLoginResult;
   NetworkResult<UserModel>? nextMeResult;
 
   @override
-  Future<NetworkResult<AuthResponse>> login(String emailOrPhone, String password) async {
+  Future<NetworkResult<AuthResponse>> login(
+    String emailOrPhone,
+    String password,
+  ) async {
     return nextLoginResult ??
-        const NetworkFailure(ApiException(message: 'Default error', statusCode: 500));
+        const NetworkFailure(
+          ApiException(message: 'Default error', statusCode: 500),
+        );
   }
 
   @override
   Future<NetworkResult<UserModel>> me() async {
     return nextMeResult ??
-        const NetworkFailure(ApiException(message: 'No token', statusCode: 401));
+        const NetworkFailure(
+          ApiException(message: 'No token', statusCode: 401),
+        );
   }
 }
 
 class FakeSecureStorage extends SecureStorageService {
+  String? refresh;
+  @override
+  Future<String?> readRefreshToken() async => refresh;
+  @override
+  Future<void> saveRefreshToken(String token) async {
+    refresh = token;
+  }
+
   String? _token;
 
   @override

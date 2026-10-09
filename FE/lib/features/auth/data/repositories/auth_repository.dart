@@ -5,10 +5,7 @@ import '../services/auth_service.dart';
 
 /// Combines the auth API with secure token storage.
 class AuthRepository {
-  AuthRepository({
-    required this.service,
-    required this.storage,
-  });
+  AuthRepository({required this.service, required this.storage});
 
   final AuthService service;
   final SecureStorageService storage;
@@ -22,6 +19,9 @@ class AuthRepository {
     switch (result) {
       case NetworkSuccess(:final data):
         await storage.saveAccessToken(data.accessToken);
+        if (data.refreshToken.isNotEmpty) {
+          await storage.saveRefreshToken(data.refreshToken);
+        }
         return NetworkSuccess(data.user);
       case NetworkFailure(:final error):
         return NetworkFailure(error);
@@ -42,10 +42,20 @@ class AuthRepository {
       case NetworkFailure(:final error):
         if (error.isUnauthorized || error.isForbidden || error.isNotFound) {
           await storage.clear();
+          return null;
         }
-        return null;
+        throw error;
     }
   }
 
-  Future<void> logout() => storage.clear();
+  Future<void> logout() async {
+    try {
+      final token = await storage.readRefreshToken();
+      if (token != null) await service.logout(token);
+    } finally {
+      await storage.clear();
+    }
+  }
+
+  Future<void> clearSession() => storage.clear();
 }

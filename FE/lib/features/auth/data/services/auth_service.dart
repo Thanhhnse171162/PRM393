@@ -1,4 +1,4 @@
-﻿import '../../../../core/constants/api_constants.dart';
+import '../../../../core/constants/api_constants.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/network_result.dart';
 import '../../../../shared/models/user_model.dart';
@@ -9,6 +9,24 @@ class AuthService {
   AuthService(this._api);
 
   final ApiClient _api;
+
+  Future<NetworkResult<dynamic>> register({
+    required String fullName,
+    required String phoneNumber,
+    required String email,
+    required String password,
+  }) => _api.post<dynamic>(
+    '/api/auth/register',
+    body: {
+      'fullName': fullName.trim(),
+      'phoneNumber': phoneNumber.trim(),
+      'email': email.trim().isEmpty ? null : email.trim(),
+      'password': password,
+    },
+  );
+
+  Future<NetworkResult<dynamic>> logout(String token) =>
+      _api.post<dynamic>('/api/auth/logout', body: {'refreshToken': token});
 
   Future<NetworkResult<AuthResponse>> login(
     String emailOrPhone,
@@ -25,8 +43,9 @@ class AuthService {
   }
 
   Future<NetworkResult<UserModel>> me() async {
-    final result =
-        await _api.get<Map<String, dynamic>>('${ApiConstants.auth}/me');
+    final result = await _api.get<Map<String, dynamic>>(
+      '${ApiConstants.auth}/me',
+    );
     return result.when(
       success: (data) => NetworkSuccess(UserModel.fromJson(data)),
       failure: NetworkFailure.new,

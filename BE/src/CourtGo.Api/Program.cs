@@ -15,10 +15,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Optional local overrides (git-ignored). Real secrets: user-secrets or environment variables.
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
+var paymentSettings = builder.Configuration.GetSection("Payments").Get<CourtGo.Infrastructure.Payments.PaymentSettings>() ?? new();
+var useDevelopmentPayments = builder.Environment.IsDevelopment() && paymentSettings.ProviderMode == "Development";
 
 builder.Services.AddControllers()
     .ConfigureApplicationPartManager(manager => manager.FeatureProviders.Add(
-        new CourtGo.Api.Controllers.DevelopmentPaymentControllerFeatureProvider(builder.Environment.IsDevelopment())))
+        new CourtGo.Api.Controllers.DevelopmentPaymentControllerFeatureProvider(useDevelopmentPayments)))
     .ConfigureApiBehaviorOptions(o =>
     {
         // Malformed JSON / model binding errors use the same error shape as business validation errors.
@@ -75,12 +77,24 @@ builder.Services.AddDbContext<CourtGoDbContext>(options =>
 // Infrastructure: EF Core + SQL Server, JWT service, password hasher, repositories.
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddHostedService<CourtGo.Api.Workers.BookingLifecycleWorker>();
-if (builder.Environment.IsDevelopment())
+builder.Services.AddSingleton(paymentSettings);
+builder.Services.AddSingleton<CourtGo.Infrastructure.Payments.PaymentNotificationVerifier>();
+if (useDevelopmentPayments)
 {
     builder.Services.AddSingleton<CourtGo.Infrastructure.Services.DevelopmentPaymentGateway>();
     builder.Services.AddSingleton<IPaymentGateway>(sp => sp.GetRequiredService<CourtGo.Infrastructure.Services.DevelopmentPaymentGateway>());
     builder.Services.AddSingleton<IDevelopmentPaymentGateway>(sp => sp.GetRequiredService<CourtGo.Infrastructure.Services.DevelopmentPaymentGateway>());
     builder.Services.AddScoped<IDevelopmentPaymentSimulationService, CourtGo.Infrastructure.Services.DevelopmentPaymentSimulationService>();
+    builder.Services.AddScoped<IDevelopmentRefundSimulationService, CourtGo.Infrastructure.Services.DevelopmentRefundSimulationService>();
+}
+else if (paymentSettings.ProviderMode == "Production")
+{
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddHttpClient("PaymentGateway", client => client.Timeout = TimeSpan.FromSeconds(35))
+        .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });
+    builder.Services.AddScoped<IPaymentGateway>(sp => new CourtGo.Infrastructure.Payments.RealPaymentGateway(
+        sp.GetRequiredService<IHttpClientFactory>().CreateClient("PaymentGateway"), paymentSettings,
+        sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? "127.0.0.1"));
 }
 else
 {

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { secondary: "#006c49", "secondary-fixed-dim": "#4edea3", "on-secondary": "#ffffff", surface: "#faf8ff", "surface-container-highest": "#dae2fd", "on-tertiary": "#ffffff", "outline-variant": "#bdc9c6", "surface-container": "#eaedff", error: "#ba1a1a", "primary-fixed": "#9cf2e8", "error-container": "#ffdad6", "surface-bright": "#faf8ff", "tertiary-container": "#945d00", "tertiary-fixed": "#ffddb8", "on-surface-variant": "#3e4947", tertiary: "#734700", "surface-container-lowest": "#ffffff", "primary-fixed-dim": "#80d5cb", "inverse-on-surface": "#eef0ff", "on-background": "#131b2e", background: "#faf8ff", "on-error": "#ffffff", "on-error-container": "#93000a", "on-tertiary-container": "#ffe6cc", "inverse-primary": "#80d5cb", "on-secondary-fixed-variant": "#005236", "tertiary-fixed-dim": "#ffb95f", "on-tertiary-fixed": "#2a1700", "on-primary-fixed": "#00201d", outline: "#6e7977", "on-surface": "#131b2e", "on-primary-fixed-variant": "#00504a", "surface-container-high": "#e2e7ff", primary: "#005c55", "on-tertiary-fixed-variant": "#653e00", "secondary-container": "#6cf8bb", "secondary-fixed": "#6ffbbe", "surface-variant": "#dae2fd", "inverse-surface": "#283044", "on-primary-container": "#a3faef", "surface-tint": "#006a63", "primary-container": "#0f766e", "on-secondary-fixed": "#002113", "on-secondary-container": "#00714d", "on-primary": "#ffffff", "surface-container-low": "#f2f3ff", "surface-dim": "#d2d9f4" }, borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" }, spacing: { "margin-md": "1.25rem", "space-md": "1rem", "space-xs": "0.25rem", "space-xl": "2rem", gutter: "0.75rem", margin: "1rem", "space-lg": "1.5rem", "gutter-md": "1rem", "space-sm": "0.5rem" }, fontFamily: { "label-sm": ["Inter"], "headline-sm": ["Inter"], "display-sm": ["Inter"], "title-md": ["Inter"], "label-md": ["Inter"], "label-lg": ["Inter"], "body-md": ["Inter"], "display-lg": ["Inter"], "currency-display": ["Inter"], "body-lg": ["Inter"], "headline-lg": ["Inter"], "body-sm": ["Inter"] }, fontSize: { "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.03em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }], "display-sm": ["24px", { lineHeight: "32px", letterSpacing: "-0.015em", fontWeight: "700" }], "title-md": ["16px", { lineHeight: "22px", letterSpacing: "-0.005em", fontWeight: "600" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }], "label-lg": ["14px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "600" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }], "currency-display": ["22px", { lineHeight: "28px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }], "headline-lg": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Brand logo. - Primary color: #0f766e
+- Font: inter
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UTENmNemTE1wi6bxckDmWojGAxlANShs35ipUR_2aU13AFyajjReKmZKtue0iwo5z43ztMoOykMmTlMIyhlYQTr9eYiaVz4OnXZiaYR112HlPCS7ijaJfTY5pw1pVakcXqdkNXL29wCxgpLhKyfA01FRytSuGJx7iu99bOZ8i-IOMtwtD9pSMmiJ7coO-jcc8_hemOfYLgeJfjiS0A2IRx8ntCz2nkG86kdunkUo7EU_Flk1gnL07TwJLr"/><div class="flex flex-col"><span class="font-label-sm text-label-sm text-primary tracking-wider uppercase">COURTGO STAFF</span><h1 class="font-headline-sm text-headline-sm text-on-surface leading-tight truncate">Quản Lý Sân</h1></div></div><div class="flex items-center gap-space-sm"><button aria-label="Thông báo" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[22px]">notifications</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20" src="https://lh3.googleusercontent.com/aida/AEtjO1U213DiuzLYVsQ3jlod5PuqwnTZ0juBtKJvx6J8MHS4Fv00Ed8b3c1NCdRElwWSASSpTIagtKooKl0H9n8cFfbHKJ_MfXb8uZIEyFXVDFlhkiMSWyrJOSQEmW1MJ4cYaDYKpc1Gks11H0656g1p1gEdw08zi7J2kfXSvheqrGHpeIJ3imwlMlk_SJ8DAQYLZHAp9jnp5g-ac8BiGoevFLtryH5R3ymLC7QOr5FkfkChWJamqSjETUqPjxTG"/></div></div></header><main class="flex flex-col relative w-full pt-16 pb-28 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Top Venue Banner & Quick Action (No extra page title duplicated) -->
+<div class="px-margin pt-space-sm pb-space-xs flex items-center justify-between">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-sm text-label-sm text-primary uppercase tracking-wide">Cơ sở vận hành</p>
+<p class="font-headline-sm text-headline-sm text-on-surface truncate">CourtGo Sports Arena – Q.7</p>
+</div>
+</div>
+<button class="h-10 px-space-md rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center gap-1 shadow-sm active:scale-95 transition-transform shrink-0" id="btnQuickBooking">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Đặt nhanh</span>
+</button>
+</div>
+<!-- Realtime Facility Pulse Bar -->
+<div class="px-margin mt-space-sm">
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="relative flex items-center justify-center">
+<span class="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Trạng thái vận hành</span>
+<span class="font-title-md text-title-md text-on-surface">11/12 Sân khả dụng</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface-variant bg-surface-container-highest/60 px-space-sm py-1 rounded-full font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[15px]">schedule</span>
+<span>Cập nhật: 18:35</span>
+</div>
+</div>
+</div>
+<!-- Sport Category Filter Carousel -->
+<div class="mt-space-md">
+<div class="flex gap-space-xs overflow-x-auto px-margin py-1 no-scrollbar scroll-smooth">
+<button class="sport-chip shrink-0 px-space-md h-9 rounded-full font-label-md text-label-md flex items-center gap-1.5 transition-all bg-primary text-on-primary shadow-sm" data-category="all">
+<span>Tất cả</span>
+<span class="px-1.5 py-0.5 rounded-full bg-on-primary/20 text-[10px]">12</span>
+</button>
+<button class="sport-chip shrink-0 px-space-md h-9 rounded-full font-label-md text-label-md flex items-center gap-1.5 transition-all bg-surface-container text-on-surface-variant hover:text-on-surface" data-category="badminton">
+<span class="material-symbols-outlined text-[16px] text-tertiary">star</span>
+<span>Cầu lông</span>
+<span class="px-1.5 py-0.5 rounded-full bg-surface-container-highest text-[10px]">6</span>
+</button>
+<button class="sport-chip shrink-0 px-space-md h-9 rounded-full font-label-md text-label-md flex items-center gap-1.5 transition-all bg-surface-container text-on-surface-variant hover:text-on-surface" data-category="pickleball">
+<span class="material-symbols-outlined text-[16px]">sports_tennis</span>
+<span>Pickleball</span>
+<span class="px-1.5 py-0.5 rounded-full bg-surface-container-highest text-[10px]">3</span>
+</button>
+<button class="sport-chip shrink-0 px-space-md h-9 rounded-full font-label-md text-label-md flex items-center gap-1.5 transition-all bg-surface-container text-on-surface-variant hover:text-on-surface" data-category="football">
+<span class="material-symbols-outlined text-[16px]">sports_soccer</span>
+<span>Bóng đá</span>
+<span class="px-1.5 py-0.5 rounded-full bg-surface-container-highest text-[10px]">2</span>
+</button>
+<button class="sport-chip shrink-0 px-space-md h-9 rounded-full font-label-md text-label-md flex items-center gap-1.5 transition-all bg-surface-container text-on-surface-variant hover:text-on-surface" data-category="basketball">
+<span class="material-symbols-outlined text-[16px]">sports_basketball</span>
+<span>Bóng rổ</span>
+<span class="px-1.5 py-0.5 rounded-full bg-surface-container-highest text-[10px]">1</span>
+</button>
+</div>
+</div>
+<!-- Court Cards List -->
+<div class="px-margin mt-space-md flex flex-col gap-space-md">
+<!-- Card 1: Sân A1 - Đang hoạt động / Trống (Ready) -->
+<div class="court-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all relative overflow-hidden" data-sport="badminton" id="court-card-A1">
+<div class="flex items-start justify-between gap-space-sm mb-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/40 text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">sports_tennis</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-space-xs">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Sân A1</h2>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">Cầu lông</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Sàn Thảm Gỗ Yonex Pro • Đèn LED 500 Lux</p>
+</div>
+</div>
+<div class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-secondary/10 text-secondary shrink-0">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm">Đang hoạt động</span>
+</div>
+</div>
+<!-- Court Meta Schedule Box -->
+<div class="bg-surface-container-low rounded-xl p-space-sm flex items-center justify-between mb-space-md">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Ca hiện tại</span>
+<span class="font-title-md text-title-md text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+            Trống (Sẵn sàng)
+          </span>
+</div>
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<div class="flex flex-col text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Lịch tiếp theo</span>
+<span class="font-title-md text-title-md text-on-surface">19:00 • Minh Quân</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="grid grid-cols-2 gap-space-sm">
+<button class="h-11 rounded-xl bg-error-container/60 text-on-error-container font-label-md text-label-md flex items-center justify-center gap-1.5 active:scale-98 transition-transform" onclick="openConflictSheet('A1')">
+<span class="material-symbols-outlined text-[18px]">build_circle</span>
+<span>Đổi trạng thái</span>
+</button>
+<button class="h-11 rounded-xl bg-surface-container text-primary font-label-md text-label-md flex items-center justify-center gap-1.5 active:scale-98 transition-transform">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span>Xem lịch sân</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Sân A2 - Đang chơi (Active match) -->
+<div class="court-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all relative overflow-hidden" data-sport="badminton">
+<div class="flex items-start justify-between gap-space-sm mb-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">sports_tennis</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-space-xs">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Sân A2</h2>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">Cầu lông</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Sàn Thảm Gỗ Yonex Pro • Có khán đài nhỏ</p>
+</div>
+</div>
+<div class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container-highest text-primary-container shrink-0">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-semibold">Đang chơi</span>
+</div>
+</div>
+<!-- Live Match Details -->
+<div class="bg-surface-container-low rounded-xl p-space-sm mb-space-md">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">person</span>
+<span class="font-title-md text-title-md text-on-surface">Nguyễn Nam</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">18:00 – 19:00</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-[16px]">timelapse</span>
+<span class="font-label-md text-label-md">Còn lại: 25 phút</span>
+</div>
+<div class="w-32 bg-surface-container-highest rounded-full h-2 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 58%;"></div>
+</div>
+</div>
+</div>
+<!-- Action Row -->
+<div class="flex items-center gap-space-sm">
+<button class="w-full h-11 rounded-xl bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 active:scale-98 transition-transform" id="btnCompleteA2" onclick="completeSession('A2')">
+<span class="material-symbols-outlined text-[18px]">flag</span>
+<span>Hoàn thành sớm</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Sân P1 - Tạm khóa bảo trì -->
+<div class="court-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all relative overflow-hidden" data-sport="pickleball">
+<div class="flex items-start justify-between gap-space-sm mb-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">handyman</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-space-xs">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Sân P1</h2>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">Pickleball</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Sân thi đấu chuẩn USAPA số 1</p>
+</div>
+</div>
+<div class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-error-container text-error shrink-0">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-label-sm text-label-sm font-semibold">Tạm khóa bảo trì</span>
+</div>
+</div>
+<!-- Maintenance Info Box -->
+<div class="bg-error-container/30 rounded-xl p-space-sm mb-space-md">
+<div class="flex items-start gap-space-xs text-on-error-container mb-1.5">
+<span class="material-symbols-outlined text-[18px] shrink-0 text-error">warning</span>
+<span class="font-body-sm text-body-sm">Thay lưới và căn chỉnh đèn chiếu sáng sân 1</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Dự kiến mở lại:</span>
+<span class="font-label-md text-label-md text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">update</span>
+            20:30 hôm nay
+          </span>
+</div>
+</div>
+<!-- Action Button -->
+<div>
+<button class="w-full h-11 rounded-xl bg-secondary text-on-secondary font-label-md text-label-md flex items-center justify-center gap-1.5 active:scale-98 transition-transform shadow-sm" onclick="reopenCourt('P1')">
+<span class="material-symbols-outlined text-[18px]">lock_open_right</span>
+<span>Mở lại sân</span>
+</button>
+</div>
+</div>
+<!-- Additional Ambient Card: Sân B1 - Bóng đá Mini -->
+<div class="court-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all relative overflow-hidden" data-sport="football">
+<div class="flex items-start justify-between gap-space-sm mb-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/40 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">sports_soccer</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-space-xs">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Sân F1</h2>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">Bóng đá</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Cỏ nhân tạo Monofilament 50mm</p>
+</div>
+</div>
+<div class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-secondary/10 text-secondary shrink-0">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm">Đang hoạt động</span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-space-sm flex items-center justify-between mb-space-md">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Ca hiện tại</span>
+<span class="font-title-md text-title-md text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+            Trống (Sẵn sàng)
+          </span>
+</div>
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<div class="flex flex-col text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Lịch tiếp theo</span>
+<span class="font-title-md text-title-md text-on-surface">20:00 • CLB Sài Gòn</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<button class="h-11 rounded-xl bg-surface-container text-on-surface-variant font-label-md text-label-md flex items-center justify-center gap-1.5" onclick="openConflictSheet('F1')">
+<span class="material-symbols-outlined text-[18px]">build_circle</span>
+<span>Bảo trì</span>
+</button>
+<button class="h-11 rounded-xl bg-surface-container text-primary font-label-md text-label-md flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span>Lịch sân</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Toast Notification Pill -->
+<div class="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-inverse-surface text-inverse-on-surface px-space-md py-2.5 rounded-full shadow-lg font-label-md text-label-md flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300 transform -translate-y-2" id="toastNotification">
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed-dim" id="toastIcon">check_circle</span>
+<span id="toastMessage">Đã cập nhật trạng thái sân</span>
+</div>
+<!-- Bottom Sheet Backdrop & Modal for Conflict Alert -->
+<div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 flex items-end justify-center" id="conflictBackdrop">
+<div class="bg-surface-container-lowest w-full max-w-md rounded-t-[28px] p-space-lg shadow-2xl transform translate-y-full transition-transform duration-300 flex flex-col max-h-[795px]" id="conflictSheet">
+<!-- Drag handle -->
+<div class="w-12 h-1.5 rounded-full bg-outline-variant mx-auto mb-space-md shrink-0"></div>
+<!-- Warning Header -->
+<div class="flex items-start gap-space-sm mb-space-md">
+<div class="w-11 h-11 rounded-2xl bg-error-container text-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">warning</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-error uppercase font-bold tracking-wider">Cảnh báo xung đột lịch</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface" id="conflictSheetTitle">Khóa bảo trì Sân A1</h3>
+</div>
+</div>
+<!-- Warning Callout Box -->
+<div class="bg-error-container/40 rounded-2xl p-space-md mb-space-md">
+<p class="font-title-md text-title-md text-error flex items-center gap-1.5 mb-1">
+<span class="material-symbols-outlined text-[20px]">notification_important</span>
+<span>Chú ý quan trọng!</span>
+</p>
+<p class="font-body-md text-body-md text-on-error-container">
+          Sân A1 đang có <span class="font-bold underline decoration-error">3 lịch đặt sắp tới</span> trong tối nay (19:00, 20:30, 22:00).
+        </p>
+</div>
+<!-- Conflict Details Pill List -->
+<div class="space-y-space-xs mb-space-lg">
+<div class="flex items-center justify-between p-space-sm rounded-xl bg-surface-container-low font-body-sm text-body-sm">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-tertiary">schedule</span>
+<span>19:00 – 20:30</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Minh Quân (0908•••123)</span>
+</div>
+<div class="flex items-center justify-between p-space-sm rounded-xl bg-surface-container-low font-body-sm text-body-sm">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-tertiary">schedule</span>
+<span>20:30 – 21:30</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">CLB Bồ Công Anh</span>
+</div>
+</div>
+<!-- Radio / Option Decision -->
+<div class="space-y-space-sm mb-space-lg">
+<label class="flex items-start gap-space-sm p-space-sm rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-1 h-4 w-4 text-primary focus:ring-primary accent-primary" name="conflictChoice" type="radio" value="transfer"/>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Vẫn chuyển bảo trì</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tự động tạo lệnh điều chuyển khách dời sang <strong class="text-primary">Sân A3</strong> và gửi SMS/Zalo thông báo</span>
+</div>
+</label>
+<label class="flex items-start gap-space-sm p-space-sm rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input class="mt-1 h-4 w-4 text-primary focus:ring-primary accent-primary" name="conflictChoice" type="radio" value="cancel"/>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Quay lại và hủy thao tác</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Giữ nguyên sân ở trạng thái sẵn sàng đón khách</span>
+</div>
+</label>
+</div>
+<!-- Action Buttons in Sheet -->
+<div class="flex flex-col gap-space-xs">
+<button class="w-full h-12 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-2 active:scale-98 transition-transform shadow-md" id="btnConfirmConflict">
+<span class="material-symbols-outlined text-[20px]">check</span>
+<span>Xác nhận xử lý</span>
+</button>
+<button class="w-full h-11 rounded-xl bg-transparent text-on-surface-variant font-label-md text-label-md flex items-center justify-center hover:bg-surface-container/50" onclick="closeConflictSheet()">
+          Đóng cửa sổ
+        </button>
+</div>
+</div>
+</div>
+<!-- Interactive Client-side Script -->
+<script>
+    // Tab and Category Filtering micro-interaction
+    const sportChips = document.querySelectorAll('.sport-chip');
+    const courtCards = document.querySelectorAll('.court-card');
+
+    sportChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        sportChips.forEach(c => {
+          c.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+          c.classList.add('bg-surface-container', 'text-on-surface-variant');
+        });
+        chip.classList.remove('bg-surface-container', 'text-on-surface-variant');
+        chip.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+
+        const cat = chip.dataset.category;
+        courtCards.forEach(card => {
+          if (cat === 'all' || card.dataset.sport === cat) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Conflict Bottom Sheet Handlers
+    const backdrop = document.getElementById('conflictBackdrop');
+    const sheet = document.getElementById('conflictSheet');
+
+    function openConflictSheet(courtId) {
+      document.getElementById('conflictSheetTitle').textContent = `Khóa bảo trì Sân ${courtId}`;
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      backdrop.classList.add('opacity-100');
+      sheet.classList.remove('translate-y-full');
+      sheet.classList.add('translate-y-0');
+    }
+
+    function closeConflictSheet() {
+      sheet.classList.remove('translate-y-0');
+      sheet.classList.add('translate-y-full');
+      backdrop.classList.remove('opacity-100');
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) {
+        closeConflictSheet();
+      }
+    });
+
+    // Toast helper
+    function showToast(message, icon = 'check_circle') {
+      const toast = document.getElementById('toastNotification');
+      const toastMsg = document.getElementById('toastMessage');
+      const toastIco = document.getElementById('toastIcon');
+      
+      toastMsg.textContent = message;
+      toastIco.textContent = icon;
+      
+      toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-2');
+      }, 2600);
+    }
+
+    // Confirm conflict resolution action
+    document.getElementById('btnConfirmConflict').addEventListener('click', () => {
+      const selected = document.querySelector('input[name="conflictChoice"]:checked').value;
+      closeConflictSheet();
+      if (selected === 'transfer') {
+        showToast('Đã dời 3 ca sang Sân A3 & đưa A1 vào bảo trì');
+        // Visual indicator on A1
+        const a1Card = document.getElementById('court-card-A1');
+        if (a1Card) {
+          const badge = a1Card.querySelector('.text-secondary');
+          if (badge) {
+            badge.className = 'inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-error-container text-error shrink-0 font-label-sm text-label-sm font-semibold';
+            badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-error"></span><span>Bảo trì dời lịch</span>';
+          }
+        }
+      } else {
+        showToast('Đã hủy thao tác, giữ nguyên trạng thái', 'info');
+      }
+    });
+
+    // Complete Session Early Micro-interaction
+    function completeSession(courtId) {
+      showToast(`Đã nghiệm thu sớm cho ${courtId}. Sân sẵn sàng đón khách!`);
+      const btn = document.getElementById('btnCompleteA2');
+      if (btn) {
+        btn.innerHTML = '<span class="material-symbols-outlined text-[18px] text-secondary">check</span><span>Đã dọn sân xong</span>';
+        btn.classList.add('text-secondary', 'bg-secondary-container/30');
+      }
+    }
+
+    // Reopen Court Micro-interaction
+    function reopenCourt(courtId) {
+      showToast(`Đã mở lại sân ${courtId} cho khách đặt!`);
+    }
+
+    // Quick booking trigger
+    document.getElementById('btnQuickBooking').addEventListener('click', () => {
+      showToast('Mở màn hình chọn ca nhanh tại quầy', 'bolt');
+    });
+  </script>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(15,23,42,0.06)]" data-active-classes="text-primary font-bold"><div class="flex justify-around items-center h-16 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] py-1 text-on-surface-variant transition-colors" data-path="trang-chu" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-sm text-label-sm mt-0.5">Trang chủ</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] py-1 text-on-surface-variant transition-colors" data-path="lich-dat" href="#"><span class="material-symbols-outlined text-[22px]">calendar_month</span><span class="font-label-sm text-label-sm mt-0.5">Lịch đặt</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] py-1 text-on-surface-variant transition-colors" data-path="quet-qr" href="#"><div class="w-11 h-11 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_4px_12px_rgba(15,118,110,0.3)] -mt-4"><span class="material-symbols-outlined text-[24px]">qr_code_scanner</span></div><span class="font-label-sm text-label-sm mt-0.5">Quét QR</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] py-1 text-on-surface-variant transition-colors" data-path="quan-ly-san" href="#"><span class="material-symbols-outlined text-[22px]">sports_tennis</span><span class="font-label-sm text-label-sm mt-0.5">Quản lý sân</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] py-1 text-on-surface-variant transition-colors" data-path="tai-khoan" href="#"><span class="material-symbols-outlined text-[22px]">badge</span><span class="font-label-sm text-label-sm mt-0.5">Tài khoản</span></a></div></nav></body></html>

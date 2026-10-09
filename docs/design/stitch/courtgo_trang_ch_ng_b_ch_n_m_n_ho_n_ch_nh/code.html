@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<meta content="mobile_tab" name="shell-type"/>
+<title>CourtGo - Đặt sân thể thao nhanh chóng</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#005c55",
+        "primary-container": "#006852",
+        "primary-dark": "#005a46",
+        "on-primary": "#ffffff",
+        "surface": "#ffffff",
+        "surface-container-low": "#fafafa",
+        "on-surface": "#0f172a",
+        "on-surface-variant": "#64748b"
+      },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"]
+      }
+    }
+  }
+}
+</script>
+<style>
+  @layer base {
+    html, body {
+      width: 100vw;
+      margin: 0;
+      padding: 0;
+      background-color: #fafafa;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      overscroll-behavior: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pb-safe {
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+    }
+    .pt-safe {
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .animate-spin-custom {
+    animation: spin 0.8s linear infinite;
+  }
+</style>
+</head>
+<body class="bg-[#fafafa] text-slate-900 flex flex-col min-h-screen antialiased select-none">
+<!-- TOAST NOTIFICATION CONTAINER -->
+<div class="fixed top-5 left-1/2 -translate-x-1/2 z-[80] bg-slate-900/95 text-white px-4 py-2.5 rounded-full text-xs font-semibold shadow-2xl flex items-center gap-2 transition-all duration-300 pointer-events-none max-w-[90%] border border-white/10 opacity-0 -translate-y-4" id="toast">
+<span class="material-symbols-outlined text-[18px] text-emerald-400" id="toast-icon">check_circle</span>
+<span class="truncate" id="toast-text">Đã chọn môn: Cầu lông</span>
+</div>
+<!-- HEADER -->
+<header class="sticky top-0 z-30 pt-safe bg-white/95 backdrop-blur-md border-b border-slate-100 transition-all">
+<div class="px-4 pt-3 pb-3 flex items-center justify-between">
+<!-- Brand logo & Greeting & Location -->
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl overflow-hidden shadow-sm shrink-0 border border-slate-100 flex items-center justify-center bg-teal-50">
+<img alt="CourtGo Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1UTENmNemTE1wi6bxckDmWojGAxlANShs35ipUR_2aU13AFyajjReKmZKtue0iwo5z43ztMoOykMmTlMIyhlYQTr9eYiaVz4OnXZiaYR112HlPCS7ijaJfTY5pw1pVakcXqdkNXL29wCxgpLhKyfA01FRytSuGJx7iu99bOZ8i-IOMtwtD9pSMmiJ7coO-jcc8_hemOfYLgeJfjiS0A2IRx8ntCz2nkG86kdunkUo7EU_Flk1gnL07TwJLr"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="text-xs font-bold uppercase tracking-wider text-emerald-700">CourtGo</span>
+</div>
+<h1 class="text-[17px] font-bold text-slate-900 leading-tight">Xin chào, Minh 👋</h1>
+<button class="flex items-center gap-1 text-slate-500 hover:text-slate-700 text-xs font-medium mt-0.5 group" onclick="toggleFilterSheet(true)">
+<span class="material-symbols-outlined text-[15px] text-emerald-700">location_on</span>
+<span class="">Quận 7, TP. Hồ Chí Minh</span>
+<span class="material-symbols-outlined text-[14px] text-slate-400 group-hover:translate-y-0.5 transition-transform">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+<!-- Actions (Notification & User Avatar) -->
+<div class="flex items-center gap-2.5">
+<button aria-label="Thông báo" class="relative w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors" onclick="toggleNotificationModal(true)">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white"></span>
+</button>
+<div class="w-9 h-9 rounded-full overflow-hidden ring-2 ring-emerald-600/20 shadow-sm shrink-0 cursor-pointer">
+<img alt="Minh Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1U213DiuzLYVsQ3jlod5PuqwnTZ0juBtKJvx6J8MHS4Fv00Ed8b3c1NCdRElwWSASSpTIagtKooKl0H9n8cFfbHKJ_MfXb8uZIEyFXVDFlhkiMSWyrJOSQEmW1MJ4cYaDYKpc1Gks11H0656g1p1gEdw08zi7J2kfXSvheqrGHpeIJ3imwlMlk_SJ8DAQYLZHAp9jnp5g-ac8BiGoevFLtryH5R3ymLC7QOr5FkfkChWJamqSjETUqPjxTG"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col w-full pb-24 space-y-6">
+<!-- SEARCH BAR -->
+<section class="px-4 pt-4">
+<div class="flex items-center gap-2">
+<div class="flex-1 flex items-center bg-white border border-slate-200 rounded-2xl px-3.5 py-3 gap-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.02)] cursor-pointer hover:border-slate-300 transition-colors" onclick="toggleSearchModal(true)">
+<span class="material-symbols-outlined text-slate-400 text-[20px]">search</span>
+<span class="text-sm text-slate-400 font-normal select-none truncate">Tìm sân hoặc trung tâm thể thao</span>
+</div>
+<button aria-label="Bộ lọc" class="w-12 h-12 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center shrink-0 border border-slate-200 shadow-sm active:scale-95 transition-all" onclick="toggleFilterSheet(true)">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+</div>
+</section>
+<!-- PROMOTIONAL BANNER CAROUSEL -->
+<section class="px-4">
+<div class="relative w-full h-[140px] rounded-2xl overflow-hidden shadow-sm select-none" id="promo-carousel">
+<div class="flex w-full h-full transition-transform duration-500 ease-out" id="carousel-track" style="transform: translateX(0%);">
+<!-- Slide 1 -->
+<div class="relative w-full h-full shrink-0 overflow-hidden cursor-pointer" onclick="toggleSearchModal(true)">
+<img alt="Sân cầu lông chất lượng" class="absolute inset-0 w-full h-full object-cover object-right" src="https://lh3.googleusercontent.com/aida/AEtjO1XlIXYmZduzca2SpG3kLDB7so5WQ1BowmqEi-5sZLfhKgBzZBePu55Za9AaxUZHcU0oYdKzqyBjyCfFj0gahdrPglBEN33tvBjQj2jhaX1ypN6FaGINxhzuuikCTEPl9aAUn_TUi5qRSQyorjDnnZgcRvC8ipDldAo2dToP3oD9WfyZAhtE1a_4imzJ4cmyWHIMfT3cY7F3DdxBWviyhnBCPgeBrxWauoJ1mF4WTqwtrwnrOFn1Dq4ZakSe"/>
+<div class="absolute inset-0 bg-gradient-to-r from-[#064E3B]/95 via-[#064e3b]/85 via-45% to-transparent"></div>
+<div class="relative z-10 h-full flex flex-col justify-between p-4 max-w-[70%]">
+<div>
+<span class="inline-block px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold tracking-wider uppercase">
+                ĐẶT SÂN NHANH
+              </span>
+<h3 class="text-[19px] font-bold text-white leading-snug mt-1 drop-shadow-sm">Tìm sân trống ngay</h3>
+<p class="text-xs text-emerald-100/90 line-clamp-1 mt-0.5">Chọn giờ phù hợp và đặt sân chỉ trong vài bước</p>
+</div>
+<div>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-emerald-900 text-xs font-bold shadow-md hover:bg-emerald-50 active:scale-95 transition-all" onclick="event.stopPropagation(); triggerQuickSearch();">
+<span class="">Tìm sân</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Slide 2 -->
+<div class="relative w-full h-full shrink-0 overflow-hidden cursor-pointer" onclick="handleSelectSportFromCategory('football')">
+<img alt="Trận đấu tối nay" class="absolute inset-0 w-full h-full object-cover object-right" src="https://lh3.googleusercontent.com/aida/AEtjO1XRmwOP2b_Tn8T84WKeC-kuAzm1OoC7ydaG1PJxrqM_5Tf_5eA7y5ZobTi49jo6MVtkdQsaK7FRocjhmMn-DOAz2YkAXbdmDiiO_QF88g_pNc3_bxGCHK23vv3r13toY_Dk6wCpKj5uEnZhd82nC_np2oSZnT46Fmg18EJKaQjLllIkxFUUhp2cnkqfxihiT6hmIYtpgbWBgHVnBgNn17At3BaPiUo1Lu7_cjH07fYxY8wZprEZshEvfWI"/>
+<div class="absolute inset-0 bg-gradient-to-r from-[#064E3B]/95 via-[#064e3b]/85 via-45% to-transparent"></div>
+<div class="relative z-10 h-full flex flex-col justify-between p-4 max-w-[70%]">
+<div>
+<span class="inline-block px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[10px] font-bold tracking-wider uppercase">
+                GIỜ VÀNG THỂ THAO
+              </span>
+<h3 class="text-[19px] font-bold text-white leading-snug mt-1 drop-shadow-sm">Sẵn sàng cho trận tối nay?</h3>
+<p class="text-xs text-emerald-100/90 line-clamp-1 mt-0.5">Tìm sân còn trống gần bạn</p>
+</div>
+<div>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500 text-white text-xs font-bold shadow-md hover:bg-emerald-600 active:scale-95 transition-all" onclick="event.stopPropagation(); handleSelectSportFromCategory('football');">
+<span class="">Xem sân trống</span>
+<span class="material-symbols-outlined text-[15px]">sports_soccer</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Slide 3 -->
+<div class="relative w-full h-full shrink-0 overflow-hidden cursor-pointer" onclick="showToast('Ưu đãi 20% đặt sân từ 06:00 - 14:00!')">
+<img alt="Sân pickleball buổi sáng" class="absolute inset-0 w-full h-full object-cover object-right" src="https://lh3.googleusercontent.com/aida/AEtjO1WqyCfiuKH8On_DkFlCOjsNSWRrfvZQhCYzpgL6f7oSeOzt8mrfQg26TFFNGQNsrRLi-Qz6nN0A23dS3e3aDdqGdFrzuv1s9a1HWabjZBKEhQAsQuvNIvXX0QZjAJ1MYtZeYoD_B6oDAkA9CmonMlYKw7-B17KXoXw0HWzM7qfQKULYOKQuNtBa3l64ceWSCstovPaWhBRIVaeLQYKSr7XAGhPJy2ZbF9aqQw5kXY4i2Rh3XWtG3w7t4Shy"/>
+<div class="absolute inset-0 bg-gradient-to-r from-[#064E3B]/95 via-[#064e3b]/85 via-45% to-transparent"></div>
+<div class="relative z-10 h-full flex flex-col justify-between p-4 max-w-[70%]">
+<div>
+<span class="inline-block px-2 py-0.5 rounded-full bg-teal-400/20 text-teal-200 border border-teal-400/30 text-[10px] font-bold tracking-wider uppercase">
+                ƯU ĐÃI COURTGO
+              </span>
+<h3 class="text-[19px] font-bold text-white leading-snug mt-1 drop-shadow-sm">Giảm 20% giờ thấp điểm</h3>
+<p class="text-xs text-emerald-100/90 line-clamp-1 mt-0.5">Đặt sân buổi sáng ngày thường</p>
+</div>
+<div>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-teal-900 text-xs font-bold shadow-md hover:bg-emerald-50 active:scale-95 transition-all" onclick="event.stopPropagation(); showToast('Ưu đãi: Giảm 20% cho buổi sáng!');">
+<span class="">Khám phá</span>
+<span class="material-symbols-outlined text-[15px]">percent</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Carousel Dots -->
+<div class="absolute bottom-2.5 right-4 z-20 flex items-center gap-1.5">
+<button aria-label="Slide 1" class="carousel-dot h-1.5 rounded-full transition-all duration-300 w-5 bg-white shadow-sm" onclick="setCarouselSlide(0)"></button>
+<button aria-label="Slide 2" class="carousel-dot h-1.5 rounded-full transition-all duration-300 w-1.5 bg-white/50" onclick="setCarouselSlide(1)"></button>
+<button aria-label="Slide 3" class="carousel-dot h-1.5 rounded-full transition-all duration-300 w-1.5 bg-white/50" onclick="setCarouselSlide(2)"></button>
+</div>
+</div>
+</section>
+<!-- QUICK BOOKING WIDGET ("Đặt sân nhanh") -->
+<section class="px-4 relative z-20" id="quick-booking-container">
+<div class="relative bg-white rounded-[24px] p-4 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] select-none">
+<!-- Watermark Racket & Shuttlecock Vector in Top-Right Background -->
+<div class="absolute -right-5 -top-4 w-44 h-48 pointer-events-none opacity-85 z-0 overflow-hidden">
+<svg class="w-full h-full" fill="none" viewbox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
+<circle cx="120" cy="50" fill="#e6f7f0" fill-opacity="0.5" filter="blur(16px)" r="55"></circle>
+<g transform="rotate(32 105 75)">
+<ellipse cx="105" cy="40" fill="none" opacity="0.9" rx="34" ry="46" stroke="#006852" stroke-width="5"></ellipse>
+<path d="M85 10v60 M93 4v72 M101 2v76 M109 2v76 M117 4v72 M125 10v60" opacity="0.65" stroke="#10b981" stroke-dasharray="2.5 2" stroke-width="1.2"></path>
+<path d="M78 20h54 M74 32h62 M73 44h64 M76 56h58 M82 68h46" opacity="0.65" stroke="#10b981" stroke-dasharray="2.5 2" stroke-width="1.2"></path>
+<path d="M105 86v55" stroke="#004d3d" stroke-linecap="round" stroke-width="4.5"></path>
+<path d="M103 125h4v35h-4z" fill="#00382b" rx="2"></path>
+</g>
+<g transform="translate(112, 18) rotate(-18)">
+<path d="M12 28 L3 6 Q16 1 30 5 L20 28 Z" fill="#ffffff" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.08))" stroke="#cbd5e1" stroke-width="1.2"></path>
+<path d="M8 8 L14 26 M16 4 L16 27 M24 7 L18 26" stroke="#e2e8f0" stroke-width="1.4"></path>
+<path d="M7 16 C12 14, 20 14, 25 15" fill="none" stroke="#94a3b8" stroke-width="1.2"></path>
+<rect fill="#006852" height="3" rx="1.5" width="9" x="11.5" y="27"></rect>
+<ellipse cx="16" cy="34" fill="#f8fafc" rx="4.8" ry="5.2" stroke="#e2e8f0" stroke-width="1"></ellipse>
+</g>
+</svg>
+</div>
+<!-- Header Row -->
+<div class="relative z-10 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-2xl bg-[#006852] flex items-center justify-center text-white shadow-sm shrink-0">
+<span class="material-symbols-outlined text-[24px]">bolt</span>
+</div>
+<div class="flex flex-col">
+<h2 class="text-[18px] font-bold text-slate-900 tracking-tight leading-tight">Đặt sân nhanh</h2>
+<p class="text-xs text-slate-500 font-normal mt-0.5">Chọn môn, thời gian và tìm sân trống ngay</p>
+</div>
+</div>
+<div class="bg-[#e6f7f0] text-[#006852] font-semibold text-xs px-3 py-1 rounded-full flex items-center gap-1.5 shadow-xs shrink-0">
+<span class="w-2 h-2 rounded-full bg-[#006852]"></span>
+<span class="text-[11px]">Trực tuyến</span>
+</div>
+</div>
+<!-- 3 Selector Cards in a row -->
+<div class="grid grid-cols-3 gap-2.5 my-3.5 relative z-10">
+<!-- Card 1: MÔN THỂ THAO Selector Button -->
+<div class="relative">
+<button aria-expanded="false" aria-haspopup="dialog" class="w-full bg-[#f8fafc] border border-slate-200/80 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-emerald-500 active:scale-95 transition-all text-left group shadow-xs p-2.5" id="btn-sport" onclick="toggleModal('sport', event)">
+<div class="flex items-center justify-between w-full">
+<div class="w-8 h-8 rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden border border-slate-100 shadow-xs p-0.5" id="qb-sport-icon-box">
+<img alt="Cầu lông" class="w-full h-full object-contain" id="main-sport-icon" src="https://lh3.googleusercontent.com/aida/AEtjO1XGG_2ZI5K3KG5xOd6Mal38qL4RkX_cyoCNe5WRvdcRguLhSmHtFJbHNPYtVuoLJxOeCu668CGpkBwIT0691l3DsqzRHrZVEVoqTq_Rl2VnRwZspwu-Jhdm7j8d9yftOa0Bu_MpFPavvUUYWMQfW90YzMPog20WqLg1yLxyZQ0XmxFa_mr6hrQ7fgV9nR2LlnC0piTQ_uHzM_IpClxppnwXsuz0K5t7uRSjj0YTmEtYE1OpUBtkXeLawMI"/>
+</div>
+<div class="flex items-center gap-0.5 text-slate-400 group-hover:text-slate-600">
+<span class="text-[9px] font-bold text-slate-400 uppercase tracking-tight">MÔN</span>
+<span class="material-symbols-outlined text-[16px] text-slate-400 transition-transform duration-200" id="sport-chevron">keyboard_arrow_down</span>
+</div>
+</div>
+<div class="mt-2">
+<span class="font-bold text-slate-900 block truncate text-xs" id="main-sport-name">Cầu lông</span>
+</div>
+</button>
+</div>
+<!-- Card 2: NGÀY Selector Button -->
+<button aria-expanded="false" aria-haspopup="dialog" class="bg-[#f8fafc] border border-slate-200/80 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-emerald-500 active:scale-95 transition-all text-left group shadow-xs p-2.5" id="btn-date" onclick="toggleModal('calendar', event)">
+<div class="flex items-center justify-between w-full">
+<div class="w-8 h-8 rounded-full bg-[#e0f2fe] flex items-center justify-center text-[#0284c7] shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+</div>
+<div class="flex items-center gap-0.5 text-slate-400 group-hover:text-slate-600">
+<span class="text-[9px] font-bold text-slate-400 uppercase tracking-tight">NGÀY</span>
+<span class="material-symbols-outlined text-[16px] text-slate-400 transition-transform duration-200" id="date-chevron">keyboard_arrow_down</span>
+</div>
+</div>
+<div class="mt-2">
+<span class="font-bold text-slate-900 block truncate text-xs" id="qb-date-label">Hôm nay</span>
+</div>
+</button>
+<!-- Card 3: GIỜ Selector Button -->
+<button aria-expanded="false" aria-haspopup="dialog" class="bg-[#f8fafc] border border-slate-200/80 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-emerald-500 active:scale-95 transition-all text-left group shadow-xs p-2.5" id="btn-time" onclick="toggleModal('time', event)">
+<div class="flex items-center justify-between w-full">
+<div class="w-8 h-8 rounded-full bg-[#fef3c7] flex items-center justify-center text-[#b45309] shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+</div>
+<div class="flex items-center gap-0.5 text-slate-400 group-hover:text-slate-600">
+<span class="text-[9px] font-bold text-slate-400 uppercase tracking-tight">GIỜ</span>
+<span class="material-symbols-outlined text-[16px] text-slate-400 transition-transform duration-200" id="time-chevron">keyboard_arrow_down</span>
+</div>
+</div>
+<div class="mt-2">
+<span class="font-bold text-slate-900 block truncate text-xs" id="qb-time-label">19:00</span>
+</div>
+</button>
+</div>
+<!-- Validation Warning Message -->
+<div class="hidden mb-2 px-3 py-1.5 bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-xl flex items-center gap-1.5 transition-all" id="quick-booking-error">
+<span class="material-symbols-outlined text-[16px] text-amber-600">info</span>
+<span class="" id="quick-booking-error-text">Vui lòng chọn thông tin hợp lệ</span>
+</div>
+<!-- Bottom CTA Button -->
+<button class="w-full bg-[#005a46] hover:bg-[#004e3c] text-white py-3.5 px-5 rounded-full flex items-center justify-center gap-3 font-semibold shadow-md active:scale-[0.98] transition-all cursor-pointer relative z-10 group" id="btn-search-quick" onclick="triggerQuickSearch()">
+<span class="material-symbols-outlined text-[20px]" id="search-btn-icon">search</span>
+<span class="text-white/40 font-light">|</span>
+<span class="text-[15px] font-bold tracking-tight" id="search-btn-text">Tìm sân trống</span>
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-0.5 transition-transform" id="search-btn-arrow">arrow_forward</span>
+</button>
+</div>
+<!-- FLOATING POPOVER 1: SPORT SELECTOR DROPDOWN -->
+<div class="fixed inset-0 z-40 bg-black/25 backdrop-blur-[2px] transition-opacity hidden" id="modal-backdrop" onclick="closeAllModals()"></div>
+<div class="absolute top-[148px] left-4 z-50 w-[calc(100%-2rem)] max-w-[310px] bg-white rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.18)] border border-slate-100 transition-all duration-200 p-2.5 hidden" id="popover-sport">
+<div class="absolute -top-2 left-10 w-3.5 h-3.5 bg-white border-t border-l border-slate-100 rotate-45 rounded-tl-sm"></div>
+<div class="flex items-center justify-between px-1.5 py-1 mb-1 border-b border-slate-100 pb-2">
+<h3 class="text-xs font-bold text-slate-900 tracking-tight">Chọn môn thể thao</h3>
+<span class="text-[10px] text-slate-400 font-medium">4 bộ môn</span>
+</div>
+<div class="space-y-1 mt-1.5" id="sport-options-list">
+<!-- Rendered via renderSportDropdownOptions() -->
+</div>
+</div>
+<!-- FLOATING POPOVER 2: TIME SELECTOR (FIXED 1-HOUR SLOTS) -->
+<div class="absolute top-[148px] right-4 z-50 w-[calc(100%-2rem)] max-w-[320px] bg-white rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.18)] border border-slate-100 transition-all duration-200 p-3 hidden" id="popover-time">
+<div class="absolute -top-2 right-12 w-3.5 h-3.5 bg-white border-t border-l border-slate-100 rotate-45 rounded-tl-sm"></div>
+<div class="flex items-center justify-between pb-2 mb-2.5 border-b border-slate-100">
+<div>
+<h3 class="text-xs font-bold text-slate-900 tracking-tight">Chọn khung giờ bắt đầu</h3>
+<p class="text-[10px] text-slate-400 mt-0.5">Thời lượng mặc định: 60 phút</p>
+</div>
+<button class="w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500" onclick="closeAllModals()">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<!-- 2-Column Slot Grid -->
+<div class="grid grid-cols-2 gap-2" id="time-slots-container"></div>
+<div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-600"></span> Đang chọn</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-slate-200"></span> Hết chỗ</span>
+</div>
+</div>
+</section>
+<!-- MODAL 3: CALENDAR DATE PICKER -->
+<div class="fixed inset-0 z-50 hidden items-center justify-center p-4 transition-all" id="modal-calendar">
+<div class="w-full max-w-[340px] bg-white rounded-[24px] shadow-2xl border border-slate-100 p-5 relative z-10 transition-transform">
+<!-- Header -->
+<div class="flex items-center justify-between pb-3 border-b border-slate-100">
+<h3 class="text-sm font-bold text-slate-900 tracking-tight">Chọn ngày đặt sân</h3>
+<button class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors" onclick="closeAllModals()">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Quick Date Chips -->
+<div class="flex items-center gap-2 mt-3 mb-3">
+<button class="flex-1 py-1.5 px-3 rounded-full text-xs font-bold bg-[#effbf7] text-[#005c55] border border-[#005c55]/40 shadow-xs" id="chip-today" onclick="selectQuickChip('today')">
+        Hôm nay
+      </button>
+<button class="flex-1 py-1.5 px-3 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50" id="chip-tomorrow" onclick="selectQuickChip('tomorrow')">
+        Ngày mai
+      </button>
+</div>
+<!-- Month Navigation -->
+<div class="flex items-center justify-between px-1 py-1.5 mb-2 bg-slate-50 rounded-xl">
+<button class="w-7 h-7 rounded-lg hover:bg-white flex items-center justify-center text-slate-600 active:scale-90 transition-all" onclick="changeMonth(-1)">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<span class="text-xs font-bold text-slate-800" id="calendar-month-title">Tháng 9, 2026</span>
+<button class="w-7 h-7 rounded-lg hover:bg-white flex items-center justify-center text-slate-600 active:scale-90 transition-all" onclick="changeMonth(1)">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+<!-- Weekday Header -->
+<div class="grid grid-cols-7 text-center mb-1 text-[11px] font-semibold text-slate-400">
+<span class="">T2</span><span class="">T3</span><span class="">T4</span><span class="">T5</span><span class="">T6</span><span class="">T7</span><span class="">CN</span>
+</div>
+<!-- Days Grid -->
+<div class="grid grid-cols-7 gap-1 text-center" id="calendar-days-grid"></div>
+<!-- Bottom Selected Bar & Actions -->
+<div class="mt-4 pt-3 border-t border-slate-100">
+<div class="flex items-center justify-between text-xs mb-3">
+<span class="text-slate-500 font-medium">Đã chọn:</span>
+<span class="font-bold text-emerald-800 text-right" id="calendar-selected-preview">Thứ Bảy, 26 tháng 9</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 active:scale-95 transition-all" onclick="closeAllModals()">
+          Hủy
+        </button>
+<button class="flex-1 py-2.5 rounded-xl bg-[#005c55] hover:bg-[#004e3c] text-white text-xs font-bold shadow-md active:scale-95 transition-all" onclick="confirmDateSelection()">
+          Chọn ngày
+        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- SPORT CATEGORIES ("Môn thể thao") -->
+<section class="px-4">
+<div class="flex items-center justify-between mb-3">
+<h2 class="text-base font-bold text-slate-900">Môn thể thao</h2>
+</div>
+<div class="grid grid-cols-4 gap-2.5">
+<!-- Cầu lông (Badminton) -->
+<button class="flex flex-col items-center justify-center p-3 rounded-2xl bg-white border border-slate-200 shadow-sm active:scale-95 transition-all group hover:border-emerald-600/50" onclick="handleSelectSportFromCategory('badminton')">
+<div class="w-12 h-12 rounded-xl bg-teal-50/80 flex items-center justify-center mb-1.5 group-hover:bg-teal-100 transition-colors shrink-0 overflow-hidden relative p-1.5">
+<img alt="Cầu lông" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XGG_2ZI5K3KG5xOd6Mal38qL4RkX_cyoCNe5WRvdcRguLhSmHtFJbHNPYtVuoLJxOeCu668CGpkBwIT0691l3DsqzRHrZVEVoqTq_Rl2VnRwZspwu-Jhdm7j8d9yftOa0Bu_MpFPavvUUYWMQfW90YzMPog20WqLg1yLxyZQ0XmxFa_mr6hrQ7fgV9nR2LlnC0piTQ_uHzM_IpClxppnwXsuz0K5t7uRSjj0YTmEtYE1OpUBtkXeLawMI"/>
+</div>
+<span class="text-xs font-semibold text-slate-800">Cầu lông</span>
+</button>
+<!-- Pickleball -->
+<button class="flex flex-col items-center justify-center p-3 rounded-2xl bg-white border border-slate-200 shadow-sm active:scale-95 transition-all group hover:border-emerald-600/50" onclick="handleSelectSportFromCategory('pickleball')">
+<div class="w-12 h-12 rounded-xl bg-emerald-50/80 flex items-center justify-center mb-1.5 group-hover:bg-emerald-100 transition-colors shrink-0 overflow-hidden relative p-1.5">
+<img alt="Pickleball" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UMEiOYPJeYPDrVpmYcZG_DFibnNjpRpVHHtiBRDsHVRp7pwzF-QNnZ0S9iH_kWp6gu3Jy7-C5EC1qzEMwHpEG0gth3PfJTv8yV5o8vDLuQjN1b0KNW0caGi-oaVFl4-tX7AsekNgOWOGazIzCc2jT_iNQUg5LQ0c_hv5Byu35smDg3KrG73JvuqFRp8NALGUIvI7oO3S1zVGfpquydqyxbX1OQzbAoDmhTKrShlFx1WVs_06U4PlLipeo"/>
+</div>
+<span class="text-xs font-semibold text-slate-800">Pickleball</span>
+</button>
+<!-- Bóng đá (Football) -->
+<button class="flex flex-col items-center justify-center p-3 rounded-2xl bg-white border border-slate-200 shadow-sm active:scale-95 transition-all group hover:border-emerald-600/50" onclick="handleSelectSportFromCategory('football')">
+<div class="w-12 h-12 rounded-xl bg-blue-50/80 flex items-center justify-center mb-1.5 group-hover:bg-blue-100 transition-colors shrink-0 overflow-hidden relative p-1.5">
+<img alt="Bóng đá" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Wg6bFnGIH3gn3J-hS5wQk8drMU0sEKlVm2SkHvzfdqC2JNwEl8Sv4OFqo3Sol2csfNNH27EeJDvEjcspOpBeyqvEOMBtVL_o-slrVmqkBwvNxqmq6dWZHguC7LZplEpjk2LmkoIH70E_RzXUtlfFFQhB3c13YFEPmCtdUry1oufvDXqiwNWQSE8ddRph1ES3dwElv5d9aR0WAom2e8m3hJXqTs8KJYuL3ZAjp7TB3Jr71tDn7jaGAaLiw"/>
+</div>
+<span class="text-xs font-semibold text-slate-800">Bóng đá</span>
+</button>
+<!-- Bóng rổ (Basketball) -->
+<button class="flex flex-col items-center justify-center p-3 rounded-2xl bg-white border border-slate-200 shadow-sm active:scale-95 transition-all group hover:border-emerald-600/50" onclick="handleSelectSportFromCategory('basketball')">
+<div class="w-12 h-12 rounded-xl bg-amber-50/80 flex items-center justify-center mb-1.5 group-hover:bg-amber-100 transition-colors shrink-0 overflow-hidden relative p-1.5">
+<img alt="Bóng rổ" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VniQ4Piis9vbZgJZgD1F8Wu4Y_1Gd1kqQs3ulvpI0n4AaDBpWFl0hjYtVXocksMOhsvlzcXmiygFRUV1UgS2U6NTlVV91qxfaboyp7PWfBTDMVYIOYwAcZvTCZ-wCrMQCVU4GkcgKNuYcouWtz1OEHs4IPv3EvOSL4euFA0UxzxD-Re0Ah1TksZv0zXSmUQenWUZXwMahX5l4glN2GRYQChQVAMGLXErJi6G7FvuWGIosR0FIFyfLp_UYT"/>
+</div>
+<span class="text-xs font-semibold text-slate-800">Bóng rổ</span>
+</button>
+</div>
+</section>
+<!-- NEARBY SPORT CENTERS ("Sân gần bạn") -->
+<section class="px-4">
+<div class="flex items-center justify-between mb-3">
+<h2 class="text-base font-bold text-slate-900">Sân gần bạn</h2>
+<a class="text-xs font-semibold text-emerald-700 hover:underline" href="#" onclick="toggleSearchModal(true); return false;">Xem tất cả</a>
+</div>
+<div class="flex flex-col gap-3.5">
+<!-- Center Card 1 -->
+<div class="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-md cursor-pointer transition-all active:scale-[0.99] group" onclick="openCenterDetail('CourtGo Sports Arena')">
+<div class="relative w-full h-44 overflow-hidden">
+<img alt="CourtGo Sports Arena" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1U213DiuzLYVsQ3jlod5PuqwnTZ0juBtKJvx6J8MHS4Fv00Ed8b3c1NCdRElwWSASSpTIagtKooKl0H9n8cFfbHKJ_MfXb8uZIEyFXVDFlhkiMSWyrJOSQEmW1MJ4cYaDYKpc1Gks11H0656g1p1gEdw08zi7J2kfXSvheqrGHpeIJ3imwlMlk_SJ8DAQYLZHAp9jnp5g-ac8BiGoevFLtryH5R3ymLC7QOr5FkfkChWJamqSjETUqPjxTG"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20"></div>
+<div class="absolute top-3 left-3 bg-emerald-600 text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full shadow-sm">
+            Mở cửa
+          </div>
+<div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+<span class="text-amber-400 text-xs">★</span> 4.8 <span class="text-slate-300 font-normal">· 1.2 km</span>
+</div>
+<div class="absolute bottom-3 left-3 text-white">
+<span class="inline-block bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-medium">Cầu lông · Pickleball</span>
+</div>
+</div>
+<div class="p-3.5 flex items-center justify-between">
+<div>
+<h3 class="font-bold text-slate-900 text-base group-hover:text-emerald-700 transition-colors">CourtGo Sports Arena</h3>
+<p class="text-xs text-slate-500 mt-0.5">32 Huỳnh Tấn Phát, Tân Thuận Đông, Quận 7</p>
+</div>
+<div class="text-right shrink-0 ml-3">
+<span class="text-[10px] text-slate-400 font-medium block">Giá từ</span>
+<span class="text-sm font-bold text-emerald-700">100.000đ<span class="text-[11px] font-normal text-slate-500">/giờ</span></span>
+</div>
+</div>
+</div>
+<!-- Center Card 2 -->
+<div class="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-md cursor-pointer transition-all active:scale-[0.99] group" onclick="openCenterDetail('GreenField Sports')">
+<div class="relative w-full h-44 overflow-hidden">
+<img alt="GreenField Sports" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1UTENmNemTE1wi6bxckDmWojGAxlANShs35ipUR_2aU13AFyajjReKmZKtue0iwo5z43ztMoOykMmTlMIyhlYQTr9eYiaVz4OnXZiaYR112HlPCS7ijaJfTY5pw1pVakcXqdkNXL29wCxgpLhKyfA01FRytSuGJx7iu99bOZ8i-IOMtwtD9pSMmiJ7coO-jcc8_hemOfYLgeJfjiS0A2IRx8ntCz2nkG86kdunkUo7EU_Flk1gnL07TwJLr"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20"></div>
+<div class="absolute top-3 left-3 bg-emerald-600 text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full shadow-sm">
+            Mở cửa
+          </div>
+<div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+<span class="text-amber-400 text-xs">★</span> 4.7 <span class="text-slate-300 font-normal">· 2.4 km</span>
+</div>
+<div class="absolute bottom-3 left-3 text-white">
+<span class="inline-block bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-medium">Bóng đá · Cầu lông</span>
+</div>
+</div>
+<div class="p-3.5 flex items-center justify-between">
+<div>
+<h3 class="font-bold text-slate-900 text-base group-hover:text-emerald-700 transition-colors">GreenField Sports</h3>
+<p class="text-xs text-slate-500 mt-0.5">18 Nguyễn Hữu Thọ, Tân Phong, Quận 7</p>
+</div>
+<div class="text-right shrink-0 ml-3">
+<span class="text-[10px] text-slate-400 font-medium block">Giá từ</span>
+<span class="text-sm font-bold text-emerald-700">120.000đ<span class="text-[11px] font-normal text-slate-500">/giờ</span></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- RECOMMENDED COURTS ("Gợi ý cho bạn") -->
+<section class="px-4">
+<div class="flex items-center justify-between mb-3">
+<div>
+<h2 class="text-base font-bold text-slate-900">Gợi ý cho bạn</h2>
+<p class="text-xs text-slate-500">Khung giờ đặt nhanh trong hôm nay</p>
+</div>
+</div>
+<div class="flex flex-col gap-2.5">
+<!-- Court 1 -->
+<div class="bg-white rounded-2xl p-3 border border-slate-200/90 shadow-sm flex items-center gap-3">
+<div class="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-100">
+<img alt="Sân A1 Cầu Lông" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1XlIXYmZduzca2SpG3kLDB7so5WQ1BowmqEi-5sZLfhKgBzZBePu55Za9AaxUZHcU0oYdKzqyBjyCfFj0gahdrPglBEN33tvBjQj2jhaX1ypN6FaGINxhzuuikCTEPl9aAUn_TUi5qRSQyorjDnnZgcRvC8ipDldAo2dToP3oD9WfyZAhtE1a_4imzJ4cmyWHIMfT3cY7F3DdxBWviyhnBCPgeBrxWauoJ1mF4WTqwtrwnrOFn1Dq4ZakSe"/>
+<span class="absolute top-1 left-1 bg-black/60 text-white font-bold text-[9px] px-1.5 py-0.5 rounded">A1</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold text-slate-900 truncate">Sân A1 - Sân Cầu Lông</h4>
+<p class="text-[11px] text-slate-500 truncate">CourtGo Sports Arena</p>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+<span class="text-[11px] font-medium text-emerald-700">Còn 6 khung giờ hôm nay</span>
+</div>
+<div class="text-xs font-bold text-emerald-700 mt-1">100.000đ<span class="text-[10px] font-normal text-slate-500">/giờ</span></div>
+</div>
+<button class="shrink-0 px-3.5 py-2 rounded-xl bg-emerald-700 text-white text-xs font-semibold hover:bg-emerald-800 active:scale-95 transition-all shadow-sm" onclick="showToast('Mở lịch đặt Sân A1 - Sân Cầu Lông')">
+          Xem lịch
+        </button>
+</div>
+<!-- Court 2 -->
+<div class="bg-white rounded-2xl p-3 border border-slate-200/90 shadow-sm flex items-center gap-3">
+<div class="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-100">
+<img alt="Sân P1 Pickleball" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1WqyCfiuKH8On_DkFlCOjsNSWRrfvZQhCYzpgL6f7oSeOzt8mrfQg26TFFNGQNsrRLi-Qz6nN0A23dS3e3aDdqGdFrzuv1s9a1HWabjZBKEhQAsQuvNIvXX0QZjAJ1MYtZeYoD_B6oDAkA9CmonMlYKw7-B17KXoXw0HWzM7qfQKULYOKQuNtBa3l64ceWSCstovPaWhBRIVaeLQYKSr7XAGhPJy2ZbF9aqQw5kXY4i2Rh3XWtG3w7t4Shy"/>
+<span class="absolute top-1 left-1 bg-black/60 text-white font-bold text-[9px] px-1.5 py-0.5 rounded">P1</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold text-slate-900 truncate">Sân P1 - Sân Pickleball</h4>
+<p class="text-[11px] text-slate-500 truncate">CourtGo Sports Arena</p>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+<span class="text-[11px] font-medium text-emerald-700">Còn sân lúc 19:00</span>
+</div>
+<div class="text-xs font-bold text-emerald-700 mt-1">150.000đ<span class="text-[10px] font-normal text-slate-500">/giờ</span></div>
+</div>
+<button class="shrink-0 px-3.5 py-2 rounded-xl bg-emerald-700 text-white text-xs font-semibold hover:bg-emerald-800 active:scale-95 transition-all shadow-sm" onclick="showToast('Mở lịch đặt Sân P1 - Sân Pickleball')">
+          Xem lịch
+        </button>
+</div>
+<!-- Court 3 -->
+<div class="bg-white/80 rounded-2xl p-3 border border-slate-200/60 shadow-sm flex items-center gap-3 opacity-80">
+<div class="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-100 grayscale-[30%]">
+<img alt="Sân F2 Bóng Đá" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1XRmwOP2b_Tn8T84WKeC-kuAzm1OoC7ydaG1PJxrqM_5Tf_5eA7y5ZobTi49jo6MVtkdQsaK7FRocjhmMn-DOAz2YkAXbdmDiiO_QF88g_pNc3_bxGCHK23vv3r13toY_Dk6wCpKj5uEnZhd82nC_np2oSZnT46Fmg18EJKaQjLllIkxFUUhp2cnkqfxihiT6hmIYtpgbWBgHVnBgNn17At3BaPiUo1Lu7_cjH07fYxY8wZprEZshEvfWI"/>
+<span class="absolute top-1 left-1 bg-black/60 text-white font-bold text-[9px] px-1.5 py-0.5 rounded">F2</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold text-slate-700 truncate">Sân F2 - Sân Bóng Đá</h4>
+<p class="text-[11px] text-slate-400 truncate">GreenField Sports</p>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0"></span>
+<span class="text-[11px] font-medium text-slate-500">Hết sân tối nay</span>
+</div>
+<div class="text-xs font-semibold text-slate-600 mt-1">320.000đ<span class="text-[10px] font-normal text-slate-400">/giờ</span></div>
+</div>
+<button class="shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 text-slate-600 text-xs font-semibold hover:bg-slate-200 active:scale-95 transition-all" onclick="showToast('Lịch đặt Sân F2 - Sân Bóng Đá')">
+          Xem lịch
+        </button>
+</div>
+</div>
+</section>
+<!-- SUBTLE PROMOTION BANNER -->
+<section class="px-4 pb-2">
+<div class="rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/60 p-3 flex items-center justify-between gap-3 shadow-sm">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="text-xl shrink-0">🎁</span>
+<div class="min-w-0">
+<p class="text-xs font-semibold text-slate-800 truncate">Ưu đãi giờ vàng: Giảm 20%</p>
+<p class="text-[11px] text-slate-500 truncate">Khung giờ sáng các ngày trong tuần</p>
+</div>
+</div>
+<button class="shrink-0 text-xs font-bold text-emerald-700 hover:underline flex items-center gap-0.5" onclick="showToast('Ưu đãi 20% từ 06:00 - 14:00!')">
+<span class="">Chi tiết</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</section>
+</main>
+<!-- BOTTOM NAVIGATION -->
+<nav class="fixed bottom-0 w-full z-40 pb-safe bg-white/95 backdrop-blur-xl border-t border-slate-200 shadow-[0_-2px_10px_rgba(0,0,0,0.03)]">
+<div class="flex justify-around items-center h-14 px-1">
+<!-- Tab 1: Trang chủ (Active) -->
+<a aria-current="page" class="flex-1 flex flex-col items-center justify-center h-full gap-0.5 text-emerald-800 font-bold transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]" style='font-variation-settings: "FILL" 1;'>home</span>
+<span class="text-[10px] tracking-tight">Trang chủ</span>
+</a>
+<!-- Tab 2: Khám phá -->
+<a class="flex-1 flex flex-col items-center justify-center h-full gap-0.5 text-slate-400 hover:text-slate-700 transition-all font-medium" href="#" onclick="toggleSearchModal(true); return false;">
+<span class="material-symbols-outlined text-[22px]">explore</span>
+<span class="text-[10px] tracking-tight">Khám phá</span>
+</a>
+<!-- Tab 3: Lịch đặt -->
+<a class="flex-1 flex flex-col items-center justify-center h-full gap-0.5 text-slate-400 hover:text-slate-700 transition-all font-medium" href="#" onclick="showToast('Chuyển tới Lịch đặt sân của bạn'); return false;">
+<span class="material-symbols-outlined text-[22px]">calendar_today</span>
+<span class="text-[10px] tracking-tight">Lịch đặt</span>
+</a>
+<!-- Tab 4: Thông báo -->
+<a class="flex-1 flex flex-col items-center justify-center h-full gap-0.5 text-slate-400 hover:text-slate-700 transition-all font-medium" href="#" onclick="toggleNotificationModal(true); return false;">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="text-[10px] tracking-tight">Thông báo</span>
+</a>
+<!-- Tab 5: Tài khoản -->
+<a class="flex-1 flex flex-col items-center justify-center h-full gap-0.5 text-slate-400 hover:text-slate-700 transition-all font-medium" href="#" onclick="showToast('Chuyển tới Tài khoản của bạn'); return false;">
+<span class="material-symbols-outlined text-[22px]">person</span>
+<span class="text-[10px] tracking-tight">Tài khoản</span>
+</a>
+</div>
+</nav>
+<!-- MODAL: SEARCH & EXPLORE -->
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex-col justify-end transition-opacity" id="search-modal">
+<div class="bg-white rounded-t-3xl w-full max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
+<div class="p-4 border-b border-slate-100 flex items-center justify-between">
+<div class="flex-1 flex items-center bg-slate-100 rounded-xl px-3 py-2.5 gap-2 mr-3">
+<span class="material-symbols-outlined text-slate-400 text-[20px]">search</span>
+<input autofocus="" class="w-full bg-transparent border-none p-0 text-sm focus:ring-0 text-slate-800 placeholder:text-slate-400" id="search-input" placeholder="Tìm tên sân, quận, trung tâm..." type="text"/>
+</div>
+<button class="text-xs font-semibold text-slate-500 hover:text-slate-800 p-2" onclick="toggleSearchModal(false)">Đóng</button>
+</div>
+<div class="p-4 overflow-y-auto space-y-4">
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Tìm kiếm phổ biến</p>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 rounded-full bg-slate-100 text-xs text-slate-700 hover:bg-slate-200" onclick="selectSearchTerm('Sân Cầu Lông Quận 7')">🏸 Sân Cầu Lông Quận 7</button>
+<button class="px-3 py-1.5 rounded-full bg-slate-100 text-xs text-slate-700 hover:bg-slate-200" onclick="selectSearchTerm('Pickleball có mái che')">🏓 Pickleball có mái che</button>
+<button class="px-3 py-1.5 rounded-full bg-slate-100 text-xs text-slate-700 hover:bg-slate-200" onclick="selectSearchTerm('Sân Bóng Đá 7 người')">⚽ Sân Bóng Đá 7 người</button>
+</div>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Gần bạn nhất</p>
+<div class="space-y-2">
+<div class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200" onclick="openCenterDetail('CourtGo Sports Arena')">
+<div>
+<p class="text-sm font-semibold text-slate-800">CourtGo Sports Arena</p>
+<p class="text-xs text-slate-400">1.2 km · Cầu lông, Pickleball</p>
+</div>
+<span class="text-xs font-bold text-emerald-700">100k/h</span>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200" onclick="openCenterDetail('GreenField Sports')">
+<div>
+<p class="text-sm font-semibold text-slate-800">GreenField Sports</p>
+<p class="text-xs text-slate-400">2.4 km · Bóng đá, Cầu lông</p>
+</div>
+<span class="text-xs font-bold text-emerald-700">120k/h</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BOTTOM SHEET: FILTER & LOCATION -->
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex-col justify-end" id="filter-sheet">
+<div class="bg-white rounded-t-3xl w-full p-5 max-h-[85vh] overflow-y-auto shadow-2xl">
+<div class="flex items-center justify-between pb-3 border-b border-slate-100">
+<h3 class="text-base font-bold text-slate-900" id="sheet-title">Bộ lọc &amp; Khu vực</h3>
+<button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500" onclick="toggleFilterSheet(false)">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="py-4 space-y-4" id="sheet-content">
+<div>
+<label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Khu vực</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="p-2.5 rounded-xl border border-emerald-600 bg-emerald-50 text-emerald-800 text-xs font-semibold text-left flex items-center justify-between">
+<span class="">Quận 7, TP.HCM</span>
+<span class="material-symbols-outlined text-[16px]">check</span>
+</button>
+<button class="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold text-left" onclick="showToast('Chọn: Quận 4, TP.HCM')">
+<span class="">Quận 4, TP.HCM</span>
+</button>
+<button class="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold text-left" onclick="showToast('Chọn: TP. Thủ Đức')">
+<span class="">TP. Thủ Đức</span>
+</button>
+<button class="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold text-left" onclick="showToast('Chọn: Quận 1, TP.HCM')">
+<span class="">Quận 1, TP.HCM</span>
+</button>
+</div>
+</div>
+<div>
+<label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Mức giá mỗi giờ</label>
+<div class="flex items-center gap-2">
+<button class="px-3 py-2 rounded-xl bg-slate-100 text-xs font-semibold text-slate-700 hover:bg-slate-200">Dưới 100k</button>
+<button class="px-3 py-2 rounded-xl bg-emerald-50 border border-emerald-600 text-xs font-semibold text-emerald-800">100k - 200k</button>
+<button class="px-3 py-2 rounded-xl bg-slate-100 text-xs font-semibold text-slate-700 hover:bg-slate-200">Trên 200k</button>
+</div>
+</div>
+</div>
+<button class="w-full py-3 rounded-xl bg-emerald-700 text-white font-semibold text-sm mt-2 shadow-sm" onclick="toggleFilterSheet(false)">
+      Áp dụng
+    </button>
+</div>
+</div>
+<!-- NOTIFICATION MODAL -->
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex-col justify-end" id="notif-modal">
+<div class="bg-white rounded-t-3xl w-full p-5 max-h-[80vh] overflow-y-auto shadow-2xl">
+<div class="flex items-center justify-between pb-3 border-b border-slate-100">
+<h3 class="text-base font-bold text-slate-900">Thông báo</h3>
+<button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500" onclick="toggleNotificationModal(false)">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="py-4 space-y-3">
+<div class="flex items-start gap-3 p-3 rounded-xl bg-emerald-50/70 border border-emerald-100">
+<span class="material-symbols-outlined text-emerald-700 text-[20px] mt-0.5">check_circle</span>
+<div>
+<p class="text-xs font-bold text-slate-900">Đặt sân thành công!</p>
+<p class="text-xs text-slate-600 mt-0.5">Sân A1 - CourtGo D7 lúc 19:00 hôm nay đã sẵn sàng.</p>
+<span class="text-[10px] text-slate-400 mt-1 block">15 phút trước</span>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+<span class="material-symbols-outlined text-amber-500 text-[20px] mt-0.5">local_offer</span>
+<div>
+<p class="text-xs font-bold text-slate-900">Khuyến mãi giờ vàng</p>
+<p class="text-xs text-slate-600 mt-0.5">Giảm 20% cho các khung giờ trước 14:00.</p>
+<span class="text-[10px] text-slate-400 mt-1 block">2 giờ trước</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Toast Helper
+  let toastTimer = null;
+  function showToast(message, iconName = 'check_circle') {
+    const toast = document.getElementById('toast');
+    const toastText = document.getElementById('toast-text');
+    const toastIcon = document.getElementById('toast-icon');
+    if (toastIcon) toastIcon.innerText = iconName;
+    toastText.innerText = message;
+    toast.classList.remove('opacity-0', '-translate-y-4');
+    toast.classList.add('opacity-100', 'translate-y-0');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toast.classList.remove('opacity-100', 'translate-y-0');
+      toast.classList.add('opacity-0', '-translate-y-4');
+    }, 2800);
+  }
+
+  // Banner Carousel Logic
+  let currentSlide = 0;
+  const totalSlides = 3;
+  let carouselInterval = null;
+
+  function updateCarousel() {
+    const track = document.getElementById('carousel-track');
+    if (!track) return;
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    const dots = document.querySelectorAll('.carousel-dot');
+    dots.forEach((dot, idx) => {
+      if (idx === currentSlide) {
+        dot.className = 'carousel-dot h-1.5 rounded-full transition-all duration-300 w-5 bg-white shadow-sm';
+      } else {
+        dot.className = 'carousel-dot h-1.5 rounded-full transition-all duration-300 w-1.5 bg-white/50';
+      }
+    });
+  }
+
+  function setCarouselSlide(index) {
+    currentSlide = (index + totalSlides) % totalSlides;
+    updateCarousel();
+    resetCarouselTimer();
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateCarousel();
+  }
+
+  function resetCarouselTimer() {
+    if (carouselInterval) clearInterval(carouselInterval);
+    carouselInterval = setInterval(nextSlide, 4500);
+  }
+  resetCarouselTimer();
+
+  // ==========================================
+  // SINGLE SOURCE OF TRUTH FOR SPORTS
+  // ==========================================
+  const sportsData = {
+    badminton: {
+      id: 'badminton',
+      name: 'Cầu lông',
+      icon: 'https://lh3.googleusercontent.com/aida/AEtjO1XGG_2ZI5K3KG5xOd6Mal38qL4RkX_cyoCNe5WRvdcRguLhSmHtFJbHNPYtVuoLJxOeCu668CGpkBwIT0691l3DsqzRHrZVEVoqTq_Rl2VnRwZspwu-Jhdm7j8d9yftOa0Bu_MpFPavvUUYWMQfW90YzMPog20WqLg1yLxyZQ0XmxFa_mr6hrQ7fgV9nR2LlnC0piTQ_uHzM_IpClxppnwXsuz0K5t7uRSjj0YTmEtYE1OpUBtkXeLawMI'
+    },
+    pickleball: {
+      id: 'pickleball',
+      name: 'Pickleball',
+      icon: 'https://lh3.googleusercontent.com/aida/AEtjO1UMEiOYPJeYPDrVpmYcZG_DFibnNjpRpVHHtiBRDsHVRp7pwzF-QNnZ0S9iH_kWp6gu3Jy7-C5EC1qzEMwHpEG0gth3PfJTv8yV5o8vDLuQjN1b0KNW0caGi-oaVFl4-tX7AsekNgOWOGazIzCc2jT_iNQUg5LQ0c_hv5Byu35smDg3KrG73JvuqFRp8NALGUIvI7oO3S1zVGfpquydqyxbX1OQzbAoDmhTKrShlFx1WVs_06U4PlLipeo'
+    },
+    football: {
+      id: 'football',
+      name: 'Bóng đá',
+      icon: 'https://lh3.googleusercontent.com/aida/AEtjO1Wg6bFnGIH3gn3J-hS5wQk8drMU0sEKlVm2SkHvzfdqC2JNwEl8Sv4OFqo3Sol2csfNNH27EeJDvEjcspOpBeyqvEOMBtVL_o-slrVmqkBwvNxqmq6dWZHguC7LZplEpjk2LmkoIH70E_RzXUtlfFFQhB3c13YFEPmCtdUry1oufvDXqiwNWQSE8ddRph1ES3dwElv5d9aR0WAom2e8m3hJXqTs8KJYuL3ZAjp7TB3Jr71tDn7jaGAaLiw'
+    },
+    basketball: {
+      id: 'basketball',
+      name: 'Bóng rổ',
+      icon: 'https://lh3.googleusercontent.com/aida/AEtjO1VniQ4Piis9vbZgJZgD1F8Wu4Y_1Gd1kqQs3ulvpI0n4AaDBpWFl0hjYtVXocksMOhsvlzcXmiygFRUV1UgS2U6NTlVV91qxfaboyp7PWfBTDMVYIOYwAcZvTCZ-wCrMQCVU4GkcgKNuYcouWtz1OEHs4IPv3EvOSL4euFA0UxzxD-Re0Ah1TksZv0zXSmUQenWUZXwMahX5l4glN2GRYQChQVAMGLXErJi6G7FvuWGIosR0FIFyfLp_UYT'
+    }
+  };
+
+  let selectedSportId = 'badminton';
+
+  // Fixed 1-Hour Time Slots
+  const timeSlots = [
+    { start: '17:00', end: '18:00', label: '17:00 - 18:00', available: true },
+    { start: '18:00', end: '19:00', label: '18:00 - 19:00', available: true },
+    { start: '19:00', end: '20:00', label: '19:00 - 20:00', available: true },
+    { start: '20:00', end: '21:00', label: '20:00 - 21:00', available: true },
+    { start: '21:00', end: '22:00', label: '21:00 - 22:00', available: true }
+  ];
+
+  // Calendar State
+  const TODAY = new Date(2026, 8, 26);
+  let selectedDate = new Date(2026, 8, 26);
+  let tempCalendarDate = new Date(2026, 8, 26);
+  let calendarViewingYear = 2026;
+  let calendarViewingMonth = 8;
+
+  let selectedTime = '19:00';
+  let activeModal = null; // 'sport' | 'calendar' | 'time' | null
+
+  // Initialize Quick Booking UI
+  function initQuickBooking() {
+    renderSportSelectorCard();
+    renderDateSelectorCard();
+    renderTimeSelectorCard();
+    renderSportDropdownOptions();
+    renderTimeSlots();
+    renderCalendar();
+  }
+
+  // Render Sport Card
+  function renderSportSelectorCard() {
+    const sport = sportsData[selectedSportId] || sportsData.badminton;
+    const nameEl = document.getElementById('main-sport-name');
+    const iconEl = document.getElementById('main-sport-icon');
+
+    if (nameEl) nameEl.textContent = sport.name;
+    if (iconEl) {
+      iconEl.src = sport.icon;
+      iconEl.alt = sport.name;
+    }
+  }
+
+  function formatDateLabel(dateObj) {
+    const isSameDay = (d1, d2) => 
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate();
+
+    const tomorrow = new Date(TODAY);
+    tomorrow.setDate(TODAY.getDate() + 1);
+
+    if (isSameDay(dateObj, TODAY)) {
+      return 'Hôm nay';
+    } else if (isSameDay(dateObj, tomorrow)) {
+      return 'Ngày mai';
+    } else {
+      const dd = String(dateObj.getDate()).padStart(2, '0');
+      const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+      return `${dd}/${mm}`;
+    }
+  }
+
+  function renderDateSelectorCard() {
+    const label = document.getElementById('qb-date-label');
+    if (label) {
+      label.innerText = formatDateLabel(selectedDate);
+    }
+  }
+
+  function renderTimeSelectorCard() {
+    const label = document.getElementById('qb-time-label');
+    if (label) {
+      label.innerText = selectedTime || '--:--';
+    }
+  }
+
+  // Active / Inactive Button Stylings
+  function updateCardStyles() {
+    const btnSport = document.getElementById('btn-sport');
+    const btnDate = document.getElementById('btn-date');
+    const btnTime = document.getElementById('btn-time');
+
+    const chevronSport = document.getElementById('sport-chevron');
+    const chevronDate = document.getElementById('date-chevron');
+    const chevronTime = document.getElementById('time-chevron');
+
+    [btnSport, btnDate, btnTime].forEach(btn => {
+      if (btn) {
+        btn.className = 'w-full bg-[#f8fafc] border border-slate-200/80 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-emerald-500 active:scale-95 transition-all text-left group shadow-xs p-2.5';
+      }
+    });
+
+    if (chevronSport) chevronSport.innerText = 'keyboard_arrow_down';
+    if (chevronDate) chevronDate.innerText = 'keyboard_arrow_down';
+    if (chevronTime) chevronTime.innerText = 'keyboard_arrow_down';
+
+    if (activeModal === 'sport' && btnSport) {
+      btnSport.className = 'w-full bg-emerald-50/50 border-2 border-[#005c55] ring-2 ring-emerald-500/20 rounded-2xl flex flex-col justify-between cursor-pointer active:scale-95 transition-all text-left group shadow-xs p-2.5';
+      if (chevronSport) chevronSport.innerText = 'keyboard_arrow_up';
+    } else if (activeModal === 'calendar' && btnDate) {
+      btnDate.className = 'w-full bg-emerald-50/50 border-2 border-[#005c55] ring-2 ring-emerald-500/20 rounded-2xl flex flex-col justify-between cursor-pointer active:scale-95 transition-all text-left group shadow-xs p-2.5';
+      if (chevronDate) chevronDate.innerText = 'keyboard_arrow_up';
+    } else if (activeModal === 'time' && btnTime) {
+      btnTime.className = 'w-full bg-emerald-50/50 border-2 border-[#005c55] ring-2 ring-emerald-500/20 rounded-2xl flex flex-col justify-between cursor-pointer active:scale-95 transition-all text-left group shadow-xs p-2.5';
+      if (chevronTime) chevronTime.innerText = 'keyboard_arrow_up';
+    }
+  }
+
+  // Modal switcher logic
+  function toggleModal(modalType, event) {
+    if (event) event.stopPropagation();
+    hideValidationError();
+
+    if (activeModal === modalType) {
+      closeAllModals();
+      return;
+    }
+
+    activeModal = modalType;
+    const backdrop = document.getElementById('modal-backdrop');
+    const popoverSport = document.getElementById('popover-sport');
+    const popoverTime = document.getElementById('popover-time');
+    const modalCalendar = document.getElementById('modal-calendar');
+
+    popoverSport.classList.add('hidden');
+    popoverTime.classList.add('hidden');
+    modalCalendar.classList.add('hidden');
+    modalCalendar.classList.remove('flex');
+
+    backdrop.classList.remove('hidden');
+
+    if (modalType === 'sport') {
+      renderSportDropdownOptions();
+      popoverSport.classList.remove('hidden');
+    } else if (modalType === 'calendar') {
+      tempCalendarDate = new Date(selectedDate);
+      calendarViewingYear = selectedDate.getFullYear();
+      calendarViewingMonth = selectedDate.getMonth();
+      renderCalendar();
+      modalCalendar.classList.remove('hidden');
+      modalCalendar.classList.add('flex');
+    } else if (modalType === 'time') {
+      renderTimeSlots();
+      popoverTime.classList.remove('hidden');
+    }
+
+    updateCardStyles();
+  }
+
+  function closeAllModals() {
+    activeModal = null;
+    document.getElementById('modal-backdrop').classList.add('hidden');
+    document.getElementById('popover-sport').classList.add('hidden');
+    document.getElementById('popover-time').classList.add('hidden');
+    
+    const cal = document.getElementById('modal-calendar');
+    cal.classList.add('hidden');
+    cal.classList.remove('flex');
+
+    updateCardStyles();
+  }
+
+  // ==========================================
+  // SPORT SELECTOR LOGIC (SYNCHRONIZED)
+  // ==========================================
+  function renderSportDropdownOptions() {
+    const list = document.getElementById('sport-options-list');
+    if (!list) return;
+    list.innerHTML = '';
+
+    Object.keys(sportsData).forEach(id => {
+      const sport = sportsData[id];
+      const isSelected = id === selectedSportId;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `w-full flex items-center justify-between p-2 rounded-xl transition-all group cursor-pointer ${
+        isSelected ? 'bg-[#effbf7] border border-emerald-200/80 shadow-xs' : 'hover:bg-slate-50 border border-transparent'
+      }`;
+      btn.onclick = () => selectSport(id);
+
+      btn.innerHTML = `
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 p-0.5 shadow-xs border border-slate-100 bg-white overflow-hidden">
+            <img src="${sport.icon}" alt="${sport.name}" class="w-full h-full object-contain" />
+          </div>
+          <span class="text-xs ${isSelected ? 'font-bold text-slate-900' : 'font-medium text-slate-700'}">${sport.name}</span>
+        </div>
+        <div class="w-5 h-5 rounded-full border-2 ${
+          isSelected ? 'border-[#005c55] bg-[#005c55]' : 'border-slate-300 bg-white'
+        } flex items-center justify-center shrink-0 transition-colors">
+          ${isSelected ? '<div class="w-1.5 h-1.5 rounded-full bg-white"></div>' : ''}
+        </div>
+      `;
+      list.appendChild(btn);
+    });
+  }
+
+  function selectSport(sportId) {
+    if (!sportsData[sportId]) return;
+    selectedSportId = sportId;
+
+    // Instantly update main selector card
+    renderSportSelectorCard();
+    renderSportDropdownOptions();
+    closeAllModals();
+    showToast(`Đã chọn môn: ${sportsData[sportId].name}`);
+  }
+
+  function handleSelectSportFromCategory(sportIdOrName) {
+    let id = sportIdOrName;
+    if (!sportsData[id]) {
+      const found = Object.keys(sportsData).find(k => sportsData[k].name === sportIdOrName);
+      if (found) id = found;
+    }
+    if (sportsData[id]) {
+      selectSport(id);
+    }
+    const container = document.getElementById('quick-booking-container');
+    if (container) {
+      container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  // ==========================================
+  // CALENDAR MODAL LOGIC
+  // ==========================================
+  const monthNames = [
+    'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+    'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+  ];
+  const dayNamesOfWeek = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+
+  function changeMonth(delta) {
+    calendarViewingMonth += delta;
+    if (calendarViewingMonth > 11) {
+      calendarViewingMonth = 0;
+      calendarViewingYear += 1;
+    } else if (calendarViewingMonth < 0) {
+      calendarViewingMonth = 11;
+      calendarViewingYear -= 1;
+    }
+    renderCalendar();
+  }
+
+  function selectQuickChip(type) {
+    const targetDate = new Date(TODAY);
+    if (type === 'tomorrow') {
+      targetDate.setDate(TODAY.getDate() + 1);
+    }
+    tempCalendarDate = new Date(targetDate);
+    calendarViewingYear = targetDate.getFullYear();
+    calendarViewingMonth = targetDate.getMonth();
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    const monthTitle = document.getElementById('calendar-month-title');
+    const grid = document.getElementById('calendar-days-grid');
+    const preview = document.getElementById('calendar-selected-preview');
+    const chipToday = document.getElementById('chip-today');
+    const chipTomorrow = document.getElementById('chip-tomorrow');
+
+    if (monthTitle) {
+      monthTitle.innerText = `${monthNames[calendarViewingMonth]}, ${calendarViewingYear}`;
+    }
+
+    const isSameDate = (d1, d2) => 
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate();
+
+    const tomorrow = new Date(TODAY);
+    tomorrow.setDate(TODAY.getDate() + 1);
+
+    if (chipToday) {
+      if (isSameDate(tempCalendarDate, TODAY)) {
+        chipToday.className = 'flex-1 py-1.5 px-3 rounded-full text-xs font-bold bg-[#effbf7] text-[#005c55] border border-[#005c55]/40 shadow-xs';
+      } else {
+        chipToday.className = 'flex-1 py-1.5 px-3 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50';
+      }
+    }
+
+    if (chipTomorrow) {
+      if (isSameDate(tempCalendarDate, tomorrow)) {
+        chipTomorrow.className = 'flex-1 py-1.5 px-3 rounded-full text-xs font-bold bg-[#effbf7] text-[#005c55] border border-[#005c55]/40 shadow-xs';
+      } else {
+        chipTomorrow.className = 'flex-1 py-1.5 px-3 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50';
+      }
+    }
+
+    if (preview) {
+      const dayOfWeek = dayNamesOfWeek[tempCalendarDate.getDay()];
+      const dayNum = tempCalendarDate.getDate();
+      const monthNum = tempCalendarDate.getMonth() + 1;
+      preview.innerText = `${dayOfWeek}, ${dayNum} tháng ${monthNum}`;
+    }
+
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const firstDay = new Date(calendarViewingYear, calendarViewingMonth, 1);
+    let startingIndex = firstDay.getDay() - 1;
+    if (startingIndex === -1) startingIndex = 6;
+
+    const daysInMonth = new Date(calendarViewingYear, calendarViewingMonth + 1, 0).getDate();
+
+    for (let i = 0; i < startingIndex; i++) {
+      const blank = document.createElement('div');
+      blank.className = 'h-9 flex items-center justify-center text-slate-300 text-xs select-none';
+      grid.appendChild(blank);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const cellDate = new Date(calendarViewingYear, calendarViewingMonth, day);
+      cellDate.setHours(0, 0, 0, 0);
+      const cleanToday = new Date(TODAY);
+      cleanToday.setHours(0, 0, 0, 0);
+
+      const isPast = cellDate < cleanToday;
+      const isToday = cellDate.getTime() === cleanToday.getTime();
+      const isSelected = cellDate.getTime() === (new Date(tempCalendarDate).setHours(0,0,0,0));
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.innerText = day;
+
+      if (isPast) {
+        btn.className = 'h-9 w-9 mx-auto rounded-full flex items-center justify-center text-xs text-slate-300 cursor-not-allowed';
+        btn.disabled = true;
+      } else if (isSelected) {
+        btn.className = 'h-9 w-9 mx-auto rounded-full flex items-center justify-center text-xs font-bold bg-[#005c55] text-white shadow-md active:scale-95 transition-all';
+        btn.onclick = () => {
+          tempCalendarDate = new Date(cellDate);
+          renderCalendar();
+        };
+      } else {
+        const todayStyle = isToday ? 'ring-2 ring-[#005c55]/30 font-bold text-[#005c55]' : 'text-slate-800 font-medium';
+        btn.className = `h-9 w-9 mx-auto rounded-full flex items-center justify-center text-xs hover:bg-slate-100 ${todayStyle} active:scale-95 transition-all cursor-pointer`;
+        btn.onclick = () => {
+          tempCalendarDate = new Date(cellDate);
+          renderCalendar();
+        };
+      }
+
+      grid.appendChild(btn);
+    }
+  }
+
+  function confirmDateSelection() {
+    selectedDate = new Date(tempCalendarDate);
+    renderDateSelectorCard();
+    closeAllModals();
+    showToast(`Đã chọn ngày: ${formatDateLabel(selectedDate)}`);
+  }
+
+  // ==========================================
+  // TIME SELECTOR LOGIC (1-HOUR SLOTS)
+  // ==========================================
+  function renderTimeSlots() {
+    const container = document.getElementById('time-slots-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    timeSlots.forEach(slot => {
+      const isSelected = selectedTime === slot.start;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+
+      if (!slot.available) {
+        btn.disabled = true;
+        btn.className = 'flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-300 cursor-not-allowed text-xs font-medium';
+        btn.innerHTML = `<span>${slot.label}</span><span class="text-[10px]">Hết</span>`;
+      } else if (isSelected) {
+        btn.className = 'flex items-center justify-between px-3 py-2.5 rounded-xl bg-[#005c55] text-white font-bold text-xs shadow-sm transition-all';
+        btn.innerHTML = `
+          <span>${slot.label}</span>
+          <span class="material-symbols-outlined text-[16px]">check</span>
+        `;
+      } else {
+        btn.className = 'flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200/90 bg-white text-slate-800 hover:border-emerald-500 hover:bg-emerald-50/40 text-xs font-semibold active:scale-95 transition-all cursor-pointer';
+        btn.innerHTML = `
+          <span>${slot.label}</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        `;
+      }
+
+      btn.onclick = () => selectTimeSlot(slot.start, slot.label);
+      container.appendChild(btn);
+    });
+  }
+
+  function selectTimeSlot(startTime, slotLabel) {
+    selectedTime = startTime;
+    renderTimeSelectorCard();
+    renderTimeSlots();
+    closeAllModals();
+    showToast(`Đã chọn khung giờ: ${slotLabel}`);
+  }
+
+  // ==========================================
+  // QUICK SEARCH VALIDATION & SUBMISSION
+  // ==========================================
+  function showValidationError(message) {
+    const errorBox = document.getElementById('quick-booking-error');
+    const errorText = document.getElementById('quick-booking-error-text');
+    if (errorBox && errorText) {
+      errorText.innerText = message;
+      errorBox.classList.remove('hidden');
+    }
+  }
+
+  function hideValidationError() {
+    const errorBox = document.getElementById('quick-booking-error');
+    if (errorBox) {
+      errorBox.classList.add('hidden');
+    }
+  }
+
+  function triggerQuickSearch() {
+    hideValidationError();
+
+    const currentSport = sportsData[selectedSportId];
+    if (!currentSport) {
+      showValidationError('Vui lòng chọn môn thể thao');
+      toggleModal('sport');
+      return;
+    }
+    if (!selectedDate) {
+      showValidationError('Vui lòng chọn ngày đặt sân');
+      toggleModal('calendar');
+      return;
+    }
+    if (!selectedTime) {
+      showValidationError('Vui lòng chọn khung giờ bắt đầu');
+      toggleModal('time');
+      return;
+    }
+
+    const btn = document.getElementById('btn-search-quick');
+    const icon = document.getElementById('search-btn-icon');
+    const text = document.getElementById('search-btn-text');
+    const arrow = document.getElementById('search-btn-arrow');
+
+    btn.disabled = true;
+    icon.innerText = 'progress_activity';
+    icon.classList.add('animate-spin-custom');
+    text.innerText = 'Đang tìm sân...';
+    arrow.classList.add('hidden');
+
+    const formattedDate = formatDateLabel(selectedDate);
+    const slotStr = `${selectedTime} - ${parseInt(selectedTime.split(':')[0]) + 1}:00`;
+
+    setTimeout(() => {
+      btn.disabled = false;
+      icon.innerText = 'search';
+      icon.classList.remove('animate-spin-custom');
+      text.innerText = 'Tìm sân trống';
+      arrow.classList.remove('hidden');
+
+      showToast(`🔍 Tìm thấy 8 sân ${currentSport.name} trống vào ${slotStr} (${formattedDate})!`);
+      
+      const rec = document.querySelector('h2.text-base.font-bold');
+      if (rec) {
+        rec.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 600);
+  }
+
+  // Modal Handlers
+  function openCenterDetail(centerName) {
+    showToast(`Mở chi tiết trung tâm: ${centerName}`);
+  }
+
+  function toggleSearchModal(show) {
+    const modal = document.getElementById('search-modal');
+    if (show) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setTimeout(() => document.getElementById('search-input').focus(), 50);
+    } else {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  }
+
+  function selectSearchTerm(term) {
+    document.getElementById('search-input').value = term;
+    showToast(`Tìm kiếm: ${term}`);
+  }
+
+  function toggleFilterSheet(show) {
+    const sheet = document.getElementById('filter-sheet');
+    if (show) {
+      sheet.classList.remove('hidden');
+      sheet.classList.add('flex');
+    } else {
+      sheet.classList.add('hidden');
+      sheet.classList.remove('flex');
+    }
+  }
+
+  function toggleNotificationModal(show) {
+    const modal = document.getElementById('notif-modal');
+    if (show) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    } else {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    initQuickBooking();
+  });
+  initQuickBooking();
+</script>
+</body></html>

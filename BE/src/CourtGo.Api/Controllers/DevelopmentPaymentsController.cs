@@ -39,6 +39,9 @@ public sealed class DevelopmentPaymentControllerFeatureProvider(bool isDevelopme
     public void PopulateFeature(IEnumerable<ApplicationPart> parts, ControllerFeature feature)
     {
         if (!_isDevelopment)
+        {
             feature.Controllers.Remove(typeof(DevelopmentPaymentsController).GetTypeInfo());
+            feature.Controllers.Remove(typeof(DevelopmentRefundsController).GetTypeInfo());
+        }
     }
 }

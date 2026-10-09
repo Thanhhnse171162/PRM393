@@ -10,18 +10,20 @@ import 'network_result.dart';
 /// Thin wrapper around Dio. Feature repositories depend on this class.
 class ApiClient {
   ApiClient({required SecureStorageService storage, Dio? dio})
-      : _dio = dio ??
-            Dio(
-              BaseOptions(
-                baseUrl: AppConfig.apiBaseUrl,
-                connectTimeout: AppConstants.networkTimeout,
-                receiveTimeout: AppConstants.networkTimeout,
-                headers: {'Accept': 'application/json'},
-              ),
-            ) {
+    : _dio =
+          dio ??
+          Dio(
+            BaseOptions(
+              baseUrl: AppConfig.apiBaseUrl,
+              connectTimeout: AppConstants.networkTimeout,
+              receiveTimeout: AppConstants.networkTimeout,
+              headers: {'Accept': 'application/json'},
+            ),
+          ) {
     _dio.interceptors.add(
       AuthInterceptor(
         storage,
+        dio: _dio,
         onUnauthorized: () => onUnauthorized?.call(),
       ),
     );
@@ -32,10 +34,7 @@ class ApiClient {
   /// Set by the app to react to expired/invalid tokens (e.g. force logout).
   void Function()? onUnauthorized;
 
-  Future<NetworkResult<T>> get<T>(
-    String path, {
-    Map<String, dynamic>? query,
-  }) =>
+  Future<NetworkResult<T>> get<T>(String path, {Map<String, dynamic>? query}) =>
       _send(() => _dio.get<dynamic>(path, queryParameters: query));
 
   Future<NetworkResult<T>> post<T>(String path, {Object? body}) =>
@@ -43,6 +42,9 @@ class ApiClient {
 
   Future<NetworkResult<T>> put<T>(String path, {Object? body}) =>
       _send(() => _dio.put<dynamic>(path, data: body));
+
+  Future<NetworkResult<T>> patch<T>(String path, {Object? body}) =>
+      _send(() => _dio.patch<dynamic>(path, data: body));
 
   Future<NetworkResult<T>> delete<T>(String path) =>
       _send(() => _dio.delete<dynamic>(path));

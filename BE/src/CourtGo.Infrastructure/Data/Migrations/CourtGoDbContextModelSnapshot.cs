@@ -709,6 +709,10 @@ namespace CourtGo.Infrastructure.Data.Migrations
                     b.Property<Guid>("BookingId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CheckoutUrl")
+                        .HasMaxLength(4096)
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("ConfirmedByUserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -716,6 +720,10 @@ namespace CourtGo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetimeoffset")
                         .HasDefaultValueSql("(sysutcdatetime())");
+
+                    b.Property<string>("GatewayName")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<DateTimeOffset?>("PaidAt")
                         .HasColumnType("datetimeoffset");
@@ -728,6 +736,10 @@ namespace CourtGo.Infrastructure.Data.Migrations
 
                     b.Property<byte>("PaymentMethod")
                         .HasColumnType("tinyint");
+
+                    b.Property<string>("ProviderReceiptId")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ProviderTransactionId")
                         .HasMaxLength(200)
@@ -747,6 +759,11 @@ namespace CourtGo.Infrastructure.Data.Migrations
                     b.HasIndex("ConfirmedByUserId");
 
                     b.HasIndex("PaidByUserId");
+
+                    b.HasIndex("ProviderReceiptId")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Payments_ProviderReceiptId")
+                        .HasFilter("([ProviderReceiptId] IS NOT NULL)");
 
                     b.HasIndex("ProviderTransactionId")
                         .IsUnique()

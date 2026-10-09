@@ -19,6 +19,10 @@ public class Payment
     public PaymentTransactionStatus TransactionStatus { get; set; } = PaymentTransactionStatus.Pending;
 
     public string? ProviderTransactionId { get; set; }
+    /// <summary>Provider-qualified receipt, distinct from our merchant order reference.</summary>
+    public string? ProviderReceiptId { get; set; }
+    public string? CheckoutUrl { get; set; }
+    public string? GatewayName { get; set; }
 
     /// <summary>Points to original payment if this row is a refund.</summary>
     public Guid? RelatedPaymentId { get; set; }

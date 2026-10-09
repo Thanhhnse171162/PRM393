@@ -35,11 +35,28 @@ public sealed class DevelopmentPaymentGateway : IDevelopmentPaymentGateway
     }
 
     private static string Reference(GatewayPaymentRequest request) => $"dev-{request.PaymentMethod}-{request.PaymentId:N}";
+
+    public Task<GatewayPaymentAttempt> CreateRefundAsync(GatewayPaymentRequest request, Guid originalPaymentId, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(new GatewayPaymentAttempt($"dev-refund-{request.PaymentMethod}-{request.PaymentId:N}", null, Name));
+    }
+    public Task<VerifiedPaymentResult> VerifyRefundSimulationAsync(GatewayPaymentRequest payment, string? providerTransactionId,
+        string? result, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        if (providerTransactionId != $"dev-refund-{payment.PaymentMethod}-{payment.PaymentId:N}")
+            throw new ValidationException("Development refund reference is invalid.", ErrorCodes.PaymentVerificationFailed);
+        if (!string.Equals(result, "success", StringComparison.OrdinalIgnoreCase))
+            throw new ValidationException("Development refunds currently support result=success only.");
+        return Task.FromResult(new VerifiedPaymentResult(payment.PaymentId, providerTransactionId!, payment.Amount, PaymentTransactionStatus.Succeeded));
+    }
 }
 
 /// <summary>Fail closed outside Development until a real verified provider adapter is configured.</summary>
 public sealed class UnavailablePaymentGateway : IPaymentGateway
 {
+    public void ValidateConfiguration(PaymentMethod method) => throw new ConfigurationException("No payment gateway is configured.", ErrorCodes.PaymentGatewayNotConfigured);
     public string Name => "Unavailable";
     public bool Supports(PaymentMethod method) => false;
     public Task<GatewayPaymentAttempt> CreateDepositAsync(GatewayPaymentRequest request, CancellationToken cancellationToken = default)

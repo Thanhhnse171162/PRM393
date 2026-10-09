@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="vi" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-high": "#eef2f6", "on-secondary-container": "#00714d", "on-primary": "#ffffff", "on-primary-fixed": "#00201d", "tertiary-fixed-dim": "#ffb95f", "secondary-container": "#e6f8f1", "surface-tint": "#0f766e", "primary-fixed-dim": "#80d5cb", "on-tertiary": "#ffffff", "on-primary-container": "#a3faef", "tertiary-fixed": "#ffddb8", "on-secondary-fixed-variant": "#005236", "surface-container-low": "#f8fafc", "inverse-surface": "#1e293b", "surface-container": "#f1f5f9", "on-primary-fixed-variant": "#00504a", "secondary": "#10b981", "surface-container-highest": "#e2e8f0", "primary-container": "#0f766e", "error": "#ef4444", "surface": "#ffffff", "outline-variant": "#e2e8f0", "on-background": "#0f172a", "on-surface-variant": "#64748b", "outline": "#cbd5e1", "on-surface": "#0f172a", "on-tertiary-container": "#ffe6cc", "error-container": "#fee2e2", "on-tertiary-fixed": "#2a1700", "on-secondary": "#ffffff", "primary": "#0f766e", "inverse-on-surface": "#f8fafc", "primary-fixed": "#9cf2e8", "secondary-fixed": "#6ffbbe", "on-error-container": "#991b1b", "surface-container-lowest": "#ffffff", "on-error": "#ffffff", "on-tertiary-fixed-variant": "#653e00", "background": "#ffffff", "tertiary": "#d97706", "surface-bright": "#ffffff", "inverse-primary": "#80d5cb", "surface-dim": "#f1f5f9", "secondary-fixed-dim": "#4edea3", "surface-variant": "#f1f5f9", "tertiary-container": "#fef3c7", "on-secondary-fixed": "#002113" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.875rem", "2xl": "1rem", "full": "9999px" }, "fontFamily": { "headline-lg": ["Inter", "sans-serif"], "label-lg": ["Inter", "sans-serif"], "label-md": ["Inter", "sans-serif"], "body-md": ["Inter", "sans-serif"], "body-lg": ["Inter", "sans-serif"], "label-sm": ["Inter", "sans-serif"], "body-sm": ["Inter", "sans-serif"], "title-md": ["Inter", "sans-serif"] } } } }</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#fafafa;font-family:'Inter',sans-serif;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:calc(env(safe-area-inset-bottom, 0px) + 0.5rem);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-[#fafafa] text-on-surface flex flex-col min-h-screen antialiased select-none">
+<!-- HEADER -->
+<header class="sticky top-0 z-30 pt-safe bg-white/95 backdrop-blur-md border-b border-slate-100 transition-all"><div class="px-4 pt-3 pb-3 flex items-center justify-between"><h1 class="text-[22px] font-bold text-slate-900 tracking-tight">Khám phá</h1><button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-teal-50 hover:bg-teal-100/70 text-primary border border-teal-100 text-xs font-medium transition-colors active:scale-95" onclick="alert('Đang mở bản đồ khám phá...')"><span class="material-symbols-outlined text-[16px] text-primary">map</span><span class="">Bản đồ</span></button></div></header>
+<main class="flex-1 flex flex-col w-full pb-24 space-y-6"><div class="flex flex-col w-full px-4 pt-3 gap-3"><!-- Search Row --><div class="flex items-center gap-2.5"><div class="flex-1 flex items-center h-12 px-3.5 rounded-2xl bg-white border border-slate-200 shadow-sm gap-2.5 focus-within:border-primary transition-colors"><span class="material-symbols-outlined text-[20px] text-slate-400">search</span><input class="w-full bg-transparent p-0 border-none text-[15px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-0" id="explore-search-input" placeholder="Tìm sân hoặc trung tâm..." type="text"><button aria-label="Xóa tìm kiếm" class="text-slate-400 hover:text-slate-700 p-1 flex items-center justify-center" onclick="document.getElementById('explore-search-input').value='';"><span class="material-symbols-outlined text-[18px]">close</span></button></div><button aria-label="Mở bộ lọc" class="h-12 w-12 rounded-2xl bg-primary text-white flex items-center justify-center shadow-sm active:scale-95 transition-transform shrink-0 hover:bg-on-primary-fixed-variant" onclick="toggleFilterSheet(true)"><span class="material-symbols-outlined text-[22px]">tune</span></button></div><!-- Category or Quick Filter Row --><div id="filter-pills-container"><div class="flex items-center gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 py-0.5" id="normal-category-chips"><button class="sport-pill shrink-0 px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-semibold shadow-sm transition-all" onclick="switchSportFilter(this, 'all')">Tất cả</button><button class="sport-pill shrink-0 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-xs font-medium hover:bg-slate-50 transition-all" onclick="switchSportFilter(this, 'Cầu lông')">Cầu lông</button><button class="sport-pill shrink-0 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-xs font-medium hover:bg-slate-50 transition-all" onclick="switchSportFilter(this, 'Pickleball')">Pickleball</button><button class="sport-pill shrink-0 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-xs font-medium hover:bg-slate-50 transition-all" onclick="switchSportFilter(this, 'Bóng đá')">Bóng đá</button><button class="sport-pill shrink-0 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-xs font-medium hover:bg-slate-50 transition-all" onclick="switchSportFilter(this, 'Bóng rổ')">Bóng rổ</button></div><div class="hidden items-center gap-1.5 overflow-x-auto no-scrollbar -mx-4 px-4 py-0.5" id="quick-active-chips"><span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-teal-50 border border-teal-100 text-primary text-xs font-semibold shrink-0"><span class="">🏓</span><span class="">Pickleball</span></span><span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-teal-50 border border-teal-100 text-primary text-xs font-semibold shrink-0"><span class="">📅</span><span class="">Ngày mai</span></span><span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-teal-50 border border-teal-100 text-primary text-xs font-semibold shrink-0"><span class="">🕒</span><span class="">19:00</span></span><button class="text-xs text-slate-400 hover:text-slate-700 font-medium px-2 py-1 shrink-0" onclick="clearQuickChips()">Xóa</button></div></div><!-- Result Header Row --><div class="flex items-center justify-between pt-0.5 pb-1"><span class="text-xs font-semibold text-slate-600">14 địa điểm</span><button class="flex items-center gap-1 text-xs text-slate-500 font-medium hover:text-primary transition-colors cursor-pointer" onclick="toggleSortSheet(true)"><span class="">Gần nhất</span><span class="material-symbols-outlined text-[16px]">expand_more</span></button></div><!-- Clean & Premium Cards List --><div class="flex flex-col gap-4"><!-- Card 1: CourtGo Sports Arena --><div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col cursor-pointer active:scale-[0.99] transition-all hover:shadow-md" onclick="openCenterDetail('CourtGo Sports Arena')"><div class="relative w-full aspect-[16/9] overflow-hidden bg-slate-100"><img alt="CourtGo Sports Arena" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWjtlnCZQGwUl_YLRGIUjdSrhdP59kbUm7hsEQ-NrkK-ePO_vvHqJKmYBKKdUhE64om5fwuL9aKwVc8DmBCU_78-CvnbCzsm3mRx3uM_QjEo4yEf2UZn047gXEPt_y9ABI-OGtRSo0leGslF5WDtgiU4WZlA32B3C32ud9GbnW6j-s8qk9yt4POYXw4irOlCvyvoMB1fxTIrV5Hk0fCJJzToqPWi1wxWaeUp0vvq6feUtjFjGP3oGK6A"><div class="absolute top-3 right-3 px-2 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[12px] font-semibold flex items-center gap-1 shadow-sm"><span class="material-symbols-outlined text-[13px] text-amber-400" style="font-variation-settings: 'FILL' 1;">star</span><span class="">4.8</span></div></div><div class="p-[14px] flex flex-col gap-1.5"><h3 class="text-[16px] font-semibold text-slate-900">CourtGo Sports Arena</h3><p class="text-[13px] text-slate-500 flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-slate-400">location_on</span><span class="">1.2 km · Quận 7</span></p><p class="text-[13px] text-slate-600">🏸 Cầu lông · 🏓 Pickleball</p><div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between"><span class="text-[14px] font-semibold text-primary">Từ 100.000đ/giờ</span><span class="flex items-center gap-1.5 text-[13px] font-medium text-emerald-600"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="">Còn sân</span></span></div></div></div><!-- Card 2: GreenField Sports Complex --><div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col cursor-pointer active:scale-[0.99] transition-all hover:shadow-md" onclick="openCenterDetail('GreenField Sports Complex')"><div class="relative w-full aspect-[16/9] overflow-hidden bg-slate-100"><img alt="GreenField Sports Complex" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1XWG-X6hQNSXhRXDqjGyEFd_UmOBB81PB0bJynhYRduuGryCcoq5V3UBWD6nTLeO29p4gGtYoDjokDlb1-RfYzcrA6g_QYcSwSxCnyZgcm8J7LmAeEazaYM6U7JGEs1YsVmsJDbxQb-ZqXdTTRSqy_VdJ5806SHafiZUNUHnUYwIuSachC93iDUj9wRHAzeOtggTha20MzdoNqcNFTNO0x8DXzaP5d4xI1BVZ9fLATd4Lkb1jTQbGcUMXk"><div class="absolute top-3 right-3 px-2 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[12px] font-semibold flex items-center gap-1 shadow-sm"><span class="material-symbols-outlined text-[13px] text-amber-400" style="font-variation-settings: 'FILL' 1;">star</span><span class="">4.7</span></div></div><div class="p-[14px] flex flex-col gap-1.5"><h3 class="text-[16px] font-semibold text-slate-900">GreenField Sports Complex</h3><p class="text-[13px] text-slate-500 flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-slate-400">location_on</span><span class="">2.4 km · Quận 7</span></p><p class="text-[13px] text-slate-600">⚽ Bóng đá · 🏸 Cầu lông</p><div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between"><span class="text-[14px] font-semibold text-primary">Từ 120.000đ/giờ</span><span class="flex items-center gap-1.5 text-[13px] font-medium text-amber-600"><span class="w-2 h-2 rounded-full bg-amber-500"></span><span class="">Còn sân lúc 19:00</span></span></div></div></div><!-- Card 3: Victory Arena Thể Thao --><div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col cursor-pointer active:scale-[0.99] transition-all hover:shadow-md" onclick="openCenterDetail('Victory Arena Thể Thao')"><div class="relative w-full aspect-[16/9] overflow-hidden bg-slate-100"><img alt="Victory Arena Thể Thao" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCz3vD91_WfWWwBuPXuz2QwM5hOWcpNvCP6vcg_eLLxJZbxA2-zCpodkGLawVpVhDPjDRmJGlLalunURHqVECqp97uMTiSug6m4eK1XBwPBFXYtJmC7krAgHuJ2-qCz3q1m3diJfA1iemFbw5fqO3IpmIc2hDfzyTSghl9XSlwXoBjqtuT9giZQGY6p3oAkelfkXVjdnu9MX_z3t8ZZ6Dpso2KDrHWvqMSd5FOi1GJZQzPl_FFOCeaOrA"><div class="absolute top-3 right-3 px-2 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[12px] font-semibold flex items-center gap-1 shadow-sm"><span class="material-symbols-outlined text-[13px] text-amber-400" style="font-variation-settings: 'FILL' 1;">star</span><span class="">4.9</span></div></div><div class="p-[14px] flex flex-col gap-1.5"><h3 class="text-[16px] font-semibold text-slate-900">Victory Arena Thể Thao</h3><p class="text-[13px] text-slate-500 flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-slate-400">location_on</span><span class="">3.1 km · Bình Thạnh</span></p><p class="text-[13px] text-slate-600">🏸 Cầu lông · 🏀 Bóng rổ</p><div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between"><span class="text-[14px] font-semibold text-primary">Từ 110.000đ/giờ</span><span class="flex items-center gap-1.5 text-[13px] font-medium text-emerald-600"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="">Còn sân</span></span></div></div></div></div></div></main>
+<!-- BOTTOM NAVIGATION (Exact 5 tabs with Vietnamese labels) -->
+<nav class="fixed bottom-0 w-full z-40 pb-safe bg-white/95 backdrop-blur-xl border-t border-slate-200 shadow-[0_-2px_10px_rgba(0,0,0,0.03)]"><div class="flex justify-around items-center h-14 px-1"><a class="flex-1 flex flex-col items-center justify-center h-full gap-0.5 text-slate-400 hover:text-slate-700 transition-all font-medium" href="#"><span class="material-symbols-outlined text-[22px]">home</span><span class="text-[10px] tracking-tight">Trang chủ</span></a><a class="flex-1 flex flex-col items-center justify-center h-full gap-0.5 text-primary transition-all font-semibold" href="#"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings: &quot;FILL&quot; 1;">explore</span><span class="text-[10px] tracking-tight">Khám phá</span></a><a class="flex-1 flex flex-col items-center justify-center h-full gap-0.5 text-slate-400 hover:text-slate-700 transition-all font-medium" href="#" onclick="alert('Chuyển tới Lịch đặt sân của bạn'); return false;"><span class="material-symbols-outlined text-[22px]">calendar_today</span><span class="text-[10px] tracking-tight">Lịch đặt</span></a><a class="flex-1 flex flex-col items-center justify-center h-full gap-0.5 text-slate-400 hover:text-slate-700 transition-all font-medium" href="#" onclick="toggleNotificationModal(true); return false;"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="text-[10px] tracking-tight">Thông báo</span></a><a class="flex-1 flex flex-col items-center justify-center h-full gap-0.5 text-slate-400 hover:text-slate-700 transition-all font-medium" href="#" onclick="alert('Chuyển tới Tài khoản của bạn'); return false;"><span class="material-symbols-outlined text-[22px]">person</span><span class="text-[10px] tracking-tight">Tài khoản</span></a></div></nav>
+<!-- MODAL: SEARCH & EXPLORE -->
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex-col justify-end transition-opacity" id="search-modal">
+<div class="bg-white rounded-t-3xl w-full max-h-[777px] flex flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-200">
+<div class="p-4 border-b border-slate-100 flex items-center justify-between">
+<div class="flex-1 flex items-center bg-slate-100 rounded-xl px-3 py-2.5 gap-2 mr-3">
+<span class="material-symbols-outlined text-slate-400 text-[20px]">search</span>
+<input autofocus="" class="w-full bg-transparent border-none p-0 text-sm focus:ring-0 text-slate-800 placeholder:text-slate-400" id="search-input" placeholder="Tìm tên sân, quận, trung tâm..." type="text">
+</div>
+<button class="text-xs font-semibold text-slate-500 hover:text-slate-800 p-2" onclick="toggleSearchModal(false)">Đóng</button>
+</div>
+<div class="p-4 overflow-y-auto space-y-4">
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Tìm kiếm phổ biến</p>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 rounded-full bg-slate-100 text-xs text-slate-700 hover:bg-slate-200" onclick="selectSearchTerm('Sân Cầu Lông Quận 7')">🏸 Sân Cầu Lông Quận 7</button>
+<button class="px-3 py-1.5 rounded-full bg-slate-100 text-xs text-slate-700 hover:bg-slate-200" onclick="selectSearchTerm('Pickleball có mái che')">🏓 Pickleball có mái che</button>
+<button class="px-3 py-1.5 rounded-full bg-slate-100 text-xs text-slate-700 hover:bg-slate-200" onclick="selectSearchTerm('Sân Bóng Đá 7 người')">⚽ Sân Bóng Đá 7 người</button>
+</div>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Gần bạn nhất</p>
+<div class="space-y-2">
+<div class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200" onclick="openCenterDetail('CourtGo Sports Arena')">
+<div>
+<p class="text-sm font-semibold text-slate-800">CourtGo Sports Arena</p>
+<p class="text-xs text-slate-400">1.2 km · Cầu lông, Pickleball</p>
+</div>
+<span class="text-xs font-bold text-primary">100k/h</span>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200" onclick="openCenterDetail('GreenField Sports')">
+<div>
+<p class="text-sm font-semibold text-slate-800">GreenField Sports</p>
+<p class="text-xs text-slate-400">2.4 km · Bóng đá, Cầu lông</p>
+</div>
+<span class="text-xs font-bold text-primary">120k/h</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BOTTOM SHEET: FILTER & QUICK SELECTORS -->
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex-col justify-end" id="filter-sheet"><div class="bg-white rounded-t-3xl w-full max-h-[85vh] flex flex-col shadow-2xl"><div class="flex items-center justify-between p-4 border-b border-slate-100"><h3 class="text-base font-bold text-slate-900">Bộ lọc tìm kiếm</h3><button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition-colors" onclick="toggleFilterSheet(false)"><span class="material-symbols-outlined text-[18px]">close</span></button></div><div class="p-4 overflow-y-auto space-y-5 flex-1"><!-- Sport Type --><div><label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Môn thể thao</label><div class="flex flex-wrap gap-2"><button class="px-3.5 py-2 rounded-xl bg-primary text-white text-xs font-semibold">Tất cả</button><button class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200">Cầu lông</button><button class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200">Pickleball</button><button class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200">Bóng đá</button><button class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200">Bóng rổ</button></div></div><!-- Date --><div><label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Ngày chơi</label><div class="grid grid-cols-3 gap-2"><button class="py-2 px-3 rounded-xl bg-teal-50 border border-primary text-primary text-xs font-semibold text-center">Hôm nay</button><button class="py-2 px-3 rounded-xl bg-slate-100 border border-slate-100 text-slate-700 text-xs font-medium text-center hover:bg-slate-200">Ngày mai</button><button class="py-2 px-3 rounded-xl bg-slate-100 border border-slate-100 text-slate-700 text-xs font-medium text-center hover:bg-slate-200">Cuối tuần</button></div></div><!-- Time Slots --><div><label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Khung giờ</label><div class="grid grid-cols-4 gap-2"><button class="py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-medium text-center hover:bg-slate-200">Sáng</button><button class="py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-medium text-center hover:bg-slate-200">Trưa</button><button class="py-2 rounded-xl bg-teal-50 border border-primary text-primary text-xs font-semibold text-center">Chiều</button><button class="py-2 rounded-xl bg-teal-50 border border-primary text-primary text-xs font-semibold text-center">Tối (Giờ vàng)</button></div></div><!-- Price Range Slider --><div><div class="flex items-center justify-between mb-2"><label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Khoảng giá mỗi giờ</label><span class="text-xs font-semibold text-primary">Dưới 200.000₫</span></div><input class="w-full accent-primary h-2 bg-slate-200 rounded-lg cursor-pointer" max="300000" min="50000" step="20000" type="range" value="200000"></div><!-- Distance & Rating --><div><label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Khoảng cách tối đa</label><div class="flex items-center gap-2"><button class="flex-1 py-2 rounded-xl bg-teal-50 border border-primary text-primary text-xs font-semibold">Dưới 5 km</button><button class="flex-1 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200">Dưới 10 km</button><button class="flex-1 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200">Tất cả</button></div></div><!-- Toggle Available Only --><div class="flex items-center justify-between pt-2 border-t border-slate-100"><div><p class="text-sm font-semibold text-slate-900">Chỉ hiển thị nơi còn sân</p><p class="text-xs text-slate-500">Ẩn các sân đã kín lịch</p></div><label class="relative inline-flex items-center cursor-pointer"><input checked="" class="sr-only peer" type="checkbox"><div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div></label></div></div><!-- Sticky Actions --><div class="p-4 border-t border-slate-100 flex items-center gap-3 bg-white"><button class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50" onclick="toggleFilterSheet(false)">Đặt lại</button><button class="flex-1 py-3 rounded-xl bg-primary text-white font-semibold text-sm shadow-sm hover:bg-on-primary-fixed-variant" onclick="toggleFilterSheet(false)">Áp dụng</button></div></div></div><div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex-col justify-end" id="sort-sheet"><div class="bg-white rounded-t-3xl w-full p-4 shadow-2xl"><div class="flex items-center justify-between pb-3 border-b border-slate-100">
+  <h3 class="text-base font-bold text-slate-900">Sắp xếp theo</h3>
+  <button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200" onclick="toggleSortSheet(false)">
+    <span class="material-symbols-outlined text-[18px]">close</span>
+  </button>
+</div>
+<div class="py-2 divide-y divide-slate-100" id="sort-options-list">
+  <button class="w-full py-3 px-2 flex items-center justify-between text-left text-sm font-semibold text-primary" onclick="selectSortOption('Gần nhất')">
+    <span class="">Gần nhất</span>
+    <span class="material-symbols-outlined text-[18px]">check</span>
+  </button>
+  <button class="w-full py-3 px-2 flex items-center justify-between text-left text-sm font-medium text-slate-700 hover:text-slate-900" onclick="selectSortOption('Đánh giá cao')">
+    <span class="">Đánh giá cao</span>
+  </button>
+  <button class="w-full py-3 px-2 flex items-center justify-between text-left text-sm font-medium text-slate-700 hover:text-slate-900" onclick="selectSortOption('Giá thấp nhất')">
+    <span class="">Giá thấp nhất</span>
+  </button>
+</div></div></div>
+<!-- NOTIFICATION MODAL -->
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex-col justify-end" id="notif-modal">
+<div class="bg-white rounded-t-3xl w-full p-5 max-h-[707px] overflow-y-auto shadow-2xl">
+<div class="flex items-center justify-between pb-3 border-b border-slate-100">
+<h3 class="text-base font-bold text-slate-900">Thông báo</h3>
+<button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500" onclick="toggleNotificationModal(false)">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="py-4 space-y-3">
+<div class="flex items-start gap-3 p-3 rounded-xl bg-teal-50/60 border border-teal-100">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5">check_circle</span>
+<div>
+<p class="text-xs font-bold text-slate-900">Đặt sân thành công!</p>
+<p class="text-xs text-slate-600 mt-0.5">Sân A1 - CourtGo D7 lúc 19:00 hôm nay đã sẵn sàng.</p>
+<span class="text-[10px] text-slate-400 mt-1 block">15 phút trước</span>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+<span class="material-symbols-outlined text-amber-500 text-[20px] mt-0.5">local_offer</span>
+<div>
+<p class="text-xs font-bold text-slate-900">Khuyến mãi giờ vàng</p>
+<p class="text-xs text-slate-600 mt-0.5">Giảm 20% cho các khung giờ trước 14:00.</p>
+<span class="text-[10px] text-slate-400 mt-1 block">2 giờ trước</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Quick Booking State
+  let qbState = {
+    sport: 'Cầu lông',
+    date: 'Hôm nay',
+    time: '19:00'
+  };
+
+  function toggleQuickSelect(type) {
+    const sheet = document.getElementById('filter-sheet');
+    const title = document.getElementById('sheet-title');
+    const content = document.getElementById('sheet-content');
+
+    if (type === 'sport') {
+      title.innerText = 'Chọn môn thể thao';
+      content.innerHTML = `
+        <div class="grid grid-cols-2 gap-2">
+          ${['Cầu lông', 'Pickleball', 'Bóng đá', 'Bóng rổ', 'Tennis'].map(s => `
+            <button onclick="setQuickVal('sport', '${s}')" class="p-3 rounded-xl border ${qbState.sport === s ? 'border-primary bg-teal-50 font-bold text-primary' : 'border-slate-200 text-slate-700 font-medium'} text-xs text-left">
+              ${s}
+            </button>
+          `).join('')}
+        </div>
+      `;
+    } else if (type === 'date') {
+      title.innerText = 'Chọn ngày chơi';
+      content.innerHTML = `
+        <div class="grid grid-cols-3 gap-2">
+          ${['Hôm nay', 'Ngày mai', 'Thứ 7', 'Chủ nhật'].map(d => `
+            <button onclick="setQuickVal('date', '${d}')" class="p-3 rounded-xl border ${qbState.date === d ? 'border-primary bg-teal-50 font-bold text-primary' : 'border-slate-200 text-slate-700 font-medium'} text-xs text-center">
+              ${d}
+            </button>
+          `).join('')}
+        </div>
+      `;
+    } else if (type === 'time') {
+      title.innerText = 'Chọn khung giờ';
+      content.innerHTML = `
+        <div class="grid grid-cols-4 gap-2">
+          ${['17:00', '18:00', '19:00', '20:00', '21:00', '08:00', '09:00', '10:00'].map(t => `
+            <button onclick="setQuickVal('time', '${t}')" class="p-2.5 rounded-xl border ${qbState.time === t ? 'border-primary bg-teal-50 font-bold text-primary' : 'border-slate-200 text-slate-700 font-medium'} text-xs text-center">
+              ${t}
+            </button>
+          `).join('')}
+        </div>
+      `;
+    }
+    sheet.classList.remove('hidden');
+    sheet.classList.add('flex');
+  }
+
+  function setQuickVal(type, val) {
+    qbState[type] = val;
+    document.getElementById(`qb-${type}-text`).innerText = val;
+    toggleFilterSheet(false);
+  }
+
+  function triggerQuickSearch() {
+    alert(`Đang tìm sân trống cho: ${qbState.sport} • ${qbState.date} • ${qbState.time}`);
+  }
+
+  function filterBySport(sportName) {
+    qbState.sport = sportName;
+    document.getElementById('qb-sport-text').innerText = sportName;
+    toggleSearchModal(true);
+    const input = document.getElementById('search-input');
+    input.value = sportName;
+  }
+
+  function openCenterDetail(centerName) {
+    alert(`Mở chi tiết trung tâm: ${centerName}`);
+  }
+
+  function openSlotSelection(courtName) {
+    alert(`Mở lịch chọn khung giờ cho: ${courtName}`);
+  }
+
+  function toggleSearchModal(show) {
+    const modal = document.getElementById('search-modal');
+    if (show) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setTimeout(() => document.getElementById('search-input').focus(), 50);
+    } else {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  }
+
+  function selectSearchTerm(term) {
+    document.getElementById('search-input').value = term;
+  }
+
+  function toggleFilterSheet(show) {
+    const sheet = document.getElementById('filter-sheet');
+    if (show) {
+      // restore default sheet content if opened via location/filter icon
+      document.getElementById('sheet-title').innerText = 'Bộ lọc & Khu vực';
+      sheet.classList.remove('hidden');
+      sheet.classList.add('flex');
+    } else {
+      sheet.classList.add('hidden');
+      sheet.classList.remove('flex');
+    }
+  }
+
+  function toggleNotificationModal(show) {
+    const modal = document.getElementById('notif-modal');
+    if (show) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    } else {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  }
+</script>
+
+
+</body></html>

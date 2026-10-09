@@ -4,3 +4,4 @@ namespace CourtGo.Application.Operations;
 public record CreateCancellationRequest(string Reason);
 public record CancellationRequestDto(Guid Id, Guid BookingId, string Status, string Reason, decimal CalculatedRefundAmount,
     decimal? ApprovedRefundAmount, DateTimeOffset CreatedAt, DateTimeOffset? ProcessedAt);
+public record CancellationDetailDto(CancellationRequestDto Request, IReadOnlyList<PaymentEntryDto> Refunds);
