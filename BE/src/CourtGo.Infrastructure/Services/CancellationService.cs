@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CourtGo.Infrastructure.Services;
 
-public partial class CancellationService(CourtGoDbContext db, BookingCommandExecutor commands, TimeProvider clock, IPaymentGateway gateway) : ICancellationService
+public partial class CancellationService(CourtGoDbContext db, BookingCommandExecutor commands, TimeProvider clock, IPaymentGateway gateway, IDepositPaymentService paymentFinalizer) : ICancellationService
 {
     private static readonly Expression<Func<CancellationRequest, CancellationRequestDto>> Projection = r =>
         new(r.Id, r.BookingId, r.Status.ToString(), r.Reason, r.CalculatedRefundAmount, r.ApprovedRefundAmount, r.CreatedAt, r.ProcessedAt);
@@ -272,7 +272,8 @@ public partial class CancellationService(CourtGoDbContext db, BookingCommandExec
 
             if (cr.Status != CancellationRequestStatus.Pending)
             {
-                if (normalizedDecision == "approve" && cr.Status == CancellationRequestStatus.Approved)
+                if (normalizedDecision == "approve" && cr.Status is CancellationRequestStatus.Approved or CancellationRequestStatus.RefundPending or CancellationRequestStatus.Completed &&
+                    (request.ApprovedRefundAmount is null || request.ApprovedRefundAmount == cr.ApprovedRefundAmount))
                 {
                     var existingRefund = await db.Payments.AsNoTracking()
                         .Where(p => p.BookingId == booking.Id && p.PaymentKind == PaymentKind.Refund)
@@ -381,28 +382,32 @@ public partial class CancellationService(CourtGoDbContext db, BookingCommandExec
             Payment? refundPayment = null;
             if (approvedRefund > 0)
             {
-                var originalPayment = await db.Payments.AsNoTracking()
+                var originalPayments = await db.Payments.AsNoTracking()
                     .Where(p => p.BookingId == booking.Id && (p.PaymentKind == PaymentKind.Deposit || p.PaymentKind == PaymentKind.Remaining) && p.TransactionStatus == PaymentTransactionStatus.Succeeded)
                     .OrderBy(p => p.CreatedAt)
-                    .FirstOrDefaultAsync(token);
-
-                var method = originalPayment?.PaymentMethod ?? PaymentMethod.MoMo;
-
-                refundPayment = new Payment
+                    .ThenBy(p => p.Id).ToListAsync(token);
+                var existingRefunds = await db.Payments.AsNoTracking().Where(p => p.BookingId == booking.Id && p.PaymentKind == PaymentKind.Refund &&
+                    (p.TransactionStatus == PaymentTransactionStatus.Pending || p.TransactionStatus == PaymentTransactionStatus.Succeeded)).ToListAsync(token);
+                var remainingRefund = approvedRefund;
+                foreach (var original in originalPayments)
                 {
-                    BookingId = booking.Id,
-                    PaymentKind = PaymentKind.Refund,
-                    PaymentMethod = method,
-                    Amount = approvedRefund,
-                    TransactionStatus = PaymentTransactionStatus.Pending,
-                    RelatedPaymentId = originalPayment?.Id,
-                    PaidByUserId = adminUserId,
-                    CreatedAt = now
-                };
-                refundPayment.ProviderTransactionId = gateway.Name == "Development"
-                    ? $"dev-{method}-{refundPayment.Id:N}" : $"refund-{refundPayment.Id:N}";
-                refundPayment.GatewayName = gateway.Name == "Development" ? "Development" : "ManualReconciliation";
-                db.Payments.Add(refundPayment);
+                    var part = Math.Min(remainingRefund, Math.Max(0, original.Amount - existingRefunds.Where(p => p.RelatedPaymentId == original.Id).Sum(p => p.Amount)));
+                    if (part <= 0) continue;
+                    var refund = new Payment
+                    {
+                        BookingId = booking.Id, PaymentKind = PaymentKind.Refund, PaymentMethod = original.PaymentMethod,
+                        Amount = part, TransactionStatus = PaymentTransactionStatus.Pending, RelatedPaymentId = original.Id,
+                        PaidByUserId = adminUserId, CreatedAt = now,
+                        GatewayName = gateway.Name == "Development" ? "Development" : "ManualReconciliation"
+                    };
+                    refund.ProviderTransactionId = gateway.Name == "Development"
+                        ? $"dev-{original.PaymentMethod}-{refund.Id:N}" : $"refund-{refund.Id:N}";
+                    db.Payments.Add(refund);
+                    refundPayment ??= refund;
+                    remainingRefund -= part;
+                    if (remainingRefund == 0) break;
+                }
+                if (remainingRefund > 0) throw new ConflictException("Original charges cannot cover this refund.", ErrorCodes.PaymentStateConflict);
 
                 booking.PaymentStatus = BookingPaymentStatus.RefundPending;
             }

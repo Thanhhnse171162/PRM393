@@ -121,7 +121,7 @@ public class SqlServerDepositPaymentTests
     }
 
     [SqlServerFact]
-    public async Task DuplicateProviderReference_ReturnsSafeConflict_AndRollsBackNewAttempt()
+    public async Task DuplicateProviderReference_ReturnsSafeConflict_AndKeepsDurablePendingIntent()
     {
         var clock = new Clock();
         await using var fixture = await Fixture.CreateAsync(held: true, clock);
@@ -136,7 +136,10 @@ public class SqlServerDepositPaymentTests
                 fixture.CustomerId, fixture.BookingId, new("MoMo")));
         Assert.Equal(ErrorCodes.PaymentStateConflict, error.Code);
         Assert.DoesNotContain("SQL", error.Message, StringComparison.OrdinalIgnoreCase);
-        Assert.Equal(1, await db.Payments.CountAsync(p => p.BookingId == fixture.BookingId));
+        Assert.Equal(2, await db.Payments.CountAsync(p => p.BookingId == fixture.BookingId));
+        var intent = await db.Payments.SingleAsync(p => p.BookingId == fixture.BookingId && p.TransactionStatus == PaymentTransactionStatus.Pending);
+        Assert.Null(intent.ProviderTransactionId);
+        Assert.Null(intent.PaidAt);
         Assert.Equal(BookingStatus.PendingPayment, (await db.Bookings.SingleAsync(b => b.Id == fixture.BookingId)).BookingStatus);
     }
 

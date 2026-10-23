@@ -142,7 +142,7 @@ public sealed class DepositPaymentService(CourtGoDbContext dbContext, BookingCom
                     var slots = await _commands.ReloadSlotsAsync(booking.Id, ct);
                     if (result.Gateway is not null && (booking.BookingStatus != BookingStatus.PendingPayment ||
                         booking.HoldExpiresAt is null || booking.HoldExpiresAt <= _timeProvider.GetUtcNow() ||
-                        slots.Count == 0 || slots.Any(s => !s.IsOccupying || s.ReservationState != ReservationState.Held || s.HoldExpiresAt <= _timeProvider.GetUtcNow())))
+                        slots.Count == 0 || slots.Any(s => !s.IsOccupying || s.CourtId != booking.CourtId || s.ReservationState != ReservationState.Held || s.HoldExpiresAt is null || s.HoldExpiresAt <= _timeProvider.GetUtcNow())))
                     {
                         // A verified charge is money received even when the hold has expired. Never resurrect slots.
                         var lateNow = _timeProvider.GetUtcNow();
@@ -223,10 +223,23 @@ public sealed class DepositPaymentService(CourtGoDbContext dbContext, BookingCom
                                (p.TransactionStatus == PaymentTransactionStatus.Succeeded || p.Id == payment.Id))
                         .SumAsync(p => (decimal?)p.Amount, ct) ?? 0m;
 
-                    if (totalRefunds >= totalCharges)
+                    if (totalRefunds > totalCharges)
+                        throw new ConflictException("Refund exceeds successful charges.", ErrorCodes.PaymentAmountMismatch);
+                    var stillPending = await _dbContext.Payments.AnyAsync(p => p.BookingId == booking.Id &&
+                        p.PaymentKind == PaymentKind.Refund && p.Id != payment.Id && p.TransactionStatus == PaymentTransactionStatus.Pending, ct);
+                    if (stillPending)
+                        booking.PaymentStatus = BookingPaymentStatus.RefundPending;
+                    else if (totalRefunds >= totalCharges)
                         booking.PaymentStatus = BookingPaymentStatus.Refunded;
                     else
                         booking.PaymentStatus = BookingPaymentStatus.PartiallyRefunded;
+
+                    if (!stillPending)
+                    {
+                        var requests = await _dbContext.CancellationRequests.Where(r => r.BookingId == booking.Id &&
+                            (r.Status == CancellationRequestStatus.Approved || r.Status == CancellationRequestStatus.RefundPending)).ToListAsync(ct);
+                        foreach (var request in requests) request.Status = CancellationRequestStatus.Completed;
+                    }
 
                     if (booking.CustomerUserId is Guid recipient)
                     {

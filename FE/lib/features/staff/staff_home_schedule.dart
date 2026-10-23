@@ -118,7 +118,7 @@ class _StaffSchedulePageState extends State<StaffSchedulePage> {
     api = context.read<StaffApi>();
     pages = PagedController((page) async {
       await api.ensureCenter();
-      date ??= api.today;
+      date ??= CustomerFormat.day(api.now);
       return api.schedule(
         page,
         date: date,
@@ -127,7 +127,7 @@ class _StaffSchedulePageState extends State<StaffSchedulePage> {
         search: search.text,
       );
     });
-    api.addListener(reload);
+    api.addListener(onMutation);
     pages.load();
     api.api
         .sports()
@@ -138,11 +138,30 @@ class _StaffSchedulePageState extends State<StaffSchedulePage> {
   }
 
   void reload() => pages.load(reset: true);
+  Future<void> onMutation() async {
+    final id = api.changedBookingId;
+    if (id == null || !pages.items.any((b) => b['bookingId'] == id)) {
+      reload();
+      return;
+    }
+    try {
+      final updated = (await api.get('bookings/$id'))['booking'] as Json;
+      if (!mounted) return;
+      if (status != null && updated['bookingStatus'] != status) {
+        reload();
+        return;
+      }
+      pages.replaceWhere((b) => b['bookingId'] == id, updated);
+    } catch (_) {
+      if (mounted) reload();
+    }
+  }
+
   @override
   void dispose() {
     debounce?.cancel();
     search.dispose();
-    api.removeListener(reload);
+    api.removeListener(onMutation);
     pages.dispose();
     super.dispose();
   }

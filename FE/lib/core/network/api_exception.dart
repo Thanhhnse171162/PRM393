@@ -31,6 +31,18 @@ class ApiException implements Exception {
       'BOOKING_SLOT_CONFLICT' =>
         'Khung giờ vừa được người khác chọn. Vui lòng chọn lại.',
       'QR_NOT_AVAILABLE' => 'Mã QR chưa khả dụng cho trạng thái lịch đặt này.',
+      'QR_INVALID' => 'Mã QR không hợp lệ hoặc không còn sử dụng được.',
+      'STAFF_CENTER_ACCESS_DENIED' => 'Lượt đặt thuộc trung tâm khác.',
+      'STAFF_NOT_ASSIGNED' => 'Tài khoản chưa được phân công trung tâm. Vui lòng liên hệ quản trị viên.',
+      'BOOKING_NOT_CHECKIN_ELIGIBLE' =>
+        'Lượt đặt đã hết hiệu lực hoặc không ở trạng thái có thể check-in.',
+      'CHECKIN_ALREADY_COMPLETED' =>
+        'Lượt đặt đã được check-in. Vui lòng tải lại chi tiết.',
+      'PAYMENT_ALREADY_FULLY_PAID' =>
+        'Lượt đặt đã thanh toán đủ. Vui lòng tải lại.',
+      'OUTSTANDING_PAYMENT_REQUIRED' =>
+        'Cần thu đủ tiền còn lại trước khi check-in.',
+      'PAYMENT_STATE_CONFLICT' => 'Giao dịch đang chờ xử lý hoặc cần đối soát. Hãy kiểm tra trạng thái trước khi thanh toán tiếp.',
       'REVIEW_ALREADY_SUBMITTED' => 'Bạn đã gửi đánh giá cho lịch đặt này.',
       'BOOKING_HOLD_EXPIRED' || 'PAYMENT_AFTER_HOLD_EXPIRED' =>
         'Thời gian giữ sân đã hết. Vui lòng chọn lại giờ.',

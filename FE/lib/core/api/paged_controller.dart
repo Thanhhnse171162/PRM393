@@ -47,4 +47,12 @@ class PagedController<T> extends ChangeNotifier {
     _disposed = true;
     super.dispose();
   }
+
+  void replaceWhere(bool Function(T) matches, T value) {
+    if (_disposed) return;
+    final index = items.indexWhere(matches);
+    if (index < 0) return;
+    items[index] = value;
+    notifyListeners();
+  }
 }

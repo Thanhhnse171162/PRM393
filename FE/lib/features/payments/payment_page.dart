@@ -146,14 +146,17 @@ class _PaymentPageState extends State<PaymentPage> with WidgetsBindingObserver {
         throw StateError('Checkout is unavailable');
       }
     } catch (e) {
-      if (mounted)
+      if (mounted) {
         setState(
           () => error = e is ApiException
               ? e.message
               : 'Chưa mở được trang thanh toán. Vui lòng thử lại.',
         );
+      }
     } finally {
-      if (mounted) setState(() => opening = false);
+      if (mounted) {
+        setState(() => opening = false);
+      }
     }
   }
 

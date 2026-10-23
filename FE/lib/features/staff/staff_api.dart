@@ -15,6 +15,7 @@ class StaffApi extends ChangeNotifier {
   CenterInfo? center;
   String? today, _userId;
   int revision = 0;
+  String? changedBookingId;
   Future<void>? _initializing;
   void setUser(String? id) {
     if (_userId == id) return;
@@ -22,7 +23,9 @@ class StaffApi extends ChangeNotifier {
     center = null;
     today = null;
     _initializing = null;
+    changedBookingId = null;
     revision++;
+    notifyListeners();
   }
 
   Future<void> ensureCenter() => _initializing ??= _loadCenter();
@@ -63,7 +66,10 @@ class StaffApi extends ChangeNotifier {
       api.get('/api/staff/$path', query: query);
   Future<Json> command(String path, [Json body = const {}]) async {
     final result = await api.post('/api/staff/$path', body);
-    changed();
+    changed(
+      bookingId:
+          result['bookingId'] ?? (result['booking'] as Map?)?['bookingId'],
+    );
     return result;
   }
 
@@ -73,7 +79,8 @@ class StaffApi extends ChangeNotifier {
     changed();
   }
 
-  void changed() {
+  void changed({String? bookingId}) {
+    changedBookingId = bookingId;
     revision++;
     notifyListeners();
   }
@@ -129,4 +136,6 @@ bool canMarkNoShow(Json booking, DateTime now) =>
 bool canCheckIn(Json verified) =>
     verified['bookingStatus'] == 'Confirmed' &&
     verified['alreadyCheckedIn'] != true &&
+    verified['payment'] is Map &&
+    (verified['payment'] as Map)['remainingAmount'] is num &&
     amount((verified['payment'] as Map)['remainingAmount']) == 0;

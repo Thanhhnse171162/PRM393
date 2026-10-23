@@ -18,6 +18,7 @@ import 'features/auth/data/repositories/auth_repository.dart';
 import 'features/auth/data/services/auth_service.dart';
 import 'features/auth/presentation/providers/auth_provider.dart';
 import 'features/staff/staff_api.dart';
+import 'features/admin/admin_api.dart';
 import 'features/payments/payment_links.dart';
 import 'shared/models/user_model.dart';
 
@@ -67,8 +68,9 @@ class _CourtGoAppState extends State<CourtGoApp> {
   void _resumePayment() {
     if (_pendingPayment == null ||
         !_auth.isAuthenticated ||
-        _router.routeInformationProvider.value.uri.path == '/splash')
+        _router.routeInformationProvider.value.uri.path == '/splash') {
       return;
+    }
     if (_auth.role != UserRole.customer) {
       _pendingPayment = null;
       return;
@@ -76,8 +78,9 @@ class _CourtGoAppState extends State<CourtGoApp> {
     final id = _pendingPayment!;
     _pendingPayment = null;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && _auth.role == UserRole.customer)
+      if (mounted && _auth.role == UserRole.customer) {
         _router.go('/customer/bookings/$id/payment');
+      }
     });
   }
 
@@ -99,6 +102,9 @@ class _CourtGoAppState extends State<CourtGoApp> {
         Provider<ApiClient>.value(value: _apiClient),
         ChangeNotifierProvider<CustomerApi>(
           create: (_) => CustomerApi(_apiClient),
+        ),
+        ChangeNotifierProvider<AdminApi>(
+          create: (c) => AdminApi(c.read<ApiClient>()),
         ),
         ChangeNotifierProxyProvider<AuthProvider, StaffApi>(
           create: (c) => StaffApi(c.read<CustomerApi>()),

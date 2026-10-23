@@ -83,5 +83,6 @@ public sealed class PaymentCallbacksController(PaymentNotificationVerifier verif
         }
         return fields;
     }
-    private OkObjectResult Ack(string code, string message) => Ok(new { RspCode = code, Message = message });
+    private OkObjectResult Ack(string code, string message) => Ok(new Dictionary<string, string>
+        { ["RspCode"] = code, ["Message"] = message });
 }

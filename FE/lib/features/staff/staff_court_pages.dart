@@ -226,8 +226,9 @@ class _StaffCourtDetailPageState extends State<StaffCourtDetailPage> {
                                       context,
                                       'Gỡ khóa sân?',
                                       'Khóa đang diễn ra sẽ kết thúc ngay. Khóa trong tương lai sẽ được gỡ bỏ.',
-                                    ))
+                                    )) {
                                       return;
+                                    }
                                     setState(() => busy = true);
                                     try {
                                       await api.removeBlock(
@@ -235,8 +236,9 @@ class _StaffCourtDetailPageState extends State<StaffCourtDetailPage> {
                                         block['id'],
                                       );
                                     } catch (e) {
-                                      if (context.mounted)
+                                      if (context.mounted) {
                                         showMessage(context, staffError(e));
+                                      }
                                     } finally {
                                       if (mounted) setState(() => busy = false);
                                     }
@@ -298,8 +300,12 @@ class _StaffCreateBlockPageState extends State<StaffCreateBlockPage> {
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(hour: initial.hour, minute: initial.minute),
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+        child: child!,
+      ),
     );
-    if (time != null && mounted)
+    if (time != null && mounted) {
       setState(() {
         final value = DateTime(
           date.year,
@@ -314,6 +320,7 @@ class _StaffCreateBlockPageState extends State<StaffCreateBlockPage> {
           end = value;
         }
       });
+    }
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_utils.dart';
 import '../../shared/models/customer_models.dart';
 import '../../shared/widgets/customer_widgets.dart';
@@ -113,14 +114,16 @@ class _StaffBookingDetailPageState extends State<StaffBookingDetailPage> {
                           context,
                           'Khách không đến?',
                           'Lượt đặt đã kết thúc. Xác nhận đánh dấu khách vắng mặt.',
-                        ))
+                        )) {
                           return;
+                        }
                         setState(() => busy = true);
                         try {
                           await api.command('bookings/${widget.id}/no-show');
                         } catch (e) {
-                          if (context.mounted)
+                          if (context.mounted) {
                             showMessage(context, staffError(e));
+                          }
                         } finally {
                           if (mounted) setState(() => busy = false);
                         }
@@ -207,7 +210,7 @@ class _RemainingPaymentSheetState extends State<RemainingPaymentSheet> {
       child: FutureBuilder<Json>(
         future: detail,
         builder: (context, snapshot) {
-          if (snapshot.hasError)
+          if (snapshot.hasError) {
             return NoticeState(
               title: staffError(snapshot.error!),
               action: () => setState(
@@ -216,11 +219,13 @@ class _RemainingPaymentSheetState extends State<RemainingPaymentSheet> {
                 ),
               ),
             );
-          if (!snapshot.hasData)
+          }
+          if (!snapshot.hasData) {
             return const SizedBox(
               height: 180,
               child: Center(child: CircularProgressIndicator()),
             );
+          }
           final data = snapshot.data!;
           final payment = data['payment'] as Json;
           return SingleChildScrollView(
@@ -277,15 +282,18 @@ class _RemainingPaymentSheetState extends State<RemainingPaymentSheet> {
                               'bookings/${widget.id}/payments/remaining',
                               {'paymentMethod': method},
                             );
-                            if (context.mounted) Navigator.pop(context);
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                            }
                           } catch (e) {
-                            if (mounted)
+                            if (mounted) {
                               setState(() {
                                 error = staffError(e);
                                 detail = context.read<StaffApi>().get(
                                   'bookings/${widget.id}',
                                 );
                               });
+                            }
                           } finally {
                             if (mounted) setState(() => busy = false);
                           }
@@ -322,56 +330,110 @@ class _StaffVerifyPageState extends State<StaffVerifyPage> {
       builder: (data, reload) {
         final api = context.read<StaffApi>();
         final payment = data['payment'] as Json;
+        final remaining = amount(payment['remainingAmount']);
+        final isAlreadyChecked =
+            data['alreadyCheckedIn'] == true ||
+            data['bookingStatus'] == 'CheckedIn';
+        final isCancelled = data['bookingStatus'] == 'Cancelled';
+
         return StaffList(
           refresh: reload,
           children: [
             StaffPanel(
-              title: data['alreadyCheckedIn'] == true
-                  ? 'Khách đã check-in'
-                  : 'QR hợp lệ',
+              title: isAlreadyChecked ? 'Khách đã check-in' : 'QR hợp lệ',
               children: [
-                StatusChip(data['bookingStatus']),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    StatusChip(data['bookingStatus'] as String? ?? 'Confirmed'),
+                    if (data['paymentStatus'] is String)
+                      StatusChip(data['paymentStatus'] as String),
+                    if (isAlreadyChecked) const StatusChip('CheckedIn'),
+                  ],
+                ),
                 const SizedBox(height: 12),
-                Text(data['bookingCode']),
+                Text(
+                  data['bookingCode'],
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 16,
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Text(
                   '${data['customer']['fullName']} · ${data['customer']['phoneNumber']}',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 Text('${data['court']['name']} · ${data['sport']['name']}'),
+                if (data['center']?['name'] != null)
+                  Text(
+                    '${data['center']['name']}',
+                    style: const TextStyle(color: AppColors.textSecondary),
+                  ),
                 Text(api.interval(data)),
               ],
             ),
             StaffPaymentSummary(payment: payment),
-            if (amount(payment['remainingAmount']) > 0 &&
-                data['alreadyCheckedIn'] != true)
+            if (remaining > 0 && !isAlreadyChecked)
               PrimaryButton(
                 label: 'Thu tiền còn lại',
                 onPressed: busy
                     ? null
                     : () => collectRemaining(context, data['bookingId']),
               ),
+            if (isAlreadyChecked)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: Text(
+                  'Lịch đặt đã được check-in trước đó.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: AppColors.primaryDark,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            if (isCancelled)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: Text(
+                  'Lịch đặt này đã bị hủy, không thể check-in.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: AppColors.error,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             if (canCheckIn(data))
               PrimaryButton(
                 label: 'Xác nhận check-in',
                 loading: busy,
                 onPressed: () async {
-                  if (busy) return;
+                  if (busy) {
+                    return;
+                  }
                   if (!await staffConfirm(
                     context,
                     'Xác nhận khách vào sân',
                     'Đã đối chiếu khách và lượt đặt ${data['bookingCode']}?',
-                  ))
+                  )) {
                     return;
+                  }
                   setState(() => busy = true);
                   try {
                     final latest = await api.verify(widget.token);
                     if (!canCheckIn(latest)) {
                       reload();
-                      if (context.mounted)
+                      if (context.mounted) {
                         showMessage(
                           context,
                           'Trạng thái đã thay đổi. Vui lòng kiểm tra lại.',
                         );
+                      }
                       return;
                     }
                     await api.command(

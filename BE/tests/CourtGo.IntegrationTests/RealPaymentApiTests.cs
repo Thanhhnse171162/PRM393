@@ -49,7 +49,7 @@ public sealed class RealPaymentApiTests
         return raw + "&vnp_SecureHash=" + PaymentSignatures.Sha512("test-only-secret-not-a-merchant", raw);
     }
     private static async Task<string?> Ack(HttpClient client, string query)
-        => (await (await client.GetAsync("/api/payments/vnpay/ipn?" + query)).Content.ReadFromJsonAsync<JsonElement>()).GetProperty("rspCode").GetString();
+        => (await (await client.GetAsync("/api/payments/vnpay/ipn?" + query)).Content.ReadFromJsonAsync<JsonElement>()).GetProperty("RspCode").GetString();
 
     [Fact]
     public async Task ReturnNeverFinalizes_IpnConfirmsExactlyOnce_AndDevelopmentRoutesAreRemoved()

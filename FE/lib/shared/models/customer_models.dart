@@ -121,14 +121,24 @@ class Booking {
 }
 
 class PageResult<T> {
-  const PageResult(this.items, this.page, this.totalPages);
+  const PageResult(
+    this.items,
+    this.page,
+    this.totalPages, {
+    this.totalItems = 0,
+    this.pageSize = 10,
+  });
   factory PageResult.fromJson(Json j, T Function(Json) decode) => PageResult(
     jsonList(j['items']).map(decode).toList(),
-    j['pageNumber'],
-    j['totalPages'],
+    (j['pageNumber'] as num?)?.toInt() ?? 1,
+    (j['totalPages'] as num?)?.toInt() ?? 1,
+    totalItems: (j['totalItems'] as num?)?.toInt() ?? 0,
+    pageSize: (j['pageSize'] as num?)?.toInt() ?? 10,
   );
   final List<T> items;
   final int page, totalPages;
+  final int totalItems, pageSize;
+  int get totalCount => totalItems;
 }
 
 class CustomerNotification {

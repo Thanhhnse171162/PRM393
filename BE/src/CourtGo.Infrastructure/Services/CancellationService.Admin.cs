@@ -105,35 +105,11 @@ public partial class CancellationService
     {
         var bookingId = await db.Payments.Where(p => p.Id == result.PaymentId && p.PaymentKind == PaymentKind.Refund)
             .Select(p => (Guid?)p.BookingId).SingleOrDefaultAsync(ct) ?? throw new NotFoundException("Refund not found.");
-        return await commands.ExecuteAsync(bookingId, async (booking, token) =>
-        {
-            var payment = await db.Payments.SingleAsync(p => p.Id == result.PaymentId, token);
-            await db.Entry(payment).ReloadAsync(token);
-            if (payment.ProviderTransactionId != result.ProviderTransactionId || payment.Amount != result.Amount ||
-                result.TransactionStatus != PaymentTransactionStatus.Succeeded)
-                throw new ValidationException("Refund verification failed.", ErrorCodes.PaymentVerificationFailed);
-            var request = await db.CancellationRequests.SingleOrDefaultAsync(r => r.BookingId == bookingId &&
-                (r.Status == CancellationRequestStatus.RefundPending || r.Status == CancellationRequestStatus.Completed), token)
-                ?? throw new ConflictException("No approved refund request exists.");
-            await db.Entry(request).ReloadAsync(token);
-            if (payment.TransactionStatus == PaymentTransactionStatus.Succeeded) return ToDto(request);
-            if (payment.TransactionStatus != PaymentTransactionStatus.Pending || booking.BookingStatus != BookingStatus.Cancelled)
-                throw new ConflictException("Refund is not pending.");
-            var now = clock.GetUtcNow();
-            payment.TransactionStatus = PaymentTransactionStatus.Succeeded;
-            payment.PaidAt = now;
-            await db.SaveChangesAsync(token);
-            var refunded = await db.Payments.Where(p => p.BookingId == bookingId && p.PaymentKind == PaymentKind.Refund &&
-                p.TransactionStatus == PaymentTransactionStatus.Succeeded).SumAsync(p => p.Amount, token);
-            if (!await db.Payments.AnyAsync(p => p.BookingId == bookingId && p.PaymentKind == PaymentKind.Refund && p.TransactionStatus == PaymentTransactionStatus.Pending, token))
-            {
-                request.Status = CancellationRequestStatus.Completed;
-                var paid = await BookingPaymentQueries.GetPaidAmountAsync(db, bookingId, token);
-                booking.PaymentStatus = refunded >= paid ? BookingPaymentStatus.Refunded : BookingPaymentStatus.PartiallyRefunded;
-                Notify(booking, NotificationType.Refund, "Refund completed", $"Refund completed for {booking.BookingCode}.", now);
-            }
-            return ToDto(request);
-        }, ct);
+        // Every verified payment result uses the same transaction/finalization implementation.
+        await paymentFinalizer.ApplyVerifiedResultAsync(result, cancellationToken: ct);
+        return await db.CancellationRequests.AsNoTracking().Where(r => r.BookingId == bookingId &&
+                (r.Status == CancellationRequestStatus.Approved || r.Status == CancellationRequestStatus.RefundPending || r.Status == CancellationRequestStatus.Completed))
+            .Select(Projection).SingleOrDefaultAsync(ct) ?? throw new ConflictException("No approved refund request exists.");
     }
     private void Notify(Booking booking, NotificationType type, string title, string message, DateTimeOffset now)
     {

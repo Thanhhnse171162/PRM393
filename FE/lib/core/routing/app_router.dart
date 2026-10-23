@@ -22,7 +22,6 @@ import '../../features/reviews/review_pages.dart';
 import '../../features/account/account_page.dart';
 import '../../shared/models/customer_models.dart';
 import '../../features/location/presentation/pages/location_page.dart';
-import '../../shared/widgets/placeholder_page.dart';
 import '../../shared/widgets/role_shell.dart';
 import 'route_guard.dart';
 import 'route_names.dart';
@@ -31,6 +30,37 @@ import '../../features/staff/staff_booking_pages.dart';
 import '../../features/staff/staff_scanner.dart';
 import '../../features/staff/staff_court_pages.dart';
 import '../../features/staff/staff_walk_in.dart';
+import '../../features/admin/dashboard/admin_dashboard_page.dart';
+import '../../features/admin/management/admin_management_hub_page.dart';
+import '../../features/admin/staff_management/admin_staff_page.dart';
+import '../../features/admin/staff_management/admin_staff_detail_page.dart';
+import '../../features/admin/staff_management/admin_staff_create_page.dart';
+import '../../features/admin/branches/admin_centers_page.dart';
+import '../../features/admin/branches/admin_center_detail_page.dart';
+import '../../features/admin/branches/admin_center_form_page.dart';
+import '../../features/admin/branches/admin_location_picker_page.dart';
+import '../../features/admin/shared/admin_models.dart';
+
+import 'package:latlong2/latlong.dart';
+
+import '../../features/admin/sports/admin_sports_page.dart';
+import '../../features/admin/courts/admin_courts_page.dart';
+import '../../features/admin/courts/admin_court_detail_page.dart';
+import '../../features/admin/courts/admin_court_form_page.dart';
+import '../../features/admin/operating_hours/admin_operating_hours_page.dart';
+import '../../features/admin/operating_hours/admin_operating_exceptions_page.dart';
+import '../../features/admin/pricing/admin_price_rules_page.dart';
+import '../../features/admin/settings/admin_settings_page.dart';
+import '../../features/admin/cancellation_policies/admin_cancellation_policies_page.dart';
+import '../../features/admin/bookings/admin_bookings_page.dart';
+import '../../features/admin/bookings/admin_booking_detail_page.dart';
+import '../../features/admin/bookings/admin_cancellation_requests_page.dart';
+import '../../features/admin/reports/admin_reports_hub_page.dart';
+import '../../features/admin/reports/admin_summary_report_page.dart';
+import '../../features/admin/reports/admin_revenue_report_page.dart';
+import '../../features/admin/reports/admin_booking_report_page.dart';
+import '../../features/admin/reports/admin_occupancy_report_page.dart';
+import '../../features/admin/account/admin_account_page.dart';
 
 class AppRouter {
   const AppRouter._();
@@ -245,43 +275,147 @@ class AppRouter {
           builder: (_, _) => const NotificationsPage(),
         ),
         _shell(_adminTabs, [
-          (
-            RouteNames.adminHome,
-            const PlaceholderPage(
-              title: 'Tổng quan',
-              icon: Icons.dashboard_outlined,
-            ),
-          ),
-          (
-            RouteNames.adminManagement,
-            const PlaceholderPage(
-              title: 'Quản lý',
-              icon: Icons.settings_outlined,
-            ),
-          ),
-          (
-            RouteNames.adminBookings,
-            const PlaceholderPage(
-              title: 'Lịch đặt',
-              icon: Icons.event_note_outlined,
-            ),
-          ),
-          (
-            RouteNames.adminReports,
-            const PlaceholderPage(
-              title: 'Báo cáo',
-              icon: Icons.bar_chart_outlined,
-            ),
-          ),
-          (
-            RouteNames.adminAccount,
-            const PlaceholderPage(
-              title: 'Tài khoản',
-              icon: Icons.person_outline,
-              showSignOut: true,
-            ),
-          ),
+          (RouteNames.adminHome, const AdminDashboardPage()),
+          (RouteNames.adminManagement, const AdminManagementHubPage()),
+          (RouteNames.adminBookings, const AdminBookingsPage()),
+          (RouteNames.adminReports, const AdminReportsHubPage()),
+          (RouteNames.adminAccount, const AdminAccountPage()),
         ]),
+        // Admin Staff Routes
+        GoRoute(
+          path: RouteNames.adminStaff,
+          builder: (_, _) => const AdminStaffPage(),
+        ),
+        GoRoute(
+          path: RouteNames.adminStaffCreate,
+          builder: (_, _) => const AdminStaffCreatePage(),
+        ),
+        GoRoute(
+          path: '/admin/staff/:id',
+          builder: (_, s) =>
+              AdminStaffDetailPage(staffId: s.pathParameters['id']!),
+        ),
+        // Admin Centers Routes
+        GoRoute(
+          path: RouteNames.adminCenters,
+          builder: (_, _) => const AdminCentersPage(),
+        ),
+        GoRoute(
+          path: RouteNames.adminCenterCreate,
+          builder: (_, _) => const AdminCenterFormPage(),
+        ),
+        GoRoute(
+          path: '/admin/centers/:id',
+          builder: (_, s) =>
+              AdminCenterDetailPage(centerId: s.pathParameters['id']!),
+        ),
+        GoRoute(
+          path: '/admin/centers/:id/edit',
+          builder: (_, s) => AdminCenterFormPage(
+            centerId: s.pathParameters['id']!,
+            initialData: s.extra is AdminSportCenterDetail
+                ? s.extra as AdminSportCenterDetail
+                : null,
+          ),
+        ),
+        GoRoute(
+          path: RouteNames.adminCenterLocationPicker,
+          builder: (_, s) => AdminLocationPickerPage(
+            initialLocation: s.extra is LatLng ? s.extra as LatLng : null,
+          ),
+        ),
+        // Admin Sports
+        GoRoute(
+          path: RouteNames.adminSports,
+          builder: (_, _) => const AdminSportsPage(),
+        ),
+        // Admin Courts Routes
+        GoRoute(
+          path: RouteNames.adminCourts,
+          builder: (_, _) => const AdminCourtsPage(),
+        ),
+        GoRoute(
+          path: RouteNames.adminCourtCreate,
+          builder: (_, _) => const AdminCourtFormPage(),
+        ),
+        GoRoute(
+          path: '/admin/courts/:id',
+          builder: (_, s) =>
+              AdminCourtDetailPage(courtId: s.pathParameters['id']!),
+        ),
+        GoRoute(
+          path: '/admin/courts/:id/edit',
+          builder: (_, s) =>
+              AdminCourtFormPage(courtId: s.pathParameters['id']!),
+        ),
+        // Admin Operating Hours & Exceptions
+        GoRoute(
+          path: RouteNames.adminOperatingHours,
+          builder: (_, s) => AdminOperatingHoursPage(
+            initialCenterId: s.extra is String
+                ? s.extra as String
+                : s.uri.queryParameters['centerId'],
+          ),
+        ),
+        GoRoute(
+          path: RouteNames.adminOperatingExceptions,
+          builder: (_, s) => AdminOperatingExceptionsPage(
+            initialCenterId: s.extra is String
+                ? s.extra as String
+                : s.uri.queryParameters['centerId'],
+          ),
+        ),
+        // Admin Price Rules
+        GoRoute(
+          path: RouteNames.adminPriceRules,
+          builder: (_, s) => AdminPriceRulesPage(
+            initialCourtId: s.extra is String
+                ? s.extra as String
+                : s.uri.queryParameters['courtId'],
+            courtName: s.uri.queryParameters['courtName'],
+          ),
+        ),
+        // Admin Settings
+        GoRoute(
+          path: RouteNames.adminSettings,
+          builder: (_, _) => const AdminSettingsPage(),
+        ),
+        // Admin Cancellation Policies
+        GoRoute(
+          path: RouteNames.adminCancellationPolicies,
+          builder: (_, _) => const AdminCancellationPoliciesPage(),
+        ),
+        // Admin Bookings & Cancellations
+        GoRoute(
+          path: '/admin/bookings/:id',
+          builder: (_, s) =>
+              AdminBookingDetailPage(bookingId: s.pathParameters['id']!),
+        ),
+        GoRoute(
+          path: RouteNames.adminCancellationRequests,
+          builder: (_, _) => const AdminCancellationRequestsPage(),
+        ),
+        // Admin Reports
+        GoRoute(
+          path: RouteNames.adminReportsHub,
+          builder: (_, _) => const AdminReportsHubPage(),
+        ),
+        GoRoute(
+          path: RouteNames.adminSummaryReport,
+          builder: (_, _) => const AdminSummaryReportPage(),
+        ),
+        GoRoute(
+          path: RouteNames.adminRevenueReport,
+          builder: (_, _) => const AdminRevenueReportPage(),
+        ),
+        GoRoute(
+          path: RouteNames.adminBookingReport,
+          builder: (_, _) => const AdminBookingReportPage(),
+        ),
+        GoRoute(
+          path: RouteNames.adminOccupancyReport,
+          builder: (_, _) => const AdminOccupancyReportPage(),
+        ),
       ],
     );
   }

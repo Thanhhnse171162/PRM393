@@ -17,14 +17,16 @@ bool consecutiveStaffSlots(List<Slot> slots) {
                     .difference(DateTime.parse(s.start))
                     .inMinutes !=
                 60,
-      ))
+      )) {
     return false;
+  }
   final sorted = [
     ...slots,
   ]..sort((a, b) => DateTime.parse(a.start).compareTo(DateTime.parse(b.start)));
   for (var i = 1; i < sorted.length; i++) {
-    if (DateTime.parse(sorted[i - 1].end) != DateTime.parse(sorted[i].start))
+    if (DateTime.parse(sorted[i - 1].end) != DateTime.parse(sorted[i].start)) {
       return false;
+    }
   }
   return true;
 }
@@ -71,8 +73,9 @@ class _StaffWalkInPageState extends State<StaffWalkInPage> {
       );
       if (mounted && version == generation) setState(() => availability = data);
     } catch (e) {
-      if (mounted && version == generation)
+      if (mounted && version == generation) {
         setState(() => error = staffError(e));
+      }
     } finally {
       if (mounted && version == generation) setState(() => loading = false);
     }
@@ -257,8 +260,9 @@ class _StaffWalkInPageState extends State<StaffWalkInPage> {
                     context,
                     'Xác nhận đặt tại quầy',
                     'Đã nhận đủ tiền và đối chiếu thông tin khách?',
-                  ))
+                  )) {
                     return;
+                  }
                   setState(() => busy = true);
                   try {
                     final result = await api.command('bookings/walk-in', {
@@ -268,10 +272,11 @@ class _StaffWalkInPageState extends State<StaffWalkInPage> {
                       'slotStartAts': slots.map((s) => s.start).toList(),
                       'paymentMethod': method,
                     });
-                    if (context.mounted)
+                    if (context.mounted) {
                       context.go(
                         '/staff/bookings/${result['booking']['bookingId']}',
                       );
+                    }
                   } catch (e) {
                     if (context.mounted) {
                       showMessage(context, staffError(e));
