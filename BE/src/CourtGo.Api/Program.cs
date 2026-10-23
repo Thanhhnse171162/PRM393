@@ -95,9 +95,24 @@ else if (paymentSettings.ProviderMode == "Production")
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddHttpClient("PaymentGateway", client => client.Timeout = TimeSpan.FromSeconds(35))
         .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });
-    builder.Services.AddScoped<IPaymentGateway>(sp => new CourtGo.Infrastructure.Payments.RealPaymentGateway(
-        sp.GetRequiredService<IHttpClientFactory>().CreateClient("PaymentGateway"), paymentSettings,
-        sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? "127.0.0.1"));
+    builder.Services.AddScoped<IPaymentGateway>(sp =>
+    {
+        var httpContext = sp.GetRequiredService<IHttpContextAccessor>().HttpContext;
+        string? clientIp = null;
+        if (httpContext != null)
+        {
+            if (httpContext.Request.Headers.TryGetValue("CF-Connecting-IP", out var cfIp) && !string.IsNullOrWhiteSpace(cfIp))
+                clientIp = cfIp.ToString();
+            else if (httpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var xff) && !string.IsNullOrWhiteSpace(xff))
+                clientIp = xff.ToString().Split(',')[0].Trim();
+            else
+                clientIp = httpContext.Connection.RemoteIpAddress?.ToString();
+        }
+        return new CourtGo.Infrastructure.Payments.RealPaymentGateway(
+            sp.GetRequiredService<IHttpClientFactory>().CreateClient("PaymentGateway"),
+            paymentSettings,
+            clientIp ?? "127.0.0.1");
+    });
 }
 else
 {

@@ -76,9 +76,38 @@ public sealed class RealPaymentGateway(HttpClient http, PaymentSettings settings
             ["vnp_Amount"] = PaymentSignatures.Number(checked(r.Amount * 100)), ["vnp_CurrCode"] = "VND",
             ["vnp_TxnRef"] = GetReference(r), ["vnp_OrderInfo"] = $"CourtGo deposit {r.BookingId:N}",
             ["vnp_OrderType"] = "other", ["vnp_Locale"] = v.Locale, ["vnp_ReturnUrl"] = v.ReturnUrl,
-            ["vnp_IpAddr"] = clientIp, ["vnp_CreateDate"] = Date(r.CreatedAt.Value), ["vnp_ExpireDate"] = Date(r.ExpiresAt.Value)
+            ["vnp_IpAddr"] = SanitizeIp(clientIp), ["vnp_CreateDate"] = Date(r.CreatedAt.Value), ["vnp_ExpireDate"] = Date(r.ExpiresAt.Value)
         };
         var raw = PaymentSignatures.VnPayCanonical(fields);
         return new(GetReference(r), v.PaymentUrl + "?" + raw + "&vnp_SecureHash=" + PaymentSignatures.Sha512(v.HashSecret, raw), "VNPay");
     }
+
+    private static string SanitizeIp(string? ip)
+    {
+        if (string.IsNullOrWhiteSpace(ip)) return "127.0.0.1";
+        var candidate = ip.Trim();
+        if (candidate.Contains(',')) candidate = candidate.Split(',')[0].Trim();
+        if (candidate.Contains(':') && System.Net.IPAddress.TryParse(candidate, out var parsedV6) && parsedV6.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
+        {
+            if (parsedV6.IsIPv4MappedToIPv6)
+            {
+                var v4 = parsedV6.MapToIPv4().ToString();
+                return v4 == "0.0.0.1" ? "127.0.0.1" : v4;
+            }
+            if (candidate == "::1") return "127.0.0.1";
+            return candidate.Length <= 45 ? candidate : "127.0.0.1";
+        }
+        if (candidate.Contains(':'))
+        {
+            var host = candidate.Split(':')[0];
+            if (System.Net.IPAddress.TryParse(host, out _)) return host;
+        }
+        if (System.Net.IPAddress.TryParse(candidate, out var addr))
+        {
+            var str = addr.ToString();
+            return str == "0.0.0.1" ? "127.0.0.1" : str;
+        }
+        return "127.0.0.1";
+    }
 }
+

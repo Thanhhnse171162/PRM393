@@ -35,7 +35,7 @@ class _Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<_Checkout> {
-  String method = 'MoMo';
+  String method = 'VNPay';
   bool busy = false;
   String? error;
   Timer? timer;
@@ -204,26 +204,22 @@ class _CheckoutState extends State<_Checkout> {
               const SizedBox(height: 24),
               const SectionHeader('Phương thức đặt cọc'),
               const SizedBox(height: 12),
-              for (final choice in ['MoMo', 'VNPay'])
+              for (final choice in ['VNPay'])
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Card(
                     child: ListTile(
                       minTileHeight: 64,
-                      leading: Icon(
-                        choice == 'MoMo'
-                            ? Icons.account_balance_wallet_outlined
-                            : Icons.account_balance_outlined,
+                      leading: const Icon(
+                        Icons.account_balance_outlined,
                         color: AppColors.primary,
                       ),
-                      title: Text(
-                        choice,
-                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      title: const Text(
+                        'VNPAY (Sandbox)',
+                        style: TextStyle(fontWeight: FontWeight.w700),
                       ),
-                      trailing: Icon(
-                        method == choice
-                            ? Icons.radio_button_checked
-                            : Icons.radio_button_off,
+                      trailing: const Icon(
+                        Icons.radio_button_checked,
                         color: AppColors.primary,
                       ),
                       onTap: busy

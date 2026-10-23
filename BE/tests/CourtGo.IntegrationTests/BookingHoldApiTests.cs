@@ -54,6 +54,7 @@ public class BookingHoldApiTests : IClassFixture<BookingHoldApiTests.Factory>
             var jwtKey = new string('x', 48);
             builder.UseSetting("Jwt:Key", jwtKey);
             builder.UseSetting("Workers:Enabled", "false");
+            builder.UseSetting("Payments:ProviderMode", "Development");
 
             builder.ConfigureServices(services =>
             {
