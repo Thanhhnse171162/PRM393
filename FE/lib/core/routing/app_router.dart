@@ -6,6 +6,7 @@ import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/location/presentation/pages/location_page.dart';
+import '../../features/payment/presentation/pages/vnpay_payment_page.dart';
 import '../../shared/widgets/placeholder_page.dart';
 import '../../shared/widgets/role_shell.dart';
 import 'route_guard.dart';
@@ -51,6 +52,12 @@ class AppRouter {
         GoRoute(path: RouteNames.login, builder: (_, _) => const LoginPage()),
         GoRoute(path: RouteNames.register, builder: (_, _) => const RegisterPage()),
         GoRoute(path: RouteNames.location, builder: (_, _) => const LocationPage()),
+        GoRoute(
+          path: RouteNames.customerPayment,
+          builder: (_, state) => VnPayPaymentPage(
+            bookingId: state.pathParameters['bookingId']!,
+          ),
+        ),
         _shell(_customerTabs, [
           (RouteNames.customerHome, const PlaceholderPage(title: 'Trang chủ', icon: Icons.home_outlined)),
           (RouteNames.customerExplore, const PlaceholderPage(title: 'Khám phá', icon: Icons.explore_outlined)),

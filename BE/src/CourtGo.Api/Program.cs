@@ -1,5 +1,6 @@
 using System.Text;
 using CourtGo.Api.Middleware;
+using CourtGo.Api.Payments;
 using CourtGo.Application.Auth;
 using CourtGo.Application.Interfaces;
 using CourtGo.Infrastructure;
@@ -16,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
 
 builder.Services.AddControllers();
+builder.Services.Configure<VnPayOptions>(builder.Configuration.GetSection(VnPayOptions.SectionName));
+builder.Services.AddSingleton<VnPayGateway>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {

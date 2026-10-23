@@ -125,6 +125,12 @@ The base URL is read from `--dart-define=API_BASE_URL=...` (see `FE/lib/core/con
 | iOS simulator | `http://localhost:5080` |
 | Physical device | `http://<YOUR_PC_LAN_IP>:5080` (same Wi-Fi; allow port 5080 in the firewall) |
 
+### VNPay sandbox
+
+VNPay settings for this machine are stored in the git-ignored `BE/src/CourtGo.Api/appsettings.Local.json`. The checked-in example at `BE/src/CourtGo.Api/appsettings.Development.example.json` shows all fields. Keep `HashSecret` on the server only. The API's `VnPay:ReturnUrl` must point to `/api/payments/vnpay/return`, for example `http://localhost:5080/api/payments/vnpay/return` during desktop testing. The supplied `http://localhost:5173/payment/vnpay-callback` belongs to a separate web frontend; this repository contains Flutter, so it is not used as the payment return endpoint. Set `VnPay:FrontendReturnUrl` only if that web page exists and reads the payment status through the authenticated API.
+
+For an Android emulator, use a return URL that its browser can reach, such as `http://10.0.2.2:5080/api/payments/vnpay/return`, if allowed by your VNPay sandbox configuration. A physical device and VNPay IPN require a publicly reachable HTTPS API URL. Register `https://<your-api-domain>/api/payments/vnpay/ipn` with VNPay. After creating a booking, open `/customer/payments/{bookingId}` in Flutter. The page opens VNPay in a browser and checks server status when the app resumes.
+
 ## Tests
 
 ```bash

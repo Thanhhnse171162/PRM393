@@ -55,5 +55,12 @@ void main() {
       expect(RouteGuard.redirect(location: RouteNames.customerHome, role: null),
           isNull);
     });
+
+    test('guest must sign in before opening payment', () {
+      expect(
+          RouteGuard.redirect(
+              location: '/customer/payments/booking-id', role: null),
+          RouteNames.login);
+    });
   });
 }

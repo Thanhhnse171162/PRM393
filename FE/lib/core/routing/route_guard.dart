@@ -23,6 +23,9 @@ class RouteGuard {
     required String location,
     required UserRole? role,
   }) {
+    if (location.startsWith('/customer/payments/') && role == null) {
+      return RouteNames.login;
+    }
     if (location.startsWith('/staff') && role != UserRole.staff) {
       return role == null ? RouteNames.login : homeFor(role);
     }
