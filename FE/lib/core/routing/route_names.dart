@@ -11,6 +11,7 @@ class RouteNames {
   static const String customerHome = '/customer/home';
   static const String customerExplore = '/customer/explore';
   static const String customerBookings = '/customer/bookings';
+  static const String customerPayment = '/customer/payments/:bookingId';
   static const String customerNotifications = '/customer/notifications';
   static const String customerAccount = '/customer/account';
 

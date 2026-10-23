@@ -67,5 +67,12 @@ void main() {
         isNull,
       );
     });
+
+    test('guest must sign in before opening payment', () {
+      expect(
+          RouteGuard.redirect(
+              location: '/customer/payments/booking-id', role: null),
+          RouteNames.login);
+    });
   });
 }

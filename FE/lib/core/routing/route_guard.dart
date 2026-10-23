@@ -19,7 +19,13 @@ class RouteGuard {
   }
 
   /// Returns a redirect path, or `null` if [location] is allowed.
-  static String? redirect({required String location, required UserRole? role}) {
+  static String? redirect({
+    required String location,
+    required UserRole? role,
+  }) {
+    if (location.startsWith('/customer/payments/') && role == null) {
+      return RouteNames.login;
+    }
     if (location.startsWith('/staff') && role != UserRole.staff) {
       return role == null ? RouteNames.login : homeFor(role);
     }

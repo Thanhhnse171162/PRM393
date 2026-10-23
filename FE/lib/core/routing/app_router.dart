@@ -22,6 +22,7 @@ import '../../features/reviews/review_pages.dart';
 import '../../features/account/account_page.dart';
 import '../../shared/models/customer_models.dart';
 import '../../features/location/presentation/pages/location_page.dart';
+import '../../features/payment/presentation/pages/vnpay_payment_page.dart';
 import '../../shared/widgets/role_shell.dart';
 import 'route_guard.dart';
 import 'route_names.dart';
@@ -172,6 +173,12 @@ class AppRouter {
         GoRoute(
           path: RouteNames.location,
           builder: (_, _) => const LocationPage(),
+        ),
+        GoRoute(
+          path: RouteNames.customerPayment,
+          builder: (_, state) => VnPayPaymentPage(
+            bookingId: state.pathParameters['bookingId']!,
+          ),
         ),
         _shell(_customerTabs, [
           (RouteNames.customerHome, const CustomerHomePage()),

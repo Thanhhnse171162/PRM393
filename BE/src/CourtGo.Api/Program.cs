@@ -1,5 +1,6 @@
 using System.Text;
 using CourtGo.Api.Middleware;
+using CourtGo.Api.Payments;
 using CourtGo.Application.Auth;
 using CourtGo.Application.Interfaces;
 using CourtGo.Infrastructure;
@@ -40,6 +41,8 @@ builder.Services.AddControllers()
             { StatusCode = 400, ContentTypes = { "application/problem+json" } };
         };
     });
+builder.Services.Configure<VnPayOptions>(builder.Configuration.GetSection(VnPayOptions.SectionName));
+builder.Services.AddSingleton<VnPayGateway>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
