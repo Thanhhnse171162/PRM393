@@ -82,6 +82,8 @@ class _CourtGoAppState extends State<CourtGoApp> {
         _router.go('/customer/bookings/$id/payment');
       }
     });
+    // A warm deep link can arrive while Flutter is idle, with no frame scheduled.
+    WidgetsBinding.instance.ensureVisualUpdate();
   }
 
   @override

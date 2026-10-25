@@ -1,3 +1,6 @@
+import '../shared/admin_image_field.dart';
+import '../../../core/widgets/error_state.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -38,6 +41,8 @@ class _AdminCenterFormPageState extends State<AdminCenterFormPage> {
   String? _pickedAddressHint;
 
   bool _saving = false;
+  bool _uploadingImage = false;
+  String? _loadError;
   bool _loading = false;
   bool _locationError = false;
 
@@ -62,17 +67,16 @@ class _AdminCenterFormPageState extends State<AdminCenterFormPage> {
       _selectedLocation = LatLng(d!.latitude!, d.longitude!);
     }
 
-    _imageCtrl.addListener(() {
-      if (mounted) setState(() {});
-    });
-
     if (_isEdit && widget.initialData == null) {
       _fetchInitial();
     }
   }
 
   void _fetchInitial() async {
-    setState(() => _loading = true);
+    setState(() {
+      _loading = true;
+      _loadError = null;
+    });
     try {
       final d = await context.read<AdminApi>().getCenter(widget.centerId!);
       if (mounted) {
@@ -93,7 +97,11 @@ class _AdminCenterFormPageState extends State<AdminCenterFormPage> {
         });
       }
     } catch (_) {
-      if (mounted) setState(() => _loading = false);
+      if (mounted)
+        setState(() {
+          _loading = false;
+          _loadError = 'Không thể tải cơ sở. Hãy thử lại để tránh sửa dữ liệu chưa đầy đủ.';
+        });
     }
   }
 
@@ -130,6 +138,7 @@ class _AdminCenterFormPageState extends State<AdminCenterFormPage> {
   }
 
   Future<void> _submit() async {
+    if (_saving || _uploadingImage || _loading || _loadError != null) return;
     final isFormValid = _formKey.currentState!.validate();
 
     if (_selectedLocation == null) {
@@ -260,6 +269,8 @@ class _AdminCenterFormPageState extends State<AdminCenterFormPage> {
           ? const Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             )
+          : _loadError != null
+          ? ErrorState(message: _loadError!, onRetry: _fetchInitial)
           : Column(
               children: [
                 Expanded(
@@ -398,6 +409,7 @@ class _AdminCenterFormPageState extends State<AdminCenterFormPage> {
           // Múi giờ vận hành (*)
           DropdownButtonFormField<String>(
             initialValue: _timeZoneId,
+            isExpanded: true,
             decoration: InputDecoration(
               labelText: 'Múi giờ vận hành *',
               border: OutlineInputBorder(
@@ -916,8 +928,6 @@ class _AdminCenterFormPageState extends State<AdminCenterFormPage> {
 
   // Section D Widget
   Widget _buildCoverImageCard() {
-    final hasUrl = _imageCtrl.text.trim().isNotEmpty;
-
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -956,108 +966,10 @@ class _AdminCenterFormPageState extends State<AdminCenterFormPage> {
           ),
           const SizedBox(height: 16),
 
-          // URL Input
-          TextFormField(
+          AdminImageField(
             controller: _imageCtrl,
-            keyboardType: TextInputType.url,
-            decoration: InputDecoration(
-              labelText: 'Đường dẫn ảnh cover (URL)',
-              hintText: 'https://example.com/banner.jpg',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 14,
-                vertical: 14,
-              ),
-              suffixIcon: hasUrl
-                  ? IconButton(
-                      icon: const Icon(
-                        Icons.clear,
-                        size: 18,
-                        color: AppColors.textSecondary,
-                      ),
-                      onPressed: () => _imageCtrl.clear(),
-                    )
-                  : null,
-            ),
-            validator: (v) {
-              if (v != null && v.trim().length > 500) {
-                return 'Đường dẫn ảnh không được vượt quá 500 ký tự';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 14),
-
-          // Image Preview Container
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Container(
-              height: 160,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColors.background,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: hasUrl
-                  ? Image.network(
-                      _imageCtrl.text.trim(),
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: AppColors.primary,
-                          ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(
-                                Icons.broken_image_outlined,
-                                color: AppColors.error,
-                                size: 36,
-                              ),
-                              SizedBox(height: 6),
-                              Text(
-                                'Không thể tải ảnh từ URL này',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.textSecondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    )
-                  : Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
-                            Icons.image_outlined,
-                            color: AppColors.textSecondary,
-                            size: 36,
-                          ),
-                          SizedBox(height: 6),
-                          Text(
-                            'Chưa có ảnh cover',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-            ),
+            enabled: !_saving,
+            onBusyChanged: (value) => setState(() => _uploadingImage = value),
           ),
         ],
       ),
@@ -1091,7 +1003,7 @@ class _AdminCenterFormPageState extends State<AdminCenterFormPage> {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          onPressed: _saving ? null : _submit,
+          onPressed: _saving || _uploadingImage ? null : _submit,
           child: _saving
               ? const SizedBox(
                   height: 20,

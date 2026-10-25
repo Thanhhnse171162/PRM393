@@ -273,4 +273,85 @@ public class AdminStaffApiTests : IDisposable
             Assert.Equal(center2Id, active.SportCenterId);
         }
     }
+
+    [Fact]
+    public async Task CreateStaff_MissingRequiredFields_ReturnsValidationProblemWithFieldErrors()
+    {
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _factory.AdminToken);
+
+        var request = new CreateStaffRequest("", null, "", "", Guid.Empty);
+        var response = await _client.PostAsJsonAsync("/api/admin/staff", request);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var problem = await response.Content.ReadFromJsonAsync<System.Text.Json.Nodes.JsonObject>();
+        Assert.NotNull(problem);
+        Assert.Equal("VALIDATION_ERROR", problem["code"]?.ToString());
+
+        var errors = problem["errors"]?.AsObject();
+        Assert.NotNull(errors);
+        Assert.True(errors.ContainsKey("fullName"));
+        Assert.True(errors.ContainsKey("phoneNumber"));
+        Assert.True(errors.ContainsKey("password"));
+        Assert.True(errors.ContainsKey("sportCenterId"));
+    }
+
+    [Theory]
+    [InlineData("123")]
+    [InlineData("abcdefgh")]
+    [InlineData("09012")]
+    public async Task CreateStaff_InvalidPhone_ReturnsValidationError(string invalidPhone)
+    {
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _factory.AdminToken);
+
+        var request = new CreateStaffRequest("Valid Name", null, invalidPhone, "Password123!", _factory.CenterId);
+        var response = await _client.PostAsJsonAsync("/api/admin/staff", request);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        var problem = await response.Content.ReadFromJsonAsync<System.Text.Json.Nodes.JsonObject>();
+        Assert.NotNull(problem);
+        var errors = problem["errors"]?.AsObject();
+        Assert.NotNull(errors);
+        Assert.True(errors.ContainsKey("phoneNumber"));
+    }
+
+    [Theory]
+    [InlineData("not-an-email")]
+    [InlineData("@missinguser.vn")]
+    [InlineData("missingdomain@")]
+    public async Task CreateStaff_InvalidEmail_ReturnsValidationError(string invalidEmail)
+    {
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _factory.AdminToken);
+
+        var request = new CreateStaffRequest("Valid Name", invalidEmail, "0901234567", "Password123!", _factory.CenterId);
+        var response = await _client.PostAsJsonAsync("/api/admin/staff", request);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        var problem = await response.Content.ReadFromJsonAsync<System.Text.Json.Nodes.JsonObject>();
+        Assert.NotNull(problem);
+        var errors = problem["errors"]?.AsObject();
+        Assert.NotNull(errors);
+        Assert.True(errors.ContainsKey("email"));
+    }
+
+    [Theory]
+    [InlineData("short")] // < 8
+    [InlineData("alllowercase123")] // no upper
+    [InlineData("ALLUPPERCASE123")] // no lower
+    [InlineData("NoDigitsAtAll!")] // no digit
+    public async Task CreateStaff_InvalidPassword_ReturnsValidationError(string invalidPassword)
+    {
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _factory.AdminToken);
+
+        var request = new CreateStaffRequest("Valid Name", "staff@cg.vn", "0901234567", invalidPassword, _factory.CenterId);
+        var response = await _client.PostAsJsonAsync("/api/admin/staff", request);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        var problem = await response.Content.ReadFromJsonAsync<System.Text.Json.Nodes.JsonObject>();
+        Assert.NotNull(problem);
+        var errors = problem["errors"]?.AsObject();
+        Assert.NotNull(errors);
+        Assert.True(errors.ContainsKey("password"));
+    }
 }
+

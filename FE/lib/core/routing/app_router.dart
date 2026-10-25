@@ -22,7 +22,6 @@ import '../../features/reviews/review_pages.dart';
 import '../../features/account/account_page.dart';
 import '../../shared/models/customer_models.dart';
 import '../../features/location/presentation/pages/location_page.dart';
-import '../../features/payment/presentation/pages/vnpay_payment_page.dart';
 import '../../shared/widgets/role_shell.dart';
 import 'route_guard.dart';
 import 'route_names.dart';
@@ -159,7 +158,8 @@ class AppRouter {
         if ((path.startsWith('/customer/bookings') ||
                 path == RouteNames.customerNotifications) &&
             !auth.isAuthenticated) {
-          return RouteNames.login;
+          final target = state.uri.toString();
+          return '${RouteNames.login}?redirect=${Uri.encodeComponent(target)}';
         }
         return RouteGuard.redirect(location: path, role: auth.role);
       },
@@ -176,9 +176,9 @@ class AppRouter {
         ),
         GoRoute(
           path: RouteNames.customerPayment,
-          builder: (_, state) => VnPayPaymentPage(
-            bookingId: state.pathParameters['bookingId']!,
-          ),
+          // Preserve old bookmarks, but use the current deposit/status API flow.
+          redirect: (_, state) =>
+              '/customer/bookings/${state.pathParameters['bookingId']!}/checkout',
         ),
         _shell(_customerTabs, [
           (RouteNames.customerHome, const CustomerHomePage()),
@@ -218,6 +218,7 @@ class AppRouter {
         GoRoute(
           path: '/customer/bookings/:id/payment',
           builder: (_, s) => PaymentPage(
+            key: ValueKey('payment-${s.pathParameters['id']}'),
             id: s.pathParameters['id']!,
             attempt: s.extra is Json ? s.extra as Json : null,
           ),

@@ -10,6 +10,7 @@ import '../../core/utils/currency_utils.dart';
 import '../../shared/widgets/customer_widgets.dart';
 import '../auth/presentation/providers/auth_provider.dart';
 import '../home/discovery_provider.dart';
+import '../../shared/models/user_model.dart';
 import 'availability_provider.dart';
 
 class AvailabilityPage extends StatelessWidget {
@@ -357,13 +358,32 @@ class _AvailabilityView extends StatelessWidget {
             const SizedBox(height: 12),
             PrimaryButton(
               label: 'Tiếp tục',
-              loading: state.holding,
-              onPressed: state.selected.isEmpty || state.loading
+              loading: state.holding || state.loading,
+              onPressed: state.selected.isEmpty || state.loading || state.holding
                   ? null
                   : () async {
                       final auth = context.read<AuthProvider>();
                       if (!auth.isAuthenticated) {
-                        context.push('/login');
+                        await context.push('/login');
+                        if (!context.mounted) return;
+                        if (auth.isAuthenticated &&
+                            auth.role == UserRole.customer) {
+                          final ok = await state.revalidateSelection();
+                          if (!context.mounted) return;
+                          if (!ok) {
+                            if (state.error != null) {
+                              showMessage(context, state.error!);
+                            }
+                            return;
+                          }
+                          final booking = await state.hold();
+                          if (context.mounted && booking != null) {
+                            context.push(
+                              '/customer/bookings/${booking.id}/checkout',
+                              extra: booking,
+                            );
+                          }
+                        }
                         return;
                       }
                       final booking = await state.hold();

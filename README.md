@@ -99,7 +99,7 @@ Connection string examples (each teammate uses their own):
 - SQL login: `Server=<server>;Database=CourtGoDb;User Id=<user>;Password=<password>;TrustServerCertificate=True`
 - Windows auth: `Server=<server>;Database=CourtGoDb;Trusted_Connection=True;TrustServerCertificate=True`
 
-> No database migration exists yet. The first backend feature will add the initial EF Core migration (see [docs/database/README.md](docs/database/README.md)).
+> EF Core migrations are included in `BE/src/CourtGo.Infrastructure/Data/Migrations`. Review the target database and migration history before applying them (see [docs/database/README.md](docs/database/README.md)). The final audit and current demo limitations are documented in [docs/final-audit/TEST_REPORT.md](docs/final-audit/TEST_REPORT.md).
 
 ## Run
 

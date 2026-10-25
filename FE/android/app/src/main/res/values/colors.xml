@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#087F6D</color>
+    <color name="ic_launcher_background">#0075FF</color>
     <color name="splash_background">#FFFFFF</color>
     <color name="courtgo_primary">#087F6D</color>
     <color name="courtgo_primary_dark">#05685A</color>

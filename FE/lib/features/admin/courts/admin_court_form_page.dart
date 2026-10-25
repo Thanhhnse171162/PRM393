@@ -1,3 +1,5 @@
+import '../shared/admin_image_field.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,11 +11,7 @@ import '../shared/admin_models.dart';
 import '../shared/admin_widgets.dart';
 
 class AdminCourtFormPage extends StatefulWidget {
-  const AdminCourtFormPage({
-    super.key,
-    this.courtId,
-    this.initialData,
-  });
+  const AdminCourtFormPage({super.key, this.courtId, this.initialData});
 
   final String? courtId;
   final AdminCourtDetail? initialData;
@@ -38,6 +36,7 @@ class _AdminCourtFormPageState extends State<AdminCourtFormPage> {
   List<AdminSportItem> _sports = [];
   bool _loading = true;
   bool _saving = false;
+  bool _uploadingImage = false;
 
   bool get _isEdit => widget.courtId != null;
 
@@ -110,6 +109,7 @@ class _AdminCourtFormPageState extends State<AdminCourtFormPage> {
   }
 
   Future<void> _submit() async {
+    if (_saving || _uploadingImage) return;
     if (!_formKey.currentState!.validate()) return;
     if (!_isEdit && _selectedCenterId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -139,12 +139,15 @@ class _AdminCourtFormPageState extends State<AdminCourtFormPage> {
         await api.updateCourt(widget.courtId!, {
           'name': _nameCtrl.text.trim(),
           'sportId': _selectedSportId,
-          'surfaceType':
-              _surfaceCtrl.text.trim().isEmpty ? null : _surfaceCtrl.text.trim(),
-          'description':
-              _descCtrl.text.trim().isEmpty ? null : _descCtrl.text.trim(),
-          'coverImageUrl':
-              _imageCtrl.text.trim().isEmpty ? null : _imageCtrl.text.trim(),
+          'surfaceType': _surfaceCtrl.text.trim().isEmpty
+              ? null
+              : _surfaceCtrl.text.trim(),
+          'description': _descCtrl.text.trim().isEmpty
+              ? null
+              : _descCtrl.text.trim(),
+          'coverImageUrl': _imageCtrl.text.trim().isEmpty
+              ? null
+              : _imageCtrl.text.trim(),
           'basePricePerHour': price,
         });
       } else {
@@ -153,12 +156,15 @@ class _AdminCourtFormPageState extends State<AdminCourtFormPage> {
           'sportId': _selectedSportId,
           'code': _codeCtrl.text.trim().toUpperCase(),
           'name': _nameCtrl.text.trim(),
-          'surfaceType':
-              _surfaceCtrl.text.trim().isEmpty ? null : _surfaceCtrl.text.trim(),
-          'description':
-              _descCtrl.text.trim().isEmpty ? null : _descCtrl.text.trim(),
-          'coverImageUrl':
-              _imageCtrl.text.trim().isEmpty ? null : _imageCtrl.text.trim(),
+          'surfaceType': _surfaceCtrl.text.trim().isEmpty
+              ? null
+              : _surfaceCtrl.text.trim(),
+          'description': _descCtrl.text.trim().isEmpty
+              ? null
+              : _descCtrl.text.trim(),
+          'coverImageUrl': _imageCtrl.text.trim().isEmpty
+              ? null
+              : _imageCtrl.text.trim(),
           'basePricePerHour': price,
         });
       }
@@ -166,9 +172,11 @@ class _AdminCourtFormPageState extends State<AdminCourtFormPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(_isEdit
-                ? 'Đã cập nhật sân thành công!'
-                : 'Đã tạo sân thể thao mới!'),
+            content: Text(
+              _isEdit
+                  ? 'Đã cập nhật sân thành công!'
+                  : 'Đã tạo sân thể thao mới!',
+            ),
           ),
         );
         Navigator.pop(context, true);
@@ -248,8 +256,10 @@ class _AdminCourtFormPageState extends State<AdminCourtFormPage> {
                             value: _selectedSportId,
                             decoration: const InputDecoration(
                               labelText: 'Môn thể thao *',
-                              prefixIcon:
-                                  Icon(Icons.sports_basketball, size: 20),
+                              prefixIcon: Icon(
+                                Icons.sports_basketball,
+                                size: 20,
+                              ),
                               border: OutlineInputBorder(),
                             ),
                             items: _sports.map((s) {
@@ -311,8 +321,10 @@ class _AdminCourtFormPageState extends State<AdminCourtFormPage> {
                             decoration: const InputDecoration(
                               labelText: 'Giá cơ sở mỗi giờ (VND) *',
                               hintText: '150000',
-                              prefixIcon:
-                                  Icon(Icons.payments_outlined, size: 20),
+                              prefixIcon: Icon(
+                                Icons.payments_outlined,
+                                size: 20,
+                              ),
                               border: OutlineInputBorder(),
                             ),
                             validator: (v) {
@@ -341,18 +353,17 @@ class _AdminCourtFormPageState extends State<AdminCourtFormPage> {
                             maxLines: 2,
                             decoration: const InputDecoration(
                               labelText: 'Mô tả chi tiết sân',
-                              hintText: 'VD: Sân trong nhà, đèn LED chuẩn thi đấu',
+                              hintText:
+                                  'VD: Sân trong nhà, đèn LED chuẩn thi đấu',
                               border: OutlineInputBorder(),
                             ),
                           ),
                           const SizedBox(height: 12),
-                          TextFormField(
+                          AdminImageField(
                             controller: _imageCtrl,
-                            decoration: const InputDecoration(
-                              labelText: 'URL hình ảnh sân',
-                              hintText: 'https://...',
-                              border: OutlineInputBorder(),
-                            ),
+                            enabled: !_saving,
+                            onBusyChanged: (value) =>
+                                setState(() => _uploadingImage = value),
                           ),
                         ],
                       ),
@@ -368,7 +379,7 @@ class _AdminCourtFormPageState extends State<AdminCourtFormPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      onPressed: _saving ? null : _submit,
+                      onPressed: _saving || _uploadingImage ? null : _submit,
                       child: _saving
                           ? const SizedBox(
                               height: 20,

@@ -17,7 +17,8 @@ class AdminFormat {
   }
 
   static String percent(num rate) {
-    return '${(rate * 100).toStringAsFixed(1)}%';
+    // Admin APIs return percentage points (0–100), not a 0–1 fraction.
+    return '${rate.toStringAsFixed(1)}%';
   }
 
   static String date(String iso) {
@@ -51,7 +52,8 @@ class AdminFormat {
 
   static String bookingStatusName(String status) {
     return switch (status.toLowerCase()) {
-      'pending' => 'Chờ thanh toán',
+      'pending' || 'pendingpayment' => 'Chờ thanh toán',
+      'expired' => 'Hết thời gian giữ',
       'confirmed' => 'Đã xác nhận',
       'checkedin' => 'Đã check-in',
       'inprogress' => 'Đang chơi',
@@ -64,8 +66,9 @@ class AdminFormat {
 
   static String paymentStatusName(String status) {
     return switch (status.toLowerCase()) {
-      'pending' => 'Chưa thanh toán',
-      'partiallypaid' => 'Đã cọc',
+      'pending' || 'unpaid' => 'Chưa thanh toán',
+      'partiallypaid' || 'depositpaid' => 'Đã cọc',
+      'refundpending' => 'Chờ hoàn tiền',
       'completed' || 'fullypaid' => 'Đã thanh toán đủ',
       'failed' => 'Thất bại',
       'cancelled' => 'Đã hủy',
@@ -256,11 +259,7 @@ class AdminStatusBadge extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w700,
-          color: fg,
-        ),
+        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: fg),
       ),
     );
   }
@@ -271,14 +270,19 @@ class AdminStatusBadge extends StatelessWidget {
       'confirmed' ||
       'completed' ||
       'approved' ||
-      'fullypaid' =>
-        (const Color(0xFFDCFCE7), const Color(0xFF15803D)),
-      'inprogress' || 'checkedin' =>
-        (const Color(0xFFE0E7FF), const Color(0xFF4338CA)),
-      'pending' || 'maintenance' || 'partiallypaid' =>
-        (const Color(0xFFFEF3C7), const Color(0xFFB45309)),
-      'cancelled' || 'rejected' || 'inactive' || 'failed' =>
-        (const Color(0xFFFEE2E2), const Color(0xFFB91C1C)),
+      'fullypaid' => (const Color(0xFFDCFCE7), const Color(0xFF15803D)),
+      'inprogress' ||
+      'checkedin' => (const Color(0xFFE0E7FF), const Color(0xFF4338CA)),
+      'pending' ||
+      'pendingpayment' ||
+      'refundpending' ||
+      'depositpaid' ||
+      'maintenance' ||
+      'partiallypaid' => (const Color(0xFFFEF3C7), const Color(0xFFB45309)),
+      'cancelled' ||
+      'rejected' ||
+      'inactive' ||
+      'failed' => (const Color(0xFFFEE2E2), const Color(0xFFB91C1C)),
       'noshow' => (const Color(0xFFFFEDD5), const Color(0xFFC2410C)),
       _ => (const Color(0xFFF1F5F9), const Color(0xFF475569)),
     };
@@ -304,12 +308,14 @@ class AdminSectionHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: AppColors.textPrimary,
+          Expanded(
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
             ),
           ),
           if (actionLabel != null && onAction != null)
@@ -430,8 +436,10 @@ class AdminBarChart extends StatelessWidget {
       height: height,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final barWidth = ((constraints.maxWidth / items.length) - 8)
-              .clamp(8.0, 36.0);
+          final barWidth = ((constraints.maxWidth / items.length) - 8).clamp(
+            8.0,
+            36.0,
+          );
           return Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -459,8 +467,10 @@ class AdminBarChart extends StatelessWidget {
                         const SizedBox(height: 4),
                         Container(
                           width: barWidth,
-                          height: (item.value / maxValue * (height - 40))
-                              .clamp(4.0, height - 40),
+                          height: (item.value / maxValue * (height - 40)).clamp(
+                            4.0,
+                            height - 40,
+                          ),
                           decoration: BoxDecoration(
                             color: primaryColor,
                             borderRadius: const BorderRadius.vertical(
@@ -547,8 +557,9 @@ class AdminActionCard extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: (badgeColor ?? AppColors.primary)
-                              .withValues(alpha: 0.15),
+                          color: (badgeColor ?? AppColors.primary).withValues(
+                            alpha: 0.15,
+                          ),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
@@ -600,7 +611,10 @@ Future<bool> adminConfirmDialog({
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
-          child: const Text('Hủy', style: TextStyle(color: AppColors.textSecondary)),
+          child: const Text(
+            'Hủy',
+            style: TextStyle(color: AppColors.textSecondary),
+          ),
         ),
         FilledButton(
           onPressed: () => Navigator.pop(ctx, true),

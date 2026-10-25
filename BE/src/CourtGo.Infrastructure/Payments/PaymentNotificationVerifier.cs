@@ -34,14 +34,14 @@ public sealed class PaymentNotificationVerifier(PaymentSettings settings)
         var v = settings.VnPay; v.Validate();
         string Get(string key) => fields.TryGetValue(key, out var value) ? value : throw Invalid();
         if (!PaymentSignatures.Matches(PaymentSignatures.Sha512(v.HashSecret, PaymentSignatures.VnPayCanonical(fields)), Get("vnp_SecureHash")) ||
-            Get("vnp_TmnCode") != v.TmnCode || !Guid.TryParseExact(Get("vnp_TxnRef"), "N", out var id) ||
+            Get("vnp_TmnCode") != v.TmnCode || (fields.TryGetValue("vnp_CurrCode", out var currency) && currency != "VND") || !Guid.TryParseExact(Get("vnp_TxnRef"), "N", out var id) ||
             !long.TryParse(Get("vnp_Amount"), NumberStyles.None, CultureInfo.InvariantCulture, out var scaled) || scaled <= 0 || scaled % 100 != 0)
             throw Invalid();
         var response = Get("vnp_ResponseCode");
         var transaction = Get("vnp_TransactionStatus");
         var status = response == "00" && transaction == "00" ? PaymentTransactionStatus.Succeeded
             : response == "24" ? PaymentTransactionStatus.Cancelled
-            : transaction is "01" or "05" or "06" ? PaymentTransactionStatus.Pending : PaymentTransactionStatus.Failed;
+            : transaction is "02" or "04" or "07" ? PaymentTransactionStatus.Failed : PaymentTransactionStatus.Pending;
         return new(id, Get("vnp_TxnRef"), scaled / 100m, status,
             Receipt("VNPay", Get("vnp_TransactionNo"), status), "VNPay");
     }

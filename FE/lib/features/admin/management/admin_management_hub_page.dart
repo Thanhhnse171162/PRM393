@@ -119,7 +119,7 @@ class AdminManagementHubPage extends StatelessWidget {
             description:
                 'Thời gian giữ chỗ, tỷ lệ đặt cọc mặc định và cho phép check-in còn nợ',
             icon: Icons.tune_outlined,
-            onTap: () => context.push('/admin/system-settings'),
+            onTap: () => context.push('/admin/settings'),
           ),
           const SizedBox(height: 32),
         ],

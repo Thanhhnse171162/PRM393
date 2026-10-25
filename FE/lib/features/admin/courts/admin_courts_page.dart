@@ -1,3 +1,5 @@
+import '../../../shared/widgets/customer_widgets.dart';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -67,13 +69,13 @@ class _AdminCourtsPageState extends State<AdminCourtsPage> {
     });
     try {
       final res = await context.read<AdminApi>().getCourts(
-            centerId: _selectedCenterId,
-            sportId: _selectedSportId,
-            status: _selectedStatus,
-            search: _searchCtrl.text.trim(),
-            page: 1,
-            pageSize: 50,
-          );
+        centerId: _selectedCenterId,
+        sportId: _selectedSportId,
+        status: _selectedStatus,
+        search: _searchCtrl.text.trim(),
+        page: 1,
+        pageSize: 50,
+      );
       if (mounted) {
         setState(() {
           _courts = res.items;
@@ -105,7 +107,10 @@ class _AdminCourtsPageState extends State<AdminCourtsPage> {
         foregroundColor: AppColors.textPrimary,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_circle_outline, color: AppColors.primary),
+            icon: const Icon(
+              Icons.add_circle_outline,
+              color: AppColors.primary,
+            ),
             tooltip: 'Thêm sân mới',
             onPressed: () async {
               final created = await context.push<bool>('/admin/courts/create');
@@ -187,8 +192,11 @@ class _AdminCourtsPageState extends State<AdminCourtsPage> {
                       ),
                       const SizedBox(width: 8),
                       ActionChip(
-                        avatar: const Icon(Icons.storefront,
-                            size: 16, color: AppColors.primary),
+                        avatar: const Icon(
+                          Icons.storefront,
+                          size: 16,
+                          color: AppColors.primary,
+                        ),
                         label: Text(
                           _selectedCenterId == null
                               ? 'Cơ sở: Tất cả'
@@ -199,8 +207,11 @@ class _AdminCourtsPageState extends State<AdminCourtsPage> {
                       ),
                       const SizedBox(width: 8),
                       ActionChip(
-                        avatar: const Icon(Icons.sports_tennis,
-                            size: 16, color: AppColors.teal),
+                        avatar: const Icon(
+                          Icons.sports_tennis,
+                          size: 16,
+                          color: AppColors.teal,
+                        ),
                         label: Text(
                           _selectedSportId == null
                               ? 'Môn: Tất cả'
@@ -281,14 +292,11 @@ class _AdminCourtsPageState extends State<AdminCourtsPage> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppColors.lightMint,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(Icons.sports_tennis,
-                      color: AppColors.primary, size: 24),
+                SportImage(
+                  url: c.coverImageUrl,
+                  width: 64,
+                  height: 64,
+                  borderRadius: 10,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -327,8 +335,11 @@ class _AdminCourtsPageState extends State<AdminCourtsPage> {
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          const Icon(Icons.storefront,
-                              size: 13, color: AppColors.textSecondary),
+                          const Icon(
+                            Icons.storefront,
+                            size: 13,
+                            color: AppColors.textSecondary,
+                          ),
                           const SizedBox(width: 4),
                           Expanded(
                             child: Text(

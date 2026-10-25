@@ -10,9 +10,14 @@ namespace CourtGo.Api.Controllers;
 [ApiController]
 [Route("api/bookings")]
 [Authorize(Roles = "Customer")]
-public class BookingPaymentsController(IDepositPaymentService depositPaymentService) : ControllerBase
+public class BookingPaymentsController(IDepositPaymentService depositPaymentService, IPaymentReconciliationService reconciliation) : ControllerBase
 {
     private readonly IDepositPaymentService _depositPaymentService = depositPaymentService;
+
+    [HttpPost("{bookingId:guid}/payments/reconcile")]
+    [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("PaymentQueryPolicy")]
+    public async Task<ActionResult<BookingPaymentStatusResponse>> ReconcileAsync(Guid bookingId, CancellationToken cancellationToken)
+        => Ok(await reconciliation.ReconcileAsync(GetUserId(), bookingId, cancellationToken));
 
     [HttpPost("{bookingId:guid}/payments/deposit")]
     public async Task<ActionResult<DepositPaymentResponse>> StartDepositAsync(Guid bookingId,

@@ -29,6 +29,7 @@ class _PaymentPageState extends State<PaymentPage> with WidgetsBindingObserver {
   String? error;
   bool checking = false, simulating = false, foreground = true;
   bool opening = false;
+  bool recheckRequested = false;
   int polls = 0;
   @override
   void initState() {
@@ -51,20 +52,38 @@ class _PaymentPageState extends State<PaymentPage> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     foreground = state == AppLifecycleState.resumed;
     timer?.cancel();
-    if (foreground) _check();
+    if (foreground) _check(manual: true);
   }
 
   Future<void> _check({bool manual = false}) async {
+    if (checking && manual) recheckRequested = true;
     if (checking || !mounted) return;
     if (manual) polls = 0;
     polls++;
     checking = true;
     try {
-      final result = await context.read<CustomerApi>().paymentStatus(widget.id);
+      final api = context.read<CustomerApi>();
+      var result = await api.paymentStatus(widget.id);
+      if (!mounted) return;
+      String? verificationError;
+      final pendingVnPay = jsonList(result['payments']).any(
+        (p) =>
+            p['paymentKind'] == 'Deposit' &&
+            p['paymentMethod'] == 'VNPay' &&
+            p['transactionStatus'] == 'Pending',
+      );
+      // Recover a lost IPN on return, resume and manual checks. Never create a new payment here.
+      if (pendingVnPay && (manual || (widget.attempt == null && polls == 1))) {
+        try {
+          result = await api.reconcilePayment(widget.id);
+        } catch (_) {
+          verificationError = 'Chưa xác minh được với VNPAY. Vui lòng kiểm tra lại sau 5 phút; không cần thanh toán thêm.';
+        }
+      }
       if (!mounted) return;
       setState(() {
         status = result;
-        error = null;
+        error = verificationError;
       });
       final paidDeposit = jsonList(result['payments']).any(
         (p) =>
@@ -90,7 +109,10 @@ class _PaymentPageState extends State<PaymentPage> with WidgetsBindingObserver {
       }
     } finally {
       checking = false;
-      if (mounted && foreground && !terminal && polls < 30) {
+      if (mounted && foreground && recheckRequested) {
+        recheckRequested = false;
+        unawaited(_check(manual: true));
+      } else if (mounted && foreground && !terminal && polls < 30) {
         timer?.cancel();
         timer = Timer(const Duration(seconds: 4), _check);
       }
@@ -207,8 +229,12 @@ class _PaymentPageState extends State<PaymentPage> with WidgetsBindingObserver {
           Text(
             reconciliation
                 ? 'Đang chờ đối soát hoàn tiền'
-                : terminal
-                ? 'Giao dịch chưa hoàn tất'
+                : status?['bookingStatus'] == 'Expired'
+                ? 'Lượt giữ sân đã hết hạn'
+                : transactionState == 'Cancelled'
+                ? 'Đã hủy thanh toán'
+                : transactionState == 'Failed'
+                ? 'Thanh toán chưa thành công'
                 : 'Đang chờ xác nhận cọc',
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w800),
@@ -247,7 +273,7 @@ class _PaymentPageState extends State<PaymentPage> with WidgetsBindingObserver {
             const Padding(
               padding: EdgeInsets.only(bottom: 16),
               child: Text(
-                'Hệ thống đã ghi nhận tiền sau khi lượt giữ sân kết thúc. Lịch đặt chưa được xác nhận; yêu cầu hoàn tiền đang chờ xử lý.',
+                'Đã ghi nhận tiền cọc, nhưng lượt giữ sân đã kết thúc khi hệ thống xác minh. Lịch đặt chưa được xác nhận; yêu cầu hoàn tiền đang chờ xử lý. Không thanh toán lại cho lịch này.',
               ),
             ),
           if (polls >= 30 && !terminal)

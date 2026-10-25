@@ -1,0 +1,814 @@
+[
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminBookingsController.cs",
+    "base": "api/admin/bookings",
+    "services": [
+      "IAdminBookingService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{bookingId:guid}"
+      ],
+      [
+        "Post",
+        "{bookingId:guid}/cancel"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminCancellationPoliciesController.cs",
+    "base": "api/admin/cancellation-policies",
+    "services": [
+      "IAdminCancellationPolicyService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{policyId:guid}"
+      ],
+      [
+        "Post",
+        ""
+      ],
+      [
+        "Post",
+        "{policyId:guid}/activate"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminCancellationRequestsController.cs",
+    "base": "api/admin/cancellation-requests",
+    "services": [
+      "ICancellationService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{requestId:guid}"
+      ],
+      [
+        "Post",
+        "{requestId:guid}/decision"
+      ],
+      [
+        "Post",
+        "{requestId:guid}/decisions"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminController.cs",
+    "base": "api/admin",
+    "services": [],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        "ping"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminCourtsController.cs",
+    "base": "api/admin/courts",
+    "services": [
+      "IAdminCourtService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{courtId:guid}"
+      ],
+      [
+        "Post",
+        ""
+      ],
+      [
+        "Put",
+        "{courtId:guid}"
+      ],
+      [
+        "Patch",
+        "{courtId:guid}/status"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminDashboardController.cs",
+    "base": "api/admin/dashboard",
+    "services": [
+      "IAdminDashboardService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminOperatingHoursController.cs",
+    "base": "api/admin/sport-centers/{centerId:guid}",
+    "services": [
+      "IAdminOperatingHourService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        "operating-hours"
+      ],
+      [
+        "Put",
+        "operating-hours"
+      ],
+      [
+        "Get",
+        "operating-hour-exceptions"
+      ],
+      [
+        "Post",
+        "operating-hour-exceptions"
+      ],
+      [
+        "Put",
+        "operating-hour-exceptions/{exceptionId:guid}"
+      ],
+      [
+        "Delete",
+        "operating-hour-exceptions/{exceptionId:guid}"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminPriceRulesController.cs",
+    "base": "api/admin/courts/{courtId:guid}/price-rules",
+    "services": [
+      "IAdminPriceRuleService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{priceRuleId:guid}"
+      ],
+      [
+        "Post",
+        ""
+      ],
+      [
+        "Put",
+        "{priceRuleId:guid}"
+      ],
+      [
+        "Patch",
+        "{priceRuleId:guid}/status"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminReportsController.cs",
+    "base": "api/admin/reports",
+    "services": [
+      "IAdminReportService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        "summary"
+      ],
+      [
+        "Get",
+        "revenue"
+      ],
+      [
+        "Get",
+        "bookings"
+      ],
+      [
+        "Get",
+        "occupancy"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminSportCentersController.cs",
+    "base": "api/admin/sport-centers",
+    "services": [
+      "IAdminSportCenterService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{centerId:guid}"
+      ],
+      [
+        "Post",
+        ""
+      ],
+      [
+        "Put",
+        "{centerId:guid}"
+      ],
+      [
+        "Patch",
+        "{centerId:guid}/status"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminSportsController.cs",
+    "base": "api/admin/sports",
+    "services": [
+      "IAdminSportService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{sportId:guid}"
+      ],
+      [
+        "Post",
+        ""
+      ],
+      [
+        "Put",
+        "{sportId:guid}"
+      ],
+      [
+        "Patch",
+        "{sportId:guid}/status"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminStaffController.cs",
+    "base": "api/admin/staff",
+    "services": [
+      "IAdminStaffService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{staffId:guid}"
+      ],
+      [
+        "Post",
+        ""
+      ],
+      [
+        "Put",
+        "{staffId:guid}"
+      ],
+      [
+        "Patch",
+        "{staffId:guid}/status"
+      ],
+      [
+        "Put",
+        "{staffId:guid}/assignment"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AdminSystemSettingsController.cs",
+    "base": "api/admin/system-settings",
+    "services": [
+      "IAdminSystemSettingService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Put",
+        ""
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AuthController.cs",
+    "base": "api/auth",
+    "services": [
+      "IAuthService"
+    ],
+    "authorization": [
+      "",
+      ""
+    ],
+    "endpoints": [
+      [
+        "Post",
+        "register"
+      ],
+      [
+        "Post",
+        "login"
+      ],
+      [
+        "Post",
+        "refresh"
+      ],
+      [
+        "Post",
+        "logout"
+      ],
+      [
+        "Get",
+        "me"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\AvailabilityController.cs",
+    "base": "",
+    "services": [
+      "IAvailabilityService"
+    ],
+    "authorization": [],
+    "endpoints": [
+      [
+        "Get",
+        "api/courts/{courtId:guid}/availability"
+      ],
+      [
+        "Get",
+        "api/availability"
+      ],
+      [
+        "Get",
+        "api/availability/ping"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\BookingLifecycleController.cs",
+    "base": "api/staff/bookings",
+    "services": [
+      "IBookingLifecycleService"
+    ],
+    "authorization": [
+      "Roles = \"Staff\""
+    ],
+    "endpoints": [
+      [
+        "Post",
+        "{bookingId:guid}/no-show"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\BookingPaymentsController.cs",
+    "base": "api/bookings",
+    "services": [
+      "IDepositPaymentService",
+      "IPaymentReconciliationService"
+    ],
+    "authorization": [
+      "Roles = \"Customer\""
+    ],
+    "endpoints": [
+      [
+        "Post",
+        "{bookingId:guid}/payments/reconcile"
+      ],
+      [
+        "Post",
+        "{bookingId:guid}/payments/deposit"
+      ],
+      [
+        "Get",
+        "{bookingId:guid}/payment-status"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\BookingsController.cs",
+    "base": "api/bookings",
+    "services": [
+      "IBookingHoldService",
+      "IBookingQueryService"
+    ],
+    "authorization": [
+      "",
+      "Roles = \"Customer\"",
+      "Roles = \"Customer\"",
+      "Roles = \"Customer\"",
+      "Roles = \"Customer\""
+    ],
+    "endpoints": [
+      [
+        "Post",
+        "hold"
+      ],
+      [
+        "Get",
+        "ping"
+      ],
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{bookingId:guid}"
+      ],
+      [
+        "Get",
+        "{bookingId:guid}/qr"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\CancellationRequestsController.cs",
+    "base": "api/bookings/{bookingId:guid}/cancellation-requests",
+    "services": [
+      "ICancellationService"
+    ],
+    "authorization": [
+      "Roles = \"Customer\""
+    ],
+    "endpoints": [
+      [
+        "Post",
+        ""
+      ],
+      [
+        "Get",
+        ""
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\CourtsController.cs",
+    "base": "api/courts",
+    "services": [
+      "ICourtService"
+    ],
+    "authorization": [],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{id:guid}"
+      ],
+      [
+        "Get",
+        "ping"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\DevelopmentPaymentsController.cs",
+    "base": "api/dev/payments",
+    "services": [
+      "IDevelopmentPaymentSimulationService"
+    ],
+    "authorization": [
+      "Roles = \"Customer\""
+    ],
+    "endpoints": [
+      [
+        "Post",
+        "{paymentId:guid}/simulate"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\DevelopmentRefundsController.cs",
+    "base": "api/dev/refunds",
+    "services": [
+      "IDevelopmentRefundSimulationService"
+    ],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Post",
+        "{paymentId:guid}/simulate"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\ImagesController.cs",
+    "base": "",
+    "services": [],
+    "authorization": [
+      "Roles = \"Admin\""
+    ],
+    "endpoints": [
+      [
+        "Post",
+        "api/admin/images"
+      ],
+      [
+        "Get",
+        "api/images/{name}"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\NotificationsController.cs",
+    "base": "api/notifications",
+    "services": [
+      "INotificationService"
+    ],
+    "authorization": [
+      ""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "unread-count"
+      ],
+      [
+        "Patch",
+        "{notificationId:guid}/read"
+      ],
+      [
+        "Patch",
+        "read-all"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\PaymentCallbacksController.cs",
+    "base": "api/payments",
+    "services": [
+      "IDepositPaymentService"
+    ],
+    "authorization": [],
+    "endpoints": [
+      [
+        "Post",
+        "momo/ipn"
+      ],
+      [
+        "Get",
+        "vnpay/ipn"
+      ],
+      [
+        "Get",
+        "momo/return"
+      ],
+      [
+        "Get",
+        "vnpay/return"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\ReviewsController.cs",
+    "base": "api/bookings/{bookingId:guid}/reviews",
+    "services": [
+      "IReviewService"
+    ],
+    "authorization": [
+      "Roles = \"Customer\""
+    ],
+    "endpoints": [
+      [
+        "Post",
+        ""
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\SportCentersController.cs",
+    "base": "api/sport-centers",
+    "services": [
+      "IReviewService",
+      "ISportCenterService"
+    ],
+    "authorization": [],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{id:guid}"
+      ],
+      [
+        "Get",
+        "{centerId:guid}/reviews"
+      ],
+      [
+        "Get",
+        "ping"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\SportsController.cs",
+    "base": "api/sports",
+    "services": [
+      "ISportService"
+    ],
+    "authorization": [],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{id:guid}"
+      ],
+      [
+        "Get",
+        "ping"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\StaffBookingsController.cs",
+    "base": "api/staff",
+    "services": [
+      "IStaffBookingService"
+    ],
+    "authorization": [
+      "Roles = \"Staff\""
+    ],
+    "endpoints": [
+      [
+        "Post",
+        "check-ins/verify"
+      ],
+      [
+        "Post",
+        "bookings/{bookingId:guid}/payments/remaining"
+      ],
+      [
+        "Post",
+        "bookings/{bookingId:guid}/check-ins"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\StaffController.cs",
+    "base": "api/staff",
+    "services": [],
+    "authorization": [
+      "Roles = \"Staff\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        "ping"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\StaffCourtsController.cs",
+    "base": "api/staff/courts",
+    "services": [
+      "IStaffCourtService"
+    ],
+    "authorization": [
+      "Roles = \"Staff\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        ""
+      ],
+      [
+        "Get",
+        "{courtId:guid}"
+      ],
+      [
+        "Get",
+        "{courtId:guid}/blocks"
+      ],
+      [
+        "Post",
+        "{courtId:guid}/blocks"
+      ],
+      [
+        "Delete",
+        "{courtId:guid}/blocks/{blockId:guid}"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\StaffOperationsController.cs",
+    "base": "api/staff",
+    "services": [
+      "IStaffOperationsService"
+    ],
+    "authorization": [
+      "Roles = \"Staff\""
+    ],
+    "endpoints": [
+      [
+        "Get",
+        "dashboard"
+      ],
+      [
+        "Get",
+        "bookings"
+      ],
+      [
+        "Get",
+        "bookings/{bookingId:guid}"
+      ]
+    ]
+  },
+  {
+    "file": "BE\\src\\CourtGo.Api\\Controllers\\WalkInBookingsController.cs",
+    "base": "api/staff/bookings/walk-in",
+    "services": [
+      "IWalkInBookingService"
+    ],
+    "authorization": [
+      "Roles = \"Staff\""
+    ],
+    "endpoints": [
+      [
+        "Post",
+        ""
+      ]
+    ]
+  }
+]

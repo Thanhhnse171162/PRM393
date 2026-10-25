@@ -76,10 +76,7 @@ class AdminDashboardData {
 // ==========================================
 
 class AssignedCenterInfo {
-  const AssignedCenterInfo({
-    required this.centerId,
-    required this.centerName,
-  });
+  const AssignedCenterInfo({required this.centerId, required this.centerName});
 
   final String centerId;
   final String centerName;
@@ -212,6 +209,7 @@ class AdminSportCenterItem {
     required this.courtCount,
     required this.activeCourtCount,
     required this.createdAt,
+    this.coverImageUrl,
   });
 
   final String centerId;
@@ -227,12 +225,14 @@ class AdminSportCenterItem {
   final int courtCount;
   final int activeCourtCount;
   final String createdAt;
+  final String? coverImageUrl;
 
   bool get isActive => status.toLowerCase() == 'active';
   String get id => centerId;
 
   factory AdminSportCenterItem.fromJson(Json json) {
     return AdminSportCenterItem(
+      coverImageUrl: json['coverImageUrl'] as String?,
       centerId: json['centerId'] as String? ?? '',
       name: json['name'] as String? ?? '',
       address: json['address'] as String? ?? '',
@@ -489,11 +489,11 @@ class AdminOperatingHourItem {
   }
 
   Map<String, dynamic> toJson() => {
-        'dayOfWeek': dayOfWeek,
-        'isClosed': isClosed,
-        'openTime': isClosed ? null : openTime,
-        'closeTime': isClosed ? null : closeTime,
-      };
+    'dayOfWeek': dayOfWeek,
+    'isClosed': isClosed,
+    'openTime': isClosed ? null : openTime,
+    'closeTime': isClosed ? null : closeTime,
+  };
 }
 
 class AdminCenterOperatingHoursData {
@@ -618,8 +618,7 @@ class SystemSettingsData {
 
   factory SystemSettingsData.fromJson(Json json) {
     return SystemSettingsData(
-      holdDurationMinutes:
-          (json['holdDurationMinutes'] as num?)?.toInt() ?? 10,
+      holdDurationMinutes: (json['holdDurationMinutes'] as num?)?.toInt() ?? 10,
       minBookingLeadMinutes:
           (json['minBookingLeadMinutes'] as num?)?.toInt() ?? 30,
       defaultDepositPercent:
@@ -652,8 +651,7 @@ class AdminCancellationPolicyRule {
   factory AdminCancellationPolicyRule.fromJson(Json json) {
     return AdminCancellationPolicyRule(
       id: json['id'] as String? ?? '',
-      minHoursBeforeStart:
-          (json['minHoursBeforeStart'] as num?)?.toInt() ?? 0,
+      minHoursBeforeStart: (json['minHoursBeforeStart'] as num?)?.toInt() ?? 0,
       maxHoursBeforeStart: (json['maxHoursBeforeStart'] as num?)?.toInt(),
       refundPercent: (json['refundPercent'] as num?)?.toDouble() ?? 0.0,
     );
@@ -1031,8 +1029,7 @@ class AdminCancellationRequestItem {
       reason: json['reason'] as String? ?? '',
       calculatedRefundAmount:
           (json['calculatedRefundAmount'] as num?)?.toDouble() ?? 0.0,
-      approvedRefundAmount:
-          (json['approvedRefundAmount'] as num?)?.toDouble(),
+      approvedRefundAmount: (json['approvedRefundAmount'] as num?)?.toDouble(),
       createdAt: json['createdAt'] as String? ?? '',
       processedAt: json['processedAt'] as String?,
     );
@@ -1113,9 +1110,11 @@ class AdminBookingDetail {
       bookingStatus: json['bookingStatus'] as String? ?? '',
       paymentStatus: json['paymentStatus'] as String? ?? '',
       customer: AdminCustomerSnapshot.fromJson(
-          json['customer'] as Json? ?? const {}),
+        json['customer'] as Json? ?? const {},
+      ),
       facility: AdminFacilitySnapshot.fromJson(
-          json['facility'] as Json? ?? const {}),
+        json['facility'] as Json? ?? const {},
+      ),
       startAt: json['startAt'] as String? ?? '',
       endAt: json['endAt'] as String? ?? '',
       durationMinutes: (json['durationMinutes'] as num?)?.toInt() ?? 0,
@@ -1123,7 +1122,8 @@ class AdminBookingDetail {
           .map((e) => AdminBookingSlotItem.fromJson(e as Json))
           .toList(),
       financialSummary: AdminFinancialSummary.fromJson(
-          json['financialSummary'] as Json? ?? const {}),
+        json['financialSummary'] as Json? ?? const {},
+      ),
       payments: (json['payments'] as List<dynamic>? ?? [])
           .map((e) => AdminPaymentEntry.fromJson(e as Json))
           .toList(),
@@ -1196,8 +1196,7 @@ class AdminCancellationRequestSummary {
       reason: json['reason'] as String? ?? '',
       calculatedRefundAmount:
           (json['calculatedRefundAmount'] as num?)?.toDouble() ?? 0.0,
-      approvedRefundAmount:
-          (json['approvedRefundAmount'] as num?)?.toDouble(),
+      approvedRefundAmount: (json['approvedRefundAmount'] as num?)?.toDouble(),
       customerNameSnapshot: json['customerNameSnapshot'] as String? ?? '',
       customerPhoneSnapshot: json['customerPhoneSnapshot'] as String? ?? '',
       centerNameSnapshot: json['centerNameSnapshot'] as String? ?? '',
@@ -1269,36 +1268,29 @@ class AdminCancellationRequestDetail {
       bookingId: json['bookingId'] as String? ?? '',
       bookingCode: json['bookingCode'] as String? ?? '',
       bookingStatus: json['bookingStatus'] as String? ?? '',
-      customer: AdminCustomerSnapshot.fromJson(
-        {
-          'customerName': (json['customer'] as Json?)?['name'] ?? '',
-          'customerPhone': (json['customer'] as Json?)?['phone'] ?? '',
-          'customerEmail': (json['customer'] as Json?)?['email'],
-          'customerUserId': (json['customer'] as Json?)?['customerUserId'],
-        },
-      ),
-      facility: AdminFacilitySnapshot.fromJson(
-        {
-          'sportCenterName':
-              (json['facility'] as Json?)?['centerName'] ?? '',
-          'courtName': (json['facility'] as Json?)?['courtName'] ?? '',
-          'sportName': (json['facility'] as Json?)?['sportName'] ?? '',
-          'sportCenterId': '',
-          'courtId': '',
-          'sportId': '',
-        },
-      ),
+      customer: AdminCustomerSnapshot.fromJson({
+        'customerName': (json['customer'] as Json?)?['name'] ?? '',
+        'customerPhone': (json['customer'] as Json?)?['phone'] ?? '',
+        'customerEmail': (json['customer'] as Json?)?['email'],
+        'customerUserId': (json['customer'] as Json?)?['customerUserId'],
+      }),
+      facility: AdminFacilitySnapshot.fromJson({
+        'sportCenterName': (json['facility'] as Json?)?['centerName'] ?? '',
+        'courtName': (json['facility'] as Json?)?['courtName'] ?? '',
+        'sportName': (json['facility'] as Json?)?['sportName'] ?? '',
+        'sportCenterId': '',
+        'courtId': '',
+        'sportId': '',
+      }),
       startAt: json['startAt'] as String? ?? '',
       endAt: json['endAt'] as String? ?? '',
       totalAmount: (json['totalAmount'] as num?)?.toDouble() ?? 0.0,
       paidAmount: (json['paidAmount'] as num?)?.toDouble() ?? 0.0,
       calculatedRefundAmount:
           (json['calculatedRefundAmount'] as num?)?.toDouble() ?? 0.0,
-      approvedRefundAmount:
-          (json['approvedRefundAmount'] as num?)?.toDouble(),
+      approvedRefundAmount: (json['approvedRefundAmount'] as num?)?.toDouble(),
       policyName: pol?['policyName'] as String?,
-      matchedRefundPercent:
-          (pol?['matchedRefundPercent'] as num?)?.toDouble(),
+      matchedRefundPercent: (pol?['matchedRefundPercent'] as num?)?.toDouble(),
       financialSummary: AdminFinancialSummary(
         totalAmount: (pay?['totalAmount'] as num?)?.toDouble() ?? 0.0,
         depositAmount: 0,

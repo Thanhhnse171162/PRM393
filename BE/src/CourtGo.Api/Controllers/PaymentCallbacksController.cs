@@ -12,7 +12,7 @@ namespace CourtGo.Api.Controllers;
 
 [ApiController, AllowAnonymous, Route("api/payments")]
 public sealed class PaymentCallbacksController(PaymentNotificationVerifier verifier, IDepositPaymentService deposits,
-    CourtGoDbContext db) : ControllerBase
+    CourtGoDbContext db, ILogger<PaymentCallbacksController> logger) : ControllerBase
 {
     [HttpPost("momo/ipn"), RequestSizeLimit(16384)]
     public async Task<IActionResult> MoMoIpn([FromBody] JsonElement body, CancellationToken ct)
@@ -29,12 +29,14 @@ public sealed class PaymentCallbacksController(PaymentNotificationVerifier verif
     {
         VerifiedPaymentResult result;
         try { result = verifier.VerifyVnPay(QueryFields()); }
-        catch (ValidationException) { return Ack("97", "Invalid signature"); }
+        catch (ValidationException) { logger.LogWarning("VNPAY IPN rejected: invalid signature or fields"); return Ack("97", "Invalid signature"); }
         try
         {
             var already = await ValidateRecord(result, ct);
             if (result.TransactionStatus == PaymentTransactionStatus.Pending) return Ack("99", "Transaction pending");
             await deposits.ApplyVerifiedResultAsync(result, cancellationToken: ct);
+            logger.LogInformation("VNPAY IPN applied PaymentId={PaymentId} Status={Status} Receipt={Receipt} Duplicate={Duplicate}",
+                result.PaymentId, result.TransactionStatus, result.ProviderReceiptId, already);
             return Ack(already ? "02" : "00", already ? "Order already confirmed" : "Confirm success");
         }
         catch (NotFoundException) { return Ack("01", "Order not found"); }
@@ -54,8 +56,19 @@ public sealed class PaymentCallbacksController(PaymentNotificationVerifier verif
         await ValidateRecord(result, ct);
         var bookingId = await db.Payments.Where(p => p.Id == result.PaymentId).Select(p => p.BookingId).SingleAsync(ct);
         Response.Headers.CacheControl = "no-store";
-        // Fixed destination prevents callback parameters from becoming an open redirect.
-        return Redirect($"courtgo://payment-result?bookingId={bookingId:D}");
+        Response.Headers["Referrer-Policy"] = "no-referrer";
+        Response.Headers["X-Content-Type-Options"] = "nosniff";
+        Response.Headers["Content-Security-Policy"] = "default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'";
+        logger.LogInformation("Payment return verified PaymentId={PaymentId} BookingId={BookingId}; navigation only", result.PaymentId, bookingId);
+        // An explicit browser gesture opens Android custom schemes reliably, including when automatic redirects are blocked.
+        // Only a DB-derived GUID is interpolated; no provider message/query is reflected or treated as payment proof.
+        return Content($$"""
+            <!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+            <title>Trở về CourtGo</title><style>body{font:18px system-ui;max-width:440px;margin:15vh auto;padding:24px;color:#183c36}a{display:block;background:#087f6f;color:white;padding:16px;border-radius:12px;text-align:center;text-decoration:none}p{line-height:1.6}</style>
+            <h1>Trở về CourtGo</h1><p>Mở ứng dụng để hệ thống kiểm tra kết quả thanh toán và trạng thái lịch đặt.</p>
+            <a href="courtgo://payment-result?bookingId={{bookingId:D}}">Mở CourtGo</a>
+            <p>Nếu ứng dụng chưa mở, vào CourtGo → Lịch đặt → Chi tiết → Kiểm tra kết quả thanh toán. Không cần thanh toán lại.</p></html>
+            """, "text/html; charset=utf-8");
     }
     private async Task<bool> ValidateRecord(VerifiedPaymentResult result, CancellationToken ct)
     {

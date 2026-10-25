@@ -148,6 +148,12 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                           ),
                           const SizedBox(height: 8),
                           StatusChip(b.paymentStatus),
+                          const SizedBox(height: 12),
+                          TextButton(
+                            onPressed: () =>
+                                open('/customer/bookings/${b.id}/payment'),
+                            child: const Text('Kiểm tra kết quả thanh toán'),
+                          ),
                         ],
                       ),
                     ),

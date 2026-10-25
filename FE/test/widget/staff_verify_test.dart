@@ -24,9 +24,10 @@ void main() {
       final dio = Dio(BaseOptions(baseUrl: 'http://test'))
         ..httpClientAdapter = TestAdapter((r) async {
           requests.add(r);
-          if (r.path.endsWith('/dashboard'))
+          if (r.path.endsWith('/dashboard')) {
             return (200, {'centerId': 'center', 'date': '2030-01-01'});
-          if (r.path == '/api/sport-centers/center')
+          }
+          if (r.path == '/api/sport-centers/center') {
             return (
               200,
               {
@@ -35,6 +36,7 @@ void main() {
                 'timeZoneId': 'Asia/Ho_Chi_Minh',
               },
             );
+          }
           if (r.path.endsWith('/verify')) {
             return (
               200,
@@ -55,7 +57,7 @@ void main() {
               },
             );
           }
-          if (r.path == '/api/staff/bookings/booking')
+          if (r.path == '/api/staff/bookings/booking') {
             return (
               200,
               {
@@ -63,12 +65,14 @@ void main() {
                 'payment': payment(),
               },
             );
+          }
           if (r.path.endsWith('/payments/remaining')) {
             remaining = 0;
             return (200, {'paymentStatus': 'FullyPaid'});
           }
-          if (r.path.endsWith('/check-ins'))
+          if (r.path.endsWith('/check-ins')) {
             return (200, {'bookingStatus': 'CheckedIn'});
+          }
           return (404, {});
         });
       final api = StaffApi(

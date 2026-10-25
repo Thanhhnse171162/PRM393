@@ -89,6 +89,10 @@ class AuthInterceptor extends Interceptor {
       }
       request.headers['Authorization'] = 'Bearer $token';
       request.extra['authRetried'] = true;
+      // Multipart streams have already been consumed by the first request.
+      if (request.data is FormData) {
+        request.data = (request.data as FormData).clone();
+      }
       handler.resolve(await _dio.fetch<dynamic>(request));
     } on DioException catch (e) {
       handler.next(e);

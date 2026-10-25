@@ -154,7 +154,7 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
                   child: Row(
                     children: [
                       AdminFilterChipItem(
-                        label: 'Tất cả (${_totalCount})',
+                        label: 'Tất cả ($_totalCount)',
                         isSelected: _selectedStatus == null,
                         onTap: () {
                           setState(() => _selectedStatus = null);

@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/config/app_config.dart';
+
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_styles.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/utils/currency_utils.dart';
 import '../../core/utils/customer_format.dart';
@@ -223,7 +226,7 @@ class SportChip extends StatelessWidget {
     child: ChoiceChip(
       label: Text(label),
       selected: selected,
-      onSelected: (_) => onTap,
+      onSelected: (_) => onTap(),
       selectedColor: AppColors.mint,
       showCheckmark: false,
       side: BorderSide(color: selected ? AppColors.primary : AppColors.border),
@@ -231,32 +234,101 @@ class SportChip extends StatelessWidget {
   );
 }
 
+String resolveSportImageUrl(String value) {
+  final trimmed = value.trim();
+  if (RegExp(r'^/api/images/[a-f0-9]{32}\.(jpg|png)$').hasMatch(trimmed)) {
+    return Uri.parse(AppConfig.apiBaseUrl).resolve(trimmed).toString();
+  }
+  return trimmed;
+}
+
+bool isSportImageUrl(String value) {
+  value = resolveSportImageUrl(value);
+  final uri = Uri.tryParse(value.trim());
+  return uri != null &&
+      (uri.scheme == 'http' || uri.scheme == 'https') &&
+      uri.host.isNotEmpty &&
+      !RegExp(r'\s').hasMatch(value.trim());
+}
+
 class SportImage extends StatelessWidget {
-  const SportImage({super.key, this.url, this.height = 144});
+  const SportImage({
+    super.key,
+    this.url,
+    this.height = 144,
+    this.width = double.infinity,
+    this.borderRadius = 0,
+    this.showMessages = false,
+  });
   final String? url;
   final double height;
+  final double width;
+  final double borderRadius;
+  final bool showMessages;
+
   @override
   Widget build(BuildContext context) {
-    Widget fallback() => Container(
-      height: height,
+    final source = resolveSportImageUrl(url ?? '');
+    Widget fallback(String message, {bool loading = false}) => ColoredBox(
       color: AppColors.lightMint,
-      child: const Center(
-        child: Icon(
-          Icons.sports_tennis_rounded,
-          size: 48,
-          color: AppColors.primary,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (loading)
+              const SizedBox.square(
+                dimension: 24,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            else
+              Icon(
+                Icons.sports_tennis_rounded,
+                size: height < 80 ? 28 : 48,
+                color: AppColors.primary,
+              ),
+            if (showMessages) ...[
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ),
+            ],
+          ],
         ),
       ),
     );
-    if (url == null || !url!.startsWith('http')) return fallback();
-    return CachedNetworkImage(
-      imageUrl: url!,
-      height: height,
-      width: double.infinity,
-      fit: BoxFit.cover,
-      memCacheWidth: 1000,
-      placeholder: (_, _) => fallback(),
-      errorWidget: (_, _, _) => fallback(),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: SizedBox(
+        height: height,
+        width: width,
+        child: source.isEmpty
+            ? fallback('Chưa có ảnh cover')
+            : !isSportImageUrl(source)
+            ? fallback(
+                'URL ảnh không hợp lệ. Hãy nhập địa chỉ http:// hoặc https://.',
+              )
+            : CachedNetworkImage(
+                key: ValueKey(source),
+                imageUrl: source,
+                height: height,
+                width: width,
+                fit: BoxFit.cover,
+                memCacheWidth: width.isFinite ? (width * 3).round() : 1000,
+                placeholder: (_, _) =>
+                    fallback('Đang tải ảnh...', loading: true),
+                errorWidget: (_, _, _) => fallback(
+                  'Không thể tải ảnh. Kiểm tra URL và kết nối mạng.',
+                ),
+              ),
+      ),
     );
   }
 }
@@ -324,9 +396,9 @@ class CenterCard extends StatelessWidget {
                   center.address,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: AppTextStyles.caption.copyWith(
                     color: AppColors.textSecondary,
-                    fontSize: 12,
+                    height: 1.4,
                   ),
                 ),
                 const SizedBox(height: 12),

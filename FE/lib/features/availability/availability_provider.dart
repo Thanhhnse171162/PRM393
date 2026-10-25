@@ -68,6 +68,50 @@ class AvailabilityProvider extends ChangeNotifier {
     return null;
   }
 
+  /// Safely re-checks availability with the backend after authentication,
+  /// preserving selected slots if they are still available.
+  Future<bool> revalidateSelection() async {
+    if (selected.isEmpty) return false;
+    loading = true;
+    error = null;
+    notifyListeners();
+    try {
+      final next = await api.availability(courtId, CustomerFormat.day(date));
+      data = next;
+      if (next.closed || next.slots.isEmpty) {
+        selected = [];
+        error =
+            'Sân đã đóng cửa hoặc không còn khung giờ khả dụng. Vui lòng chọn ngày khác.';
+        return false;
+      }
+      final stillValidSlots = <Slot>[];
+      for (final s in selected) {
+        final match =
+            next.slots.where((slot) => slot.start == s.start).firstOrNull;
+        if (match == null || !match.available) {
+          selected = [];
+          error =
+              'Khung giờ bạn chọn vừa được người khác đặt hoặc không còn khả dụng. Vui lòng chọn lại.';
+          return false;
+        }
+        stillValidSlots.add(match);
+      }
+      selected = stillValidSlots;
+      return true;
+    } on ApiException catch (e) {
+      error = e.message;
+      return false;
+    } catch (_) {
+      error = 'Không thể kiểm tra lại tình trạng sân. Vui lòng thử lại.';
+      return false;
+    } finally {
+      if (!disposed) {
+        loading = false;
+        notifyListeners();
+      }
+    }
+  }
+
   Future<Booking?> hold() async {
     if (holding || selected.isEmpty) return null;
     holding = true;

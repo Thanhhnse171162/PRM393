@@ -75,7 +75,8 @@ class AppTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          minimumSize: const Size.fromHeight(48),
+          // Row children receive unbounded width; full-width is a layout choice.
+          minimumSize: const Size(0, 48),
           foregroundColor: AppColors.primary,
           side: const BorderSide(color: AppColors.primary),
           textStyle: AppTextStyles.button,

@@ -20,7 +20,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
   DateTime _selectedDate = DateTime.now();
   String? _selectedCenterId;
   List<AdminSportCenterItem> _centers = [];
-  bool _loadingCenters = false;
 
   Future<AdminDashboardData>? _dashboardFuture;
 
@@ -32,19 +31,15 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
   }
 
   void _loadCenters() async {
-    setState(() => _loadingCenters = true);
     try {
       final api = context.read<AdminApi>();
       final res = await api.getCenters(pageSize: 100);
       if (mounted) {
         setState(() {
           _centers = res.items;
-          _loadingCenters = false;
         });
       }
-    } catch (_) {
-      if (mounted) setState(() => _loadingCenters = false);
-    }
+    } catch (_) {}
   }
 
   void _loadDashboard() {

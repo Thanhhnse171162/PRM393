@@ -125,4 +125,58 @@ void main() {
       expect(result.error.message, isNot(contains('SECRET')));
     },
   );
+  test(
+    'revalidateSelection preserves selections when slots remain available on server',
+    () async {
+      final dio = Dio(BaseOptions(baseUrl: 'http://test'))
+        ..httpClientAdapter = TestAdapter((_) async => (200, availabilityJson()));
+      final state = AvailabilityProvider(
+        CustomerApi(ApiClient(storage: MemoryTokens(), dio: dio)),
+        'court',
+        DateTime(2026, 10, 20),
+      );
+      await state.load();
+      state.toggle(state.data!.slots[0]);
+      state.toggle(state.data!.slots[1]);
+      expect(state.selected.length, 2);
+
+      final ok = await state.revalidateSelection();
+      expect(ok, isTrue);
+      expect(state.selected.length, 2);
+      expect(state.error, isNull);
+      state.dispose();
+    },
+  );
+  test(
+    'revalidateSelection clears selection, updates slots and sets error when slot becomes unavailable',
+    () async {
+      var callCount = 0;
+      final dio = Dio(BaseOptions(baseUrl: 'http://test'))
+        ..httpClientAdapter = TestAdapter((_) async {
+          callCount++;
+          if (callCount == 1) {
+            return (200, availabilityJson());
+          }
+          // On second call, slot 0 is booked!
+          final modified = availabilityJson();
+          (modified['slots'] as List)[0]['status'] = 'Booked';
+          return (200, modified);
+        });
+      final state = AvailabilityProvider(
+        CustomerApi(ApiClient(storage: MemoryTokens(), dio: dio)),
+        'court',
+        DateTime(2026, 10, 20),
+      );
+      await state.load();
+      state.toggle(state.data!.slots[0]);
+      expect(state.selected.length, 1);
+
+      final ok = await state.revalidateSelection();
+      expect(ok, isFalse);
+      expect(state.selected, isEmpty);
+      expect(state.error, contains('không còn khả dụng'));
+      expect(state.data!.slots[0].available, isFalse);
+      state.dispose();
+    },
+  );
 }

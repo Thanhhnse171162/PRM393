@@ -20,7 +20,6 @@ class AdminBookingDetailPage extends StatefulWidget {
 
 class _AdminBookingDetailPageState extends State<AdminBookingDetailPage> {
   Future<AdminBookingDetail>? _detailFuture;
-  bool _cancelling = false;
 
   @override
   void initState() {

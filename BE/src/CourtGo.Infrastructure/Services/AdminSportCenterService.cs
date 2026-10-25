@@ -76,7 +76,8 @@ public partial class AdminSportCenterService(
                 c.Status.ToString(),
                 c.Courts.Count,
                 c.Courts.Count(ct => ct.Status == CourtStatus.Active),
-                c.CreatedAt))
+                c.CreatedAt,
+                c.CoverImageUrl))
             .ToListAsync(ct);
 
         return new(items, query.PageNumber, query.PageSize, total, (int)Math.Ceiling(total / (double)query.PageSize));

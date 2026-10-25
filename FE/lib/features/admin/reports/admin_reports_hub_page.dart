@@ -56,7 +56,7 @@ class AdminReportsHubPage extends StatelessWidget {
             description:
                 'Phân bổ đơn đặt theo trạng thái, môn thể thao, cơ sở và xu hướng lịch đặt theo ngày',
             icon: Icons.event_note_outlined,
-            onTap: () => context.push('/admin/reports/bookings'),
+            onTap: () => context.push('/admin/reports/bookings-report'),
           ),
           const SizedBox(height: 12),
           AdminActionCard(

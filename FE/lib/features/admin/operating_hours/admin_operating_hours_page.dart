@@ -247,7 +247,7 @@ class _AdminOperatingHoursPageState extends State<AdminOperatingHoursPage> {
             onPressed: _selectedCenterId == null
                 ? null
                 : () => context.push(
-                      '/admin/operating-exceptions?centerId=$_selectedCenterId',
+                      '/admin/operating-hours/exceptions?centerId=$_selectedCenterId',
                     ),
           ),
         ],

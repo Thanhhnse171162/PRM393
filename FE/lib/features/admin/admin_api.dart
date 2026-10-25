@@ -25,7 +25,7 @@ class AdminApi extends ChangeNotifier {
   Future<dynamic> getRaw(String path, {Json? query}) =>
       _value(client.get<dynamic>(path, query: query));
 
-  Future<Json> post(String path, Json body) async {
+  Future<Json> post(String path, Object body) async {
     final result = await _value(client.post<Json>(path, body: body));
     notifyChanged();
     return result;
@@ -44,10 +44,8 @@ class AdminApi extends ChangeNotifier {
   }
 
   Future<void> delete(String path) async {
-    (await client.delete<dynamic>(path)).when(
-      success: (_) {},
-      failure: (e) => throw e,
-    );
+    (await client.delete<dynamic>(path))
+        .when(success: (_) {}, failure: (e) => throw e);
     notifyChanged();
   }
 
@@ -87,8 +85,7 @@ class AdminApi extends ChangeNotifier {
         'pageSize': pageSize,
         if (centerId != null && centerId.isNotEmpty) 'centerId': centerId,
         if (isActive != null) 'isActive': isActive,
-        if (search != null && search.trim().isNotEmpty)
-          'search': search.trim(),
+        if (search != null && search.trim().isNotEmpty) 'search': search.trim(),
       },
     );
     return PageResult.fromJson(res, AdminStaffItem.fromJson);
@@ -134,10 +131,9 @@ class AdminApi extends ChangeNotifier {
     String staffId,
     bool isActive,
   ) async {
-    final res = await patch(
-      '/api/admin/staff/$staffId/status',
-      {'isActive': isActive},
-    );
+    final res = await patch('/api/admin/staff/$staffId/status', {
+      'isActive': isActive,
+    });
     return AdminStaffDetail.fromJson(res);
   }
 
@@ -145,10 +141,9 @@ class AdminApi extends ChangeNotifier {
     String staffId,
     String sportCenterId,
   ) async {
-    final res = await put(
-      '/api/admin/staff/$staffId/assignment',
-      {'sportCenterId': sportCenterId},
-    );
+    final res = await put('/api/admin/staff/$staffId/assignment', {
+      'sportCenterId': sportCenterId,
+    });
     return AdminStaffDetail.fromJson(res);
   }
 
@@ -172,8 +167,7 @@ class AdminApi extends ChangeNotifier {
         if (status != null && status.isNotEmpty) 'status': status,
         if (city != null && city.isNotEmpty) 'city': city,
         if (district != null && district.isNotEmpty) 'district': district,
-        if (search != null && search.trim().isNotEmpty)
-          'search': search.trim(),
+        if (search != null && search.trim().isNotEmpty) 'search': search.trim(),
       },
     );
     return PageResult.fromJson(res, AdminSportCenterItem.fromJson);
@@ -189,7 +183,10 @@ class AdminApi extends ChangeNotifier {
     return AdminSportCenterDetail.fromJson(res);
   }
 
-  Future<AdminSportCenterDetail> updateCenter(String centerId, Json body) async {
+  Future<AdminSportCenterDetail> updateCenter(
+    String centerId,
+    Json body,
+  ) async {
     final res = await put('/api/admin/sport-centers/$centerId', body);
     return AdminSportCenterDetail.fromJson(res);
   }
@@ -198,10 +195,9 @@ class AdminApi extends ChangeNotifier {
     String centerId,
     String status,
   ) async {
-    final res = await patch(
-      '/api/admin/sport-centers/$centerId/status',
-      {'status': status},
-    );
+    final res = await patch('/api/admin/sport-centers/$centerId/status', {
+      'status': status,
+    });
     return AdminSportCenterDetail.fromJson(res);
   }
 
@@ -221,8 +217,7 @@ class AdminApi extends ChangeNotifier {
         'pageNumber': page,
         'pageSize': pageSize,
         if (isActive != null) 'isActive': isActive,
-        if (search != null && search.trim().isNotEmpty)
-          'search': search.trim(),
+        if (search != null && search.trim().isNotEmpty) 'search': search.trim(),
       },
     );
     return PageResult.fromJson(res, AdminSportItem.fromJson);
@@ -247,10 +242,9 @@ class AdminApi extends ChangeNotifier {
     String sportId,
     bool isActive,
   ) async {
-    final res = await patch(
-      '/api/admin/sports/$sportId/status',
-      {'isActive': isActive},
-    );
+    final res = await patch('/api/admin/sports/$sportId/status', {
+      'isActive': isActive,
+    });
     return AdminSportItem.fromJson(res);
   }
 
@@ -274,8 +268,7 @@ class AdminApi extends ChangeNotifier {
         if (centerId != null && centerId.isNotEmpty) 'centerId': centerId,
         if (sportId != null && sportId.isNotEmpty) 'sportId': sportId,
         if (status != null && status.isNotEmpty) 'status': status,
-        if (search != null && search.trim().isNotEmpty)
-          'search': search.trim(),
+        if (search != null && search.trim().isNotEmpty) 'search': search.trim(),
       },
     );
     return PageResult.fromJson(res, AdminCourtItem.fromJson);
@@ -300,10 +293,9 @@ class AdminApi extends ChangeNotifier {
     String courtId,
     String status,
   ) async {
-    final res = await patch(
-      '/api/admin/courts/$courtId/status',
-      {'status': status},
-    );
+    final res = await patch('/api/admin/courts/$courtId/status', {
+      'status': status,
+    });
     return AdminCourtDetail.fromJson(res);
   }
 
@@ -314,9 +306,7 @@ class AdminApi extends ChangeNotifier {
   Future<AdminCenterOperatingHoursData> getOperatingHours(
     String centerId,
   ) async {
-    final res = await get(
-      '/api/admin/sport-centers/$centerId/operating-hours',
-    );
+    final res = await get('/api/admin/sport-centers/$centerId/operating-hours');
     return AdminCenterOperatingHoursData.fromJson(res);
   }
 
@@ -343,9 +333,7 @@ class AdminApi extends ChangeNotifier {
         if (to != null && to.isNotEmpty) 'to': to,
       },
     );
-    return jsonList(raw)
-        .map(AdminOperatingHourExceptionItem.fromJson)
-        .toList();
+    return jsonList(raw).map(AdminOperatingHourExceptionItem.fromJson).toList();
   }
 
   Future<AdminOperatingHourExceptionItem> createOperatingHourException(
@@ -409,14 +397,8 @@ class AdminApi extends ChangeNotifier {
     return AdminPriceRuleItem.fromJson(res);
   }
 
-  Future<AdminPriceRuleItem> createPriceRule(
-    String courtId,
-    Json body,
-  ) async {
-    final res = await post(
-      '/api/admin/courts/$courtId/price-rules',
-      body,
-    );
+  Future<AdminPriceRuleItem> createPriceRule(String courtId, Json body) async {
+    final res = await post('/api/admin/courts/$courtId/price-rules', body);
     return AdminPriceRuleItem.fromJson(res);
   }
 
@@ -462,12 +444,9 @@ class AdminApi extends ChangeNotifier {
   // Cancellation Policies
   // ==========================================
 
-  Future<List<AdminCancellationPolicySummary>>
-      getCancellationPolicies() async {
+  Future<List<AdminCancellationPolicySummary>> getCancellationPolicies() async {
     final raw = await getRaw('/api/admin/cancellation-policies');
-    return jsonList(raw)
-        .map(AdminCancellationPolicySummary.fromJson)
-        .toList();
+    return jsonList(raw).map(AdminCancellationPolicySummary.fromJson).toList();
   }
 
   Future<AdminCancellationPolicyDetail> getCancellationPolicy(
@@ -487,8 +466,10 @@ class AdminApi extends ChangeNotifier {
   Future<AdminCancellationPolicyDetail> activateCancellationPolicy(
     String policyId,
   ) async {
-    final res =
-        await post('/api/admin/cancellation-policies/$policyId/activate', {});
+    final res = await post(
+      '/api/admin/cancellation-policies/$policyId/activate',
+      {},
+    );
     return AdminCancellationPolicyDetail.fromJson(res);
   }
 
@@ -521,8 +502,7 @@ class AdminApi extends ChangeNotifier {
           'paymentStatus': paymentStatus,
         if (dateFrom != null && dateFrom.isNotEmpty) 'dateFrom': dateFrom,
         if (dateTo != null && dateTo.isNotEmpty) 'dateTo': dateTo,
-        if (search != null && search.trim().isNotEmpty)
-          'search': search.trim(),
+        if (search != null && search.trim().isNotEmpty) 'search': search.trim(),
       },
     );
     return PageResult.fromJson(res, AdminBookingItem.fromJson);
@@ -548,8 +528,7 @@ class AdminApi extends ChangeNotifier {
   // Cancellation Requests
   // ==========================================
 
-  Future<PageResult<AdminCancellationRequestSummary>>
-      getCancellationRequests({
+  Future<PageResult<AdminCancellationRequestSummary>> getCancellationRequests({
     String? status,
     String? centerId,
     String? dateFrom,
@@ -567,12 +546,10 @@ class AdminApi extends ChangeNotifier {
         if (centerId != null && centerId.isNotEmpty) 'centerId': centerId,
         if (dateFrom != null && dateFrom.isNotEmpty) 'dateFrom': dateFrom,
         if (dateTo != null && dateTo.isNotEmpty) 'dateTo': dateTo,
-        if (search != null && search.trim().isNotEmpty)
-          'search': search.trim(),
+        if (search != null && search.trim().isNotEmpty) 'search': search.trim(),
       },
     );
-    return PageResult.fromJson(
-        res, AdminCancellationRequestSummary.fromJson);
+    return PageResult.fromJson(res, AdminCancellationRequestSummary.fromJson);
   }
 
   Future<AdminCancellationRequestDetail> getCancellationRequest(
@@ -588,16 +565,12 @@ class AdminApi extends ChangeNotifier {
     double? approvedRefundAmount,
     String? reason,
   }) async {
-    return post(
-      '/api/admin/cancellation-requests/$requestId/decision',
-      {
-        'decision': decision,
-        if (approvedRefundAmount != null)
-          'approvedRefundAmount': approvedRefundAmount,
-        if (reason != null && reason.trim().isNotEmpty)
-          'reason': reason.trim(),
-      },
-    );
+    return post('/api/admin/cancellation-requests/$requestId/decision', {
+      'decision': decision,
+      if (approvedRefundAmount != null)
+        'approvedRefundAmount': approvedRefundAmount,
+      if (reason != null && reason.trim().isNotEmpty) 'reason': reason.trim(),
+    });
   }
 
   // ==========================================

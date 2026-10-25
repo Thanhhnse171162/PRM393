@@ -24,7 +24,6 @@ class _AdminCancellationRequestsPageState
   List<AdminCancellationRequestSummary> _requests = [];
   bool _loading = false;
   String? _error;
-  int _totalCount = 0;
 
   @override
   void initState() {
@@ -47,7 +46,6 @@ class _AdminCancellationRequestsPageState
       if (mounted) {
         setState(() {
           _requests = res.items;
-          _totalCount = res.totalCount;
           _loading = false;
         });
       }

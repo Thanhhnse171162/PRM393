@@ -109,10 +109,47 @@ public partial class AdminStaffService(
 
     public async Task<AdminStaffDetailDto> CreateStaffAsync(CreateStaffRequest request, CancellationToken ct = default)
     {
-        ValidateFullName(request.FullName);
-        var phone = ValidateAndNormalizePhone(request.PhoneNumber);
-        var email = ValidateAndNormalizeEmail(request.Email);
-        ValidatePassword(request.Password);
+        var errors = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
+
+        if (string.IsNullOrWhiteSpace(request.FullName))
+            errors["fullName"] = ["Full name is required."];
+        else if (request.FullName.Trim().Length > 150)
+            errors["fullName"] = ["Full name must be at most 150 characters."];
+
+        string phone = string.Empty;
+        if (string.IsNullOrWhiteSpace(request.PhoneNumber))
+            errors["phoneNumber"] = ["Phone number is required."];
+        else
+        {
+            phone = PhoneNumberFormat.Normalize(request.PhoneNumber);
+            if (!PhoneNumberFormat.IsValid(phone))
+                errors["phoneNumber"] = ["Phone number is invalid."];
+        }
+
+        string? email = null;
+        if (!string.IsNullOrWhiteSpace(request.Email))
+        {
+            var trimmedEmail = request.Email.Trim().ToLowerInvariant();
+            if (trimmedEmail.Length > 255 || !StaffEmailRegex().IsMatch(trimmedEmail))
+                errors["email"] = ["Email is invalid."];
+            else
+                email = trimmedEmail;
+        }
+
+        if (string.IsNullOrEmpty(request.Password))
+            errors["password"] = ["Password is required."];
+        else if (request.Password.Length < 8 || request.Password.Length > 128 ||
+            !request.Password.Any(char.IsUpper) || !request.Password.Any(char.IsLower) || !request.Password.Any(char.IsDigit))
+            errors["password"] = ["Password must be 8-128 characters and contain uppercase, lowercase, and digits."];
+
+        if (request.SportCenterId == Guid.Empty)
+            errors["sportCenterId"] = ["Sport center is required."];
+
+        if (errors.Count > 0)
+        {
+            var firstMessage = errors.Values.First().First();
+            throw new ValidationException(firstMessage, errors);
+        }
 
         var center = await db.SportCenters.AsNoTracking()
             .Where(sc => sc.Id == request.SportCenterId)
@@ -120,7 +157,10 @@ public partial class AdminStaffService(
             .SingleOrDefaultAsync(ct);
 
         if (center is null || center.Status != SportCenterStatus.Active)
-            throw new ValidationException("Sport center not found or is inactive.");
+            throw new ValidationException("Sport center not found or is inactive.", new Dictionary<string, string[]>
+            {
+                ["sportCenterId"] = ["Sport center not found or is inactive."]
+            });
 
         if (await db.Users.AnyAsync(u => u.PhoneNumber == phone, ct))
             throw new ConflictException("Phone number is already registered.", ErrorCodes.PhoneAlreadyExists);

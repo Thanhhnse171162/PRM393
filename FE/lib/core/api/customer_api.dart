@@ -72,6 +72,8 @@ class CustomerApi extends ChangeNotifier {
       post('/api/bookings/$id/payments/deposit', {'paymentMethod': method});
   Future<Json> paymentStatus(String id) =>
       get('/api/bookings/$id/payment-status');
+  Future<Json> reconcilePayment(String id) =>
+      post('/api/bookings/$id/payments/reconcile', {});
   Future<Json> simulate(String paymentId, String result) =>
       post('/api/dev/payments/$paymentId/simulate', {'result': result});
   Future<Json> qr(String id) => get('/api/bookings/$id/qr');

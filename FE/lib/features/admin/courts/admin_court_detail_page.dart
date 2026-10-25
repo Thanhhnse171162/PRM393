@@ -1,3 +1,5 @@
+import '../../../shared/widgets/customer_widgets.dart';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +61,10 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
                 ),
               ),
               ListTile(
-                leading: const Icon(Icons.check_circle, color: Color(0xFF16A34A)),
+                leading: const Icon(
+                  Icons.check_circle,
+                  color: Color(0xFF16A34A),
+                ),
                 title: const Text('Hoạt động (Active)'),
                 subtitle: const Text('Sân sẵn sàng nhận lịch đặt của khách'),
                 trailing: detail.status == 'Active'
@@ -85,7 +90,9 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
               ListTile(
                 leading: const Icon(Icons.cancel, color: AppColors.error),
                 title: const Text('Tạm ngừng (Inactive)'),
-                subtitle: const Text('Không cho phép đặt sân trong thời gian dài'),
+                subtitle: const Text(
+                  'Không cho phép đặt sân trong thời gian dài',
+                ),
                 trailing: detail.status == 'Inactive'
                     ? const Icon(Icons.check, color: AppColors.primary)
                     : null,
@@ -105,12 +112,16 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
   Future<void> _updateStatus(String nextStatus) async {
     setState(() => _mutating = true);
     try {
-      await context.read<AdminApi>().updateCourtStatus(widget.courtId, nextStatus);
+      await context.read<AdminApi>().updateCourtStatus(
+        widget.courtId,
+        nextStatus,
+      );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-                'Đã cập nhật trạng thái sân thành ${AdminFormat.courtStatusName(nextStatus)}'),
+              'Đã cập nhật trạng thái sân thành ${AdminFormat.courtStatusName(nextStatus)}',
+            ),
           ),
         );
         _loadDetail();
@@ -142,10 +153,7 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
         backgroundColor: AppColors.white,
         foregroundColor: AppColors.textPrimary,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadDetail,
-          ),
+          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadDetail),
         ],
       ),
       body: FutureBuilder<AdminCourtDetail>(
@@ -170,6 +178,12 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                SportImage(
+                  url: detail.coverImageUrl,
+                  height: 200,
+                  borderRadius: 16,
+                ),
+                const SizedBox(height: 16),
                 // Primary Info Card
                 AdminCard(
                   child: Column(
@@ -178,16 +192,6 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: AppColors.lightMint,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(Icons.sports_tennis,
-                                color: AppColors.primary, size: 28),
-                          ),
-                          const SizedBox(width: 14),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,7 +212,8 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
                                     ),
                                     AdminStatusBadge(
                                       label: AdminFormat.courtStatusName(
-                                          detail.status),
+                                        detail.status,
+                                      ),
                                       statusType: detail.status,
                                     ),
                                   ],
@@ -229,15 +234,19 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
                       const SizedBox(height: 16),
                       const Divider(height: 1),
                       const SizedBox(height: 14),
-                      _buildInfoRow(Icons.storefront_outlined, 'Cơ sở',
-                          detail.sportCenterName),
+                      _buildInfoRow(
+                        Icons.storefront_outlined,
+                        'Cơ sở',
+                        detail.sportCenterName,
+                      ),
                       const SizedBox(height: 10),
                       _buildInfoRow(
-                          Icons.layers_outlined,
-                          'Mặt sân',
-                          detail.surfaceType?.isNotEmpty == true
-                              ? detail.surfaceType!
-                              : 'Tiêu chuẩn'),
+                        Icons.layers_outlined,
+                        'Mặt sân',
+                        detail.surfaceType?.isNotEmpty == true
+                            ? detail.surfaceType!
+                            : 'Tiêu chuẩn',
+                      ),
                       const SizedBox(height: 10),
                       _buildInfoRow(
                         Icons.payments_outlined,
@@ -246,8 +255,11 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
                       ),
                       if (detail.description?.isNotEmpty == true) ...[
                         const SizedBox(height: 10),
-                        _buildInfoRow(Icons.notes_outlined, 'Mô tả',
-                            detail.description!),
+                        _buildInfoRow(
+                          Icons.notes_outlined,
+                          'Mô tả',
+                          detail.description!,
+                        ),
                       ],
                       const SizedBox(height: 16),
                       Row(
@@ -258,7 +270,9 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
                               label: const Text('Chỉnh sửa'),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.primary,
-                                side: const BorderSide(color: AppColors.primary),
+                                side: const BorderSide(
+                                  color: AppColors.primary,
+                                ),
                               ),
                               onPressed: _mutating
                                   ? null
@@ -306,11 +320,10 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
                 const AdminSectionHeader(title: 'Bảng giá sân'),
                 AdminActionCard(
                   title: 'Cấu hình quy tắc giá',
-                  description:
-                      'Thiết lập giá theo thứ, khung giờ vàng hoặc giai đoạn áp dụng cho sân này',
+                  description: 'Thiết lập giá theo thứ, khung giờ vàng hoặc giai đoạn áp dụng cho sân này',
                   icon: Icons.price_change_outlined,
                   onTap: () => context.push(
-                    '/admin/courts/${detail.courtId}/price-rules?courtName=${Uri.encodeComponent(detail.name)}',
+                    '/admin/price-rules?courtId=${Uri.encodeComponent(detail.courtId)}&courtName=${Uri.encodeComponent(detail.name)}',
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -332,7 +345,10 @@ class _AdminCourtDetailPageState extends State<AdminCourtDetailPage> {
           width: 80,
           child: Text(
             label,
-            style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
+            style: const TextStyle(
+              fontSize: 13,
+              color: AppColors.textSecondary,
+            ),
           ),
         ),
         Expanded(

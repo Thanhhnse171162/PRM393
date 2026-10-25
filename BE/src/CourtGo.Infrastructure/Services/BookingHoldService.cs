@@ -230,7 +230,9 @@ public class BookingHoldService : IBookingHoldService, IWalkInBookingService
             var slotLocalStart = TimeOnly.FromDateTime(localStart.DateTime);
             var slotLocalEnd = slotLocalStart.AddHours(1);
 
-            if (slotLocalStart < openTime.Value || slotLocalEnd > closeTime.Value)
+            // TimeOnly.AddHours wraps 23:00 to 00:00. Overnight opening hours
+            // are not supported, so a wrapped end cannot fit today's window.
+            if (slotLocalEnd <= slotLocalStart || slotLocalStart < openTime.Value || slotLocalEnd > closeTime.Value)
             {
                 throw new ValidationException("Selected slots are outside sport center operating hours.", ErrorCodes.InvalidSlotSelection);
             }

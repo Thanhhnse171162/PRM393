@@ -1,0 +1,1154 @@
+[
+  {
+    "route": "/admin/account",
+    "screen": "AdminAccountPage",
+    "file": "FE/lib/features/admin/account/admin_account_page.dart",
+    "role": "Admin",
+    "module": "admin/account",
+    "api": "Auth/me, logout",
+    "entities": "User, RefreshToken",
+    "tests": "AuthApiTests",
+    "signals": {
+      "loading": false,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/bookings",
+    "screen": "AdminBookingsPage",
+    "file": "FE/lib/features/admin/bookings/admin_bookings_page.dart",
+    "role": "Admin",
+    "module": "admin/bookings",
+    "api": "AdminBookings, AdminCancellationRequests / AdminBookingService, CancellationService",
+    "entities": "Booking, CancellationRequest, Payment",
+    "tests": "AdminCancellationApiTests; AdminBookingsAndReportsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/bookings/:id",
+    "screen": "AdminBookingDetailPage",
+    "file": "FE/lib/features/admin/bookings/admin_booking_detail_page.dart",
+    "role": "Admin",
+    "module": "admin/bookings",
+    "api": "AdminBookings, AdminCancellationRequests / AdminBookingService, CancellationService",
+    "entities": "Booking, CancellationRequest, Payment",
+    "tests": "AdminCancellationApiTests; AdminBookingsAndReportsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/cancellation-policies",
+    "screen": "AdminCancellationPoliciesPage",
+    "file": "FE/lib/features/admin/cancellation_policies/admin_cancellation_policies_page.dart",
+    "role": "Admin",
+    "module": "admin/cancellation_policies",
+    "api": "AdminCancellationPolicies / AdminCancellationPolicyService",
+    "entities": "CancellationPolicy",
+    "tests": "AdminBusinessConfigApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/cancellation-requests",
+    "screen": "AdminCancellationRequestsPage",
+    "file": "FE/lib/features/admin/bookings/admin_cancellation_requests_page.dart",
+    "role": "Admin",
+    "module": "admin/bookings",
+    "api": "AdminBookings, AdminCancellationRequests / AdminBookingService, CancellationService",
+    "entities": "Booking, CancellationRequest, Payment",
+    "tests": "AdminCancellationApiTests; AdminBookingsAndReportsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/centers",
+    "screen": "AdminCentersPage",
+    "file": "FE/lib/features/admin/branches/admin_centers_page.dart",
+    "role": "Admin",
+    "module": "admin/branches",
+    "api": "AdminSportCenters, AdminOperatingHours / AdminSportCenterService",
+    "entities": "SportCenter, Court, OperatingHour",
+    "tests": "AdminMasterDataApiTests; AdminImageUrlTests; admin_image_forms_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": true,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/centers/:id",
+    "screen": "AdminCenterDetailPage",
+    "file": "FE/lib/features/admin/branches/admin_center_detail_page.dart",
+    "role": "Admin",
+    "module": "admin/branches",
+    "api": "AdminSportCenters, AdminOperatingHours / AdminSportCenterService",
+    "entities": "SportCenter, Court, OperatingHour",
+    "tests": "AdminMasterDataApiTests; AdminImageUrlTests; admin_image_forms_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": true,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/centers/:id/edit",
+    "screen": "AdminCenterFormPage",
+    "file": "FE/lib/features/admin/branches/admin_center_form_page.dart",
+    "role": "Admin",
+    "module": "admin/branches",
+    "api": "AdminSportCenters, AdminOperatingHours / AdminSportCenterService",
+    "entities": "SportCenter, Court, OperatingHour",
+    "tests": "AdminMasterDataApiTests; AdminImageUrlTests; admin_image_forms_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/centers/create",
+    "screen": "AdminCenterFormPage",
+    "file": "FE/lib/features/admin/branches/admin_center_form_page.dart",
+    "role": "Admin",
+    "module": "admin/branches",
+    "api": "AdminSportCenters, AdminOperatingHours / AdminSportCenterService",
+    "entities": "SportCenter, Court, OperatingHour",
+    "tests": "AdminMasterDataApiTests; AdminImageUrlTests; admin_image_forms_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/centers/location-picker",
+    "screen": "AdminLocationPickerPage",
+    "file": "FE/lib/features/admin/branches/admin_location_picker_page.dart",
+    "role": "Admin",
+    "module": "admin/branches",
+    "api": "AdminSportCenters, AdminOperatingHours / AdminSportCenterService",
+    "entities": "SportCenter, Court, OperatingHour",
+    "tests": "AdminMasterDataApiTests; AdminImageUrlTests; admin_image_forms_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/courts",
+    "screen": "AdminCourtsPage",
+    "file": "FE/lib/features/admin/courts/admin_courts_page.dart",
+    "role": "Admin",
+    "module": "admin/courts",
+    "api": "AdminCourts / AdminCourtService",
+    "entities": "Court, Sport, SportCenter",
+    "tests": "AdminMasterDataApiTests; AdminImageUrlTests; admin_images_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": true,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/courts/:id",
+    "screen": "AdminCourtDetailPage",
+    "file": "FE/lib/features/admin/courts/admin_court_detail_page.dart",
+    "role": "Admin",
+    "module": "admin/courts",
+    "api": "AdminCourts / AdminCourtService",
+    "entities": "Court, Sport, SportCenter",
+    "tests": "AdminMasterDataApiTests; AdminImageUrlTests; admin_images_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": true,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/courts/:id/edit",
+    "screen": "AdminCourtFormPage",
+    "file": "FE/lib/features/admin/courts/admin_court_form_page.dart",
+    "role": "Admin",
+    "module": "admin/courts",
+    "api": "AdminCourts / AdminCourtService",
+    "entities": "Court, Sport, SportCenter",
+    "tests": "AdminMasterDataApiTests; AdminImageUrlTests; admin_images_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/courts/create",
+    "screen": "AdminCourtFormPage",
+    "file": "FE/lib/features/admin/courts/admin_court_form_page.dart",
+    "role": "Admin",
+    "module": "admin/courts",
+    "api": "AdminCourts / AdminCourtService",
+    "entities": "Court, Sport, SportCenter",
+    "tests": "AdminMasterDataApiTests; AdminImageUrlTests; admin_images_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/home",
+    "screen": "AdminDashboardPage",
+    "file": "FE/lib/features/admin/dashboard/admin_dashboard_page.dart",
+    "role": "Admin",
+    "module": "admin/dashboard",
+    "api": "AdminDashboard / AdminDashboardService",
+    "entities": "Booking, Payment, Court",
+    "tests": "AdminBookingsAndReportsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/management",
+    "screen": "AdminManagementHubPage",
+    "file": "FE/lib/features/admin/management/admin_management_hub_page.dart",
+    "role": "Admin",
+    "module": "admin/management",
+    "api": "Điều hướng nội bộ",
+    "entities": "Không ghi DB",
+    "tests": "Kiểm tra route tĩnh",
+    "signals": {
+      "loading": false,
+      "error_retry": false,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/operating-hours",
+    "screen": "AdminOperatingHoursPage",
+    "file": "FE/lib/features/admin/operating_hours/admin_operating_hours_page.dart",
+    "role": "Admin",
+    "module": "admin/operating_hours",
+    "api": "AdminOperatingHours / AdminOperatingHourService",
+    "entities": "OperatingHour, OperatingHourException",
+    "tests": "AdminBusinessConfigApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/operating-hours/exceptions",
+    "screen": "AdminOperatingExceptionsPage",
+    "file": "FE/lib/features/admin/operating_hours/admin_operating_exceptions_page.dart",
+    "role": "Admin",
+    "module": "admin/operating_hours",
+    "api": "AdminOperatingHours / AdminOperatingHourService",
+    "entities": "OperatingHour, OperatingHourException",
+    "tests": "AdminBusinessConfigApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/price-rules",
+    "screen": "AdminPriceRulesPage",
+    "file": "FE/lib/features/admin/pricing/admin_price_rules_page.dart",
+    "role": "Admin",
+    "module": "admin/pricing",
+    "api": "AdminPriceRules / AdminPriceRuleService",
+    "entities": "PriceRule, Court",
+    "tests": "AdminBusinessConfigApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/reports",
+    "screen": "AdminReportsHubPage",
+    "file": "FE/lib/features/admin/reports/admin_reports_hub_page.dart",
+    "role": "Admin",
+    "module": "admin/reports",
+    "api": "AdminReports / AdminReportService",
+    "entities": "Booking, Payment, CheckIn",
+    "tests": "AdminBookingsAndReportsApiTests",
+    "signals": {
+      "loading": false,
+      "error_retry": false,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/reports/bookings-report",
+    "screen": "AdminBookingReportPage",
+    "file": "FE/lib/features/admin/reports/admin_booking_report_page.dart",
+    "role": "Admin",
+    "module": "admin/reports",
+    "api": "AdminReports / AdminReportService",
+    "entities": "Booking, Payment, CheckIn",
+    "tests": "AdminBookingsAndReportsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/reports/hub",
+    "screen": "AdminReportsHubPage",
+    "file": "FE/lib/features/admin/reports/admin_reports_hub_page.dart",
+    "role": "Admin",
+    "module": "admin/reports",
+    "api": "AdminReports / AdminReportService",
+    "entities": "Booking, Payment, CheckIn",
+    "tests": "AdminBookingsAndReportsApiTests",
+    "signals": {
+      "loading": false,
+      "error_retry": false,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/reports/occupancy",
+    "screen": "AdminOccupancyReportPage",
+    "file": "FE/lib/features/admin/reports/admin_occupancy_report_page.dart",
+    "role": "Admin",
+    "module": "admin/reports",
+    "api": "AdminReports / AdminReportService",
+    "entities": "Booking, Payment, CheckIn",
+    "tests": "AdminBookingsAndReportsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/reports/revenue",
+    "screen": "AdminRevenueReportPage",
+    "file": "FE/lib/features/admin/reports/admin_revenue_report_page.dart",
+    "role": "Admin",
+    "module": "admin/reports",
+    "api": "AdminReports / AdminReportService",
+    "entities": "Booking, Payment, CheckIn",
+    "tests": "AdminBookingsAndReportsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/reports/summary",
+    "screen": "AdminSummaryReportPage",
+    "file": "FE/lib/features/admin/reports/admin_summary_report_page.dart",
+    "role": "Admin",
+    "module": "admin/reports",
+    "api": "AdminReports / AdminReportService",
+    "entities": "Booking, Payment, CheckIn",
+    "tests": "AdminBookingsAndReportsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/settings",
+    "screen": "AdminSettingsPage",
+    "file": "FE/lib/features/admin/settings/admin_settings_page.dart",
+    "role": "Admin",
+    "module": "admin/settings",
+    "api": "AdminSystemSettings / AdminSystemSettingService",
+    "entities": "SystemSetting",
+    "tests": "AdminBusinessConfigApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/sports",
+    "screen": "AdminSportsPage",
+    "file": "FE/lib/features/admin/sports/admin_sports_page.dart",
+    "role": "Admin",
+    "module": "admin/sports",
+    "api": "AdminSports / AdminSportService",
+    "entities": "Sport, Court",
+    "tests": "AdminMasterDataApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": true,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/staff",
+    "screen": "AdminStaffPage",
+    "file": "FE/lib/features/admin/staff_management/admin_staff_page.dart",
+    "role": "Admin",
+    "module": "admin/staff_management",
+    "api": "AdminStaff / AdminStaffService",
+    "entities": "User, StaffAssignment",
+    "tests": "AdminStaffApiTests; admin_staff_create_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/staff/:id",
+    "screen": "AdminStaffDetailPage",
+    "file": "FE/lib/features/admin/staff_management/admin_staff_detail_page.dart",
+    "role": "Admin",
+    "module": "admin/staff_management",
+    "api": "AdminStaff / AdminStaffService",
+    "entities": "User, StaffAssignment",
+    "tests": "AdminStaffApiTests; admin_staff_create_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/admin/staff/create",
+    "screen": "AdminStaffCreatePage",
+    "file": "FE/lib/features/admin/staff_management/admin_staff_create_page.dart",
+    "role": "Admin",
+    "module": "admin/staff_management",
+    "api": "AdminStaff / AdminStaffService",
+    "entities": "User, StaffAssignment",
+    "tests": "AdminStaffApiTests; admin_staff_create_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/account",
+    "screen": "AccountPage",
+    "file": "FE/lib/features/account/account_page.dart",
+    "role": "Customer/Guest",
+    "module": "account",
+    "api": "Auth/me, logout / AuthService",
+    "entities": "User, RefreshToken",
+    "tests": "AuthApiTests; kiểm tra nguồn",
+    "signals": {
+      "loading": true,
+      "error_retry": false,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/bookings",
+    "screen": "BookingHistoryPage",
+    "file": "FE/lib/features/booking/booking_history_page.dart",
+    "role": "Customer/Guest",
+    "module": "booking",
+    "api": "Bookings, CancellationRequests / BookingQueryService, CancellationService",
+    "entities": "Booking, CheckIn, CancellationRequest, Payment",
+    "tests": "BookingWorkflowApiTests; AdminCancellationE2ETests; payment_state_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/bookings/:id",
+    "screen": "BookingDetailPage",
+    "file": "FE/lib/features/booking/booking_detail_page.dart",
+    "role": "Customer/Guest",
+    "module": "booking",
+    "api": "Bookings, CancellationRequests / BookingQueryService, CancellationService",
+    "entities": "Booking, CheckIn, CancellationRequest, Payment",
+    "tests": "BookingWorkflowApiTests; AdminCancellationE2ETests; payment_state_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/bookings/:id/cancellation",
+    "screen": "CancellationPage",
+    "file": "FE/lib/features/booking/cancellation_page.dart",
+    "role": "Customer/Guest",
+    "module": "booking",
+    "api": "Bookings, CancellationRequests / BookingQueryService, CancellationService",
+    "entities": "Booking, CheckIn, CancellationRequest, Payment",
+    "tests": "BookingWorkflowApiTests; AdminCancellationE2ETests; payment_state_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/bookings/:id/checkout",
+    "screen": "CheckoutPage",
+    "file": "FE/lib/features/payments/checkout_page.dart",
+    "role": "Customer/Guest",
+    "module": "payments",
+    "api": "BookingPayments / DepositPaymentService, PaymentReconciliationService",
+    "entities": "Booking, BookingSlot, Payment",
+    "tests": "RealPaymentApiTests; VnPayQueryTests; payment_state_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/bookings/:id/payment",
+    "screen": "PaymentPage",
+    "file": "FE/lib/features/payments/payment_page.dart",
+    "role": "Customer/Guest",
+    "module": "payments",
+    "api": "BookingPayments / DepositPaymentService, PaymentReconciliationService",
+    "entities": "Booking, BookingSlot, Payment",
+    "tests": "RealPaymentApiTests; VnPayQueryTests; payment_state_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/bookings/:id/qr",
+    "screen": "BookingQrPage",
+    "file": "FE/lib/features/booking/booking_qr_page.dart",
+    "role": "Customer/Guest",
+    "module": "booking",
+    "api": "Bookings, CancellationRequests / BookingQueryService, CancellationService",
+    "entities": "Booking, CheckIn, CancellationRequest, Payment",
+    "tests": "BookingWorkflowApiTests; AdminCancellationE2ETests; payment_state_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/bookings/:id/review",
+    "screen": "ReviewPage",
+    "file": "FE/lib/features/reviews/review_pages.dart",
+    "role": "Customer/Guest",
+    "module": "reviews",
+    "api": "Reviews, SportCenters/reviews / ReviewService",
+    "entities": "Review, Booking",
+    "tests": "ReviewsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/bookings/:id/success",
+    "screen": "BookingSuccessPage",
+    "file": "FE/lib/features/booking/booking_success_page.dart",
+    "role": "Customer/Guest",
+    "module": "booking",
+    "api": "Bookings, CancellationRequests / BookingQueryService, CancellationService",
+    "entities": "Booking, CheckIn, CancellationRequest, Payment",
+    "tests": "BookingWorkflowApiTests; AdminCancellationE2ETests; payment_state_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/centers/:id",
+    "screen": "CenterDetailPage",
+    "file": "FE/lib/features/centers/center_detail_page.dart",
+    "role": "Customer/Guest",
+    "module": "centers",
+    "api": "SportCenters, Sports / SportCenterService",
+    "entities": "SportCenter, Court, OperatingHour",
+    "tests": "MasterDataApiTests; admin_images_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": true,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/centers/:id/reviews",
+    "screen": "CenterReviewsPage",
+    "file": "FE/lib/features/reviews/review_pages.dart",
+    "role": "Customer/Guest",
+    "module": "reviews",
+    "api": "Reviews, SportCenters/reviews / ReviewService",
+    "entities": "Review, Booking",
+    "tests": "ReviewsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/courts/:id",
+    "screen": "CourtDetailPage",
+    "file": "FE/lib/features/courts/court_detail_page.dart",
+    "role": "Customer/Guest",
+    "module": "courts",
+    "api": "Courts / CourtService",
+    "entities": "Court, Sport",
+    "tests": "MasterDataApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": true,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/courts/:id/availability",
+    "screen": "AvailabilityPage",
+    "file": "FE/lib/features/availability/availability_page.dart",
+    "role": "Customer/Guest",
+    "module": "availability",
+    "api": "Availability, Bookings/hold / AvailabilityService, BookingHoldService",
+    "entities": "Court, Booking, BookingSlot, PriceRule",
+    "tests": "AvailabilityApiTests; BookingHoldApiTests; SQL tests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/explore",
+    "screen": "ExplorePage",
+    "file": "FE/lib/features/centers/explore_page.dart",
+    "role": "Customer/Guest",
+    "module": "centers",
+    "api": "SportCenters, Sports / SportCenterService",
+    "entities": "SportCenter, Court, OperatingHour",
+    "tests": "MasterDataApiTests; admin_images_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/home",
+    "screen": "CustomerHomePage",
+    "file": "FE/lib/features/home/customer_home_page.dart",
+    "role": "Customer/Guest",
+    "module": "home",
+    "api": "SportCenters, Sports / SportCenterService",
+    "entities": "SportCenter, Court, Sport",
+    "tests": "customer_home_test; customer_home_page_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/notifications",
+    "screen": "NotificationsPage",
+    "file": "FE/lib/features/notifications/notifications_page.dart",
+    "role": "Customer/Guest",
+    "module": "notifications",
+    "api": "Notifications / NotificationService",
+    "entities": "Notification",
+    "tests": "NotificationsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/customer/payments/:bookingId",
+    "screen": "(redirect)",
+    "file": "",
+    "role": "Customer/Guest",
+    "module": "redirect",
+    "api": "Điều hướng",
+    "entities": "—",
+    "tests": "Kiểm tra route",
+    "signals": {
+      "loading": false,
+      "error_retry": false,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": false
+    }
+  },
+  {
+    "route": "/location",
+    "screen": "LocationPage",
+    "file": "FE/lib/features/location/presentation/pages/location_page.dart",
+    "role": "Customer/Guest",
+    "module": "location",
+    "api": "Nominatim / geolocator / local storage",
+    "entities": "Không ghi DB",
+    "tests": "admin_center_form_test; kiểm tra nguồn",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/login",
+    "screen": "LoginPage",
+    "file": "FE/lib/features/auth/presentation/pages/login_page.dart",
+    "role": "Customer/Guest",
+    "module": "auth",
+    "api": "AuthController / AuthService",
+    "entities": "User, RefreshToken",
+    "tests": "AuthApiTests; auth_provider_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/register",
+    "screen": "RegisterPage",
+    "file": "FE/lib/features/auth/presentation/pages/register_page.dart",
+    "role": "Customer/Guest",
+    "module": "auth",
+    "api": "AuthController / AuthService",
+    "entities": "User, RefreshToken",
+    "tests": "AuthApiTests; auth_provider_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/splash",
+    "screen": "SplashPage",
+    "file": "FE/lib/features/auth/presentation/pages/splash_page.dart",
+    "role": "Customer/Guest",
+    "module": "auth",
+    "api": "AuthController / AuthService",
+    "entities": "User, RefreshToken",
+    "tests": "AuthApiTests; auth_provider_test",
+    "signals": {
+      "loading": false,
+      "error_retry": true,
+      "empty": false,
+      "forms": false,
+      "images": true,
+      "scroll": false
+    }
+  },
+  {
+    "route": "/staff/account",
+    "screen": "StaffAccountPage",
+    "file": "FE/lib/features/staff/staff_home_schedule.dart",
+    "role": "Staff",
+    "module": "staff",
+    "api": "StaffOperations, StaffBookings, StaffCourts, WalkInBookings / StaffAccess",
+    "entities": "StaffAssignment, Booking, Payment, CheckIn, CourtBlock",
+    "tests": "StaffOperationsApiTests; BookingWorkflowApiTests; staff_verify_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/staff/bookings",
+    "screen": "StaffSchedulePage",
+    "file": "FE/lib/features/staff/staff_home_schedule.dart",
+    "role": "Staff",
+    "module": "staff",
+    "api": "StaffOperations, StaffBookings, StaffCourts, WalkInBookings / StaffAccess",
+    "entities": "StaffAssignment, Booking, Payment, CheckIn, CourtBlock",
+    "tests": "StaffOperationsApiTests; BookingWorkflowApiTests; staff_verify_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/staff/bookings/:id",
+    "screen": "StaffBookingDetailPage",
+    "file": "FE/lib/features/staff/staff_booking_pages.dart",
+    "role": "Staff",
+    "module": "staff",
+    "api": "StaffOperations, StaffBookings, StaffCourts, WalkInBookings / StaffAccess",
+    "entities": "StaffAssignment, Booking, Payment, CheckIn, CourtBlock",
+    "tests": "StaffOperationsApiTests; BookingWorkflowApiTests; staff_verify_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/staff/camera",
+    "screen": "StaffCameraPage",
+    "file": "FE/lib/features/staff/staff_scanner.dart",
+    "role": "Staff",
+    "module": "staff",
+    "api": "StaffOperations, StaffBookings, StaffCourts, WalkInBookings / StaffAccess",
+    "entities": "StaffAssignment, Booking, Payment, CheckIn, CourtBlock",
+    "tests": "StaffOperationsApiTests; BookingWorkflowApiTests; staff_verify_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/staff/check-in",
+    "screen": "(redirect)",
+    "file": "",
+    "role": "Staff",
+    "module": "redirect",
+    "api": "Điều hướng",
+    "entities": "—",
+    "tests": "Kiểm tra route",
+    "signals": {
+      "loading": false,
+      "error_retry": false,
+      "empty": false,
+      "forms": false,
+      "images": false,
+      "scroll": false
+    }
+  },
+  {
+    "route": "/staff/checkin",
+    "screen": "StaffScannerPage",
+    "file": "FE/lib/features/staff/staff_scanner.dart",
+    "role": "Staff",
+    "module": "staff",
+    "api": "StaffOperations, StaffBookings, StaffCourts, WalkInBookings / StaffAccess",
+    "entities": "StaffAssignment, Booking, Payment, CheckIn, CourtBlock",
+    "tests": "StaffOperationsApiTests; BookingWorkflowApiTests; staff_verify_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/staff/courts",
+    "screen": "StaffCourtsPage",
+    "file": "FE/lib/features/staff/staff_court_pages.dart",
+    "role": "Staff",
+    "module": "staff",
+    "api": "StaffOperations, StaffBookings, StaffCourts, WalkInBookings / StaffAccess",
+    "entities": "StaffAssignment, Booking, Payment, CheckIn, CourtBlock",
+    "tests": "StaffOperationsApiTests; BookingWorkflowApiTests; staff_verify_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/staff/courts/:id",
+    "screen": "StaffCourtDetailPage",
+    "file": "FE/lib/features/staff/staff_court_pages.dart",
+    "role": "Staff",
+    "module": "staff",
+    "api": "StaffOperations, StaffBookings, StaffCourts, WalkInBookings / StaffAccess",
+    "entities": "StaffAssignment, Booking, Payment, CheckIn, CourtBlock",
+    "tests": "StaffOperationsApiTests; BookingWorkflowApiTests; staff_verify_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/staff/courts/:id/block",
+    "screen": "StaffCreateBlockPage",
+    "file": "FE/lib/features/staff/staff_court_pages.dart",
+    "role": "Staff",
+    "module": "staff",
+    "api": "StaffOperations, StaffBookings, StaffCourts, WalkInBookings / StaffAccess",
+    "entities": "StaffAssignment, Booking, Payment, CheckIn, CourtBlock",
+    "tests": "StaffOperationsApiTests; BookingWorkflowApiTests; staff_verify_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/staff/home",
+    "screen": "StaffHomePage",
+    "file": "FE/lib/features/staff/staff_home_schedule.dart",
+    "role": "Staff",
+    "module": "staff",
+    "api": "StaffOperations, StaffBookings, StaffCourts, WalkInBookings / StaffAccess",
+    "entities": "StaffAssignment, Booking, Payment, CheckIn, CourtBlock",
+    "tests": "StaffOperationsApiTests; BookingWorkflowApiTests; staff_verify_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/staff/notifications",
+    "screen": "NotificationsPage",
+    "file": "FE/lib/features/notifications/notifications_page.dart",
+    "role": "Staff",
+    "module": "notifications",
+    "api": "Notifications / NotificationService",
+    "entities": "Notification",
+    "tests": "NotificationsApiTests",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/staff/verify",
+    "screen": "StaffVerifyPage",
+    "file": "FE/lib/features/staff/staff_booking_pages.dart",
+    "role": "Staff",
+    "module": "staff",
+    "api": "StaffOperations, StaffBookings, StaffCourts, WalkInBookings / StaffAccess",
+    "entities": "StaffAssignment, Booking, Payment, CheckIn, CourtBlock",
+    "tests": "StaffOperationsApiTests; BookingWorkflowApiTests; staff_verify_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": false,
+      "images": false,
+      "scroll": true
+    }
+  },
+  {
+    "route": "/staff/walk-in",
+    "screen": "StaffWalkInPage",
+    "file": "FE/lib/features/staff/staff_walk_in.dart",
+    "role": "Staff",
+    "module": "staff",
+    "api": "StaffOperations, StaffBookings, StaffCourts, WalkInBookings / StaffAccess",
+    "entities": "StaffAssignment, Booking, Payment, CheckIn, CourtBlock",
+    "tests": "StaffOperationsApiTests; BookingWorkflowApiTests; staff_verify_test",
+    "signals": {
+      "loading": true,
+      "error_retry": true,
+      "empty": true,
+      "forms": true,
+      "images": false,
+      "scroll": false
+    }
+  }
+]

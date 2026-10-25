@@ -1,3 +1,5 @@
+import '../../../shared/widgets/customer_widgets.dart';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -50,13 +52,18 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
 
     setState(() => _mutating = true);
     try {
-      await context.read<AdminApi>().updateCenterStatus(widget.centerId, nextStatus);
+      await context.read<AdminApi>().updateCenterStatus(
+        widget.centerId,
+        nextStatus,
+      );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(detail.isActive
-                ? 'Đã chuyển cơ sở sang trạng thái Tạm ngừng'
-                : 'Đã kích hoạt cơ sở hoạt động trở lại'),
+            content: Text(
+              detail.isActive
+                  ? 'Đã chuyển cơ sở sang trạng thái Tạm ngừng'
+                  : 'Đã kích hoạt cơ sở hoạt động trở lại',
+            ),
           ),
         );
         _loadDetail();
@@ -88,10 +95,7 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
         backgroundColor: AppColors.white,
         foregroundColor: AppColors.textPrimary,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadDetail,
-          ),
+          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadDetail),
         ],
       ),
       body: FutureBuilder<AdminSportCenterDetail>(
@@ -116,6 +120,12 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                SportImage(
+                  url: detail.coverImageUrl,
+                  height: 200,
+                  borderRadius: 16,
+                ),
+                const SizedBox(height: 16),
                 // Primary Info Card
                 AdminCard(
                   child: Column(
@@ -124,19 +134,6 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: AppColors.lightMint,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.location_city,
-                              color: AppColors.primary,
-                              size: 28,
-                            ),
-                          ),
-                          const SizedBox(width: 14),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,7 +148,9 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
                                 ),
                                 const SizedBox(height: 6),
                                 AdminStatusBadge(
-                                  label: AdminFormat.centerStatusName(detail.status),
+                                  label: AdminFormat.centerStatusName(
+                                    detail.status,
+                                  ),
                                   statusType: detail.status,
                                 ),
                               ],
@@ -181,7 +180,8 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
                         'Múi giờ',
                         detail.timeZoneId,
                       ),
-                      if (detail.latitude != null && detail.longitude != null) ...[
+                      if (detail.latitude != null &&
+                          detail.longitude != null) ...[
                         const SizedBox(height: 10),
                         _buildInfoRow(
                           Icons.map_outlined,
@@ -198,7 +198,9 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
                               label: const Text('Chỉnh sửa'),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.primary,
-                                side: const BorderSide(color: AppColors.primary),
+                                side: const BorderSide(
+                                  color: AppColors.primary,
+                                ),
                               ),
                               onPressed: _mutating
                                   ? null
@@ -233,7 +235,9 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
                                       : AppColors.primary,
                                 ),
                               ),
-                              onPressed: _mutating ? null : () => _toggleStatus(detail),
+                              onPressed: _mutating
+                                  ? null
+                                  : () => _toggleStatus(detail),
                             ),
                           ),
                         ],
@@ -273,8 +277,7 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
                 const AdminSectionHeader(title: 'Vận hành tại cơ sở này'),
                 AdminActionCard(
                   title: 'Giờ hoạt động & Ngày ngoại lệ',
-                  description:
-                      'Cấu hình mở/đóng cửa 7 ngày trong tuần và các ngày lễ ngoại lệ',
+                  description: 'Cấu hình mở/đóng cửa 7 ngày trong tuần và các ngày lễ ngoại lệ',
                   icon: Icons.schedule_outlined,
                   onTap: () => context.push(
                     '/admin/operating-hours?centerId=${detail.centerId}',
@@ -286,9 +289,8 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
                   description:
                       'Xem và quản lý tất cả ${detail.totalCourts} sân thuộc cơ sở này',
                   icon: Icons.sports_tennis_outlined,
-                  onTap: () => context.push(
-                    '/admin/courts?centerId=${detail.centerId}',
-                  ),
+                  onTap: () =>
+                      context.push('/admin/courts?centerId=${detail.centerId}'),
                 ),
                 const SizedBox(height: 24),
               ],
@@ -309,7 +311,10 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
           width: 90,
           child: Text(
             label,
-            style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
+            style: const TextStyle(
+              fontSize: 13,
+              color: AppColors.textSecondary,
+            ),
           ),
         ),
         Expanded(
@@ -319,6 +324,7 @@ class _AdminCenterDetailPageState extends State<AdminCenterDetailPage> {
               fontSize: 13,
               fontWeight: FontWeight.w600,
               color: AppColors.textPrimary,
+              height: 1.35,
             ),
           ),
         ),

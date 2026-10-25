@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Chọn ảnh cơ sở và sân thể thao từ thư viện ảnh để cập nhật CourtGo.</string>
     <key>NSCameraUsageDescription</key>
     <string>Nhân viên CourtGo quét mã QR để xác minh lượt đặt sân của khách.</string>
     <key>FlutterDeepLinkingEnabled</key>

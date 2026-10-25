@@ -25,7 +25,8 @@ public record AdminSportCenterListItemDto(
     string Status,
     int CourtCount,
     int ActiveCourtCount,
-    DateTimeOffset CreatedAt);
+    DateTimeOffset CreatedAt,
+    string? CoverImageUrl = null);
 
 public record AdminSportCenterDetailDto(
     Guid CenterId,

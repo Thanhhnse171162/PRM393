@@ -1,3 +1,5 @@
+import '../../../shared/widgets/customer_widgets.dart';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -44,11 +46,11 @@ class _AdminCentersPageState extends State<AdminCentersPage> {
     });
     try {
       final res = await context.read<AdminApi>().getCenters(
-            status: _selectedStatus,
-            search: _searchCtrl.text.trim(),
-            page: 1,
-            pageSize: 50,
-          );
+        status: _selectedStatus,
+        search: _searchCtrl.text.trim(),
+        page: 1,
+        pageSize: 50,
+      );
       if (mounted) {
         setState(() {
           _centers = res.items;
@@ -80,7 +82,10 @@ class _AdminCentersPageState extends State<AdminCentersPage> {
         foregroundColor: AppColors.textPrimary,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_circle_outline, color: AppColors.primary),
+            icon: const Icon(
+              Icons.add_circle_outline,
+              color: AppColors.primary,
+            ),
             tooltip: 'Thêm cơ sở mới',
             onPressed: () async {
               final created = await context.push<bool>('/admin/centers/create');
@@ -121,7 +126,9 @@ class _AdminCentersPageState extends State<AdminCentersPage> {
                   onSubmitted: (_) => _loadCenters(),
                 ),
                 const SizedBox(height: 10),
-                Row(
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
                   children: [
                     AdminFilterChipItem(
                       label: 'Tất cả ($_totalCount)',
@@ -131,7 +138,6 @@ class _AdminCentersPageState extends State<AdminCentersPage> {
                         _loadCenters();
                       },
                     ),
-                    const SizedBox(width: 8),
                     AdminFilterChipItem(
                       label: 'Đang mở',
                       isSelected: _selectedStatus == 'Active',
@@ -140,7 +146,6 @@ class _AdminCentersPageState extends State<AdminCentersPage> {
                         _loadCenters();
                       },
                     ),
-                    const SizedBox(width: 8),
                     AdminFilterChipItem(
                       label: 'Tạm ngừng',
                       isSelected: _selectedStatus == 'Inactive',
@@ -204,14 +209,11 @@ class _AdminCentersPageState extends State<AdminCentersPage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: AppColors.lightMint,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(Icons.location_city,
-                          color: AppColors.primary, size: 24),
+                    SportImage(
+                      url: c.coverImageUrl,
+                      width: 64,
+                      height: 64,
+                      borderRadius: 10,
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -262,8 +264,11 @@ class _AdminCentersPageState extends State<AdminCentersPage> {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.sports_tennis,
-                            size: 15, color: AppColors.primary),
+                        const Icon(
+                          Icons.sports_tennis,
+                          size: 15,
+                          color: AppColors.primary,
+                        ),
                         const SizedBox(width: 6),
                         Text(
                           '${c.activeCourtCount}/${c.courtCount} sân hoạt động',
@@ -278,8 +283,11 @@ class _AdminCentersPageState extends State<AdminCentersPage> {
                     if (c.phone != null && c.phone!.isNotEmpty)
                       Row(
                         children: [
-                          const Icon(Icons.phone_outlined,
-                              size: 13, color: AppColors.textSecondary),
+                          const Icon(
+                            Icons.phone_outlined,
+                            size: 13,
+                            color: AppColors.textSecondary,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             c.phone!,

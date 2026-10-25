@@ -94,5 +94,6 @@ coverage/
 
 # ===== Temp =====
 .local-build/
+BE/src/CourtGo.Api/App_Data/images/
 *.tmp
 *.bak

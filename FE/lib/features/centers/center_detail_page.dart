@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/api/customer_api.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_styles.dart';
 import '../../shared/models/customer_models.dart';
 import '../../shared/widgets/customer_widgets.dart';
 import '../home/discovery_provider.dart';
@@ -43,7 +44,7 @@ class CenterDetailPage extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     center.name,
-                    style: const TextStyle(
+                    style: AppTextStyles.h1.copyWith(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
                     ),
@@ -51,7 +52,7 @@ class CenterDetailPage extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     center.address,
-                    style: const TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       color: AppColors.textSecondary,
                       height: 1.5,
                     ),

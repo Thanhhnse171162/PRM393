@@ -13,6 +13,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+// Framework request-start logs include full callback queries. Audit payment outcomes explicitly instead.
+builder.Logging.AddFilter("Microsoft.AspNetCore.Hosting.Diagnostics", LogLevel.Warning);
 
 // Optional local overrides (git-ignored). Real secrets: user-secrets or environment variables.
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
@@ -79,9 +81,17 @@ builder.Services.AddDbContext<CourtGoDbContext>(options =>
 
 // Infrastructure: EF Core + SQL Server, JWT service, password hasher, repositories.
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddSingleton<IImageStorage>(new CourtGo.Infrastructure.Services.LocalImageStorage(
+    Path.Combine(builder.Environment.ContentRootPath, "App_Data", "images")));
 builder.Services.AddHostedService<CourtGo.Api.Workers.BookingLifecycleWorker>();
 builder.Services.AddSingleton(paymentSettings);
 builder.Services.AddSingleton<CourtGo.Infrastructure.Payments.PaymentNotificationVerifier>();
+builder.Services.AddSingleton<CourtGo.Infrastructure.Payments.PaymentReconciliationGate>();
+builder.Services.AddHttpClient("VnPayQuery", client => client.Timeout = TimeSpan.FromSeconds(20))
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });
+builder.Services.AddScoped(sp => new CourtGo.Infrastructure.Payments.VnPayTransactionQuery(
+    sp.GetRequiredService<IHttpClientFactory>().CreateClient("VnPayQuery"), paymentSettings, sp.GetRequiredService<TimeProvider>()));
+builder.Services.AddScoped<IPaymentReconciliationService, CourtGo.Infrastructure.Services.PaymentReconciliationService>();
 if (useDevelopmentPayments)
 {
     builder.Services.AddSingleton<CourtGo.Infrastructure.Services.DevelopmentPaymentGateway>();
@@ -183,6 +193,10 @@ builder.Services.AddHealthChecks();
 
 builder.Services.AddRateLimiter(options =>
 {
+    options.AddPolicy("PaymentQueryPolicy", context => System.Threading.RateLimiting.RateLimitPartition.GetFixedWindowLimiter(
+        context.User.FindFirst("sub")?.Value ?? context.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
+        _ => new System.Threading.RateLimiting.FixedWindowRateLimiterOptions {
+            PermitLimit = 12, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
     options.OnRejected = async (context, token) =>
     {
@@ -205,6 +219,7 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
+app.UseMiddleware<PaymentCallbackPortMiddleware>();
 
 // Safe development-only database connectivity check
 if (app.Environment.IsDevelopment())
@@ -266,8 +281,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
-app.UseRateLimiter();
 app.UseAuthentication();
+app.UseRateLimiter();
 app.UseAuthorization();
 
 app.MapHealthChecks("/health");

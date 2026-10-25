@@ -14,6 +14,18 @@ namespace CourtGo.UnitTests;
 
 public class BookingHoldServiceTests
 {
+    [Fact]
+    public async Task HoldAsync_MidnightRolloverOutsideOpeningHours_IsRejected()
+    {
+        var (db, _, service, customer, court) = CreateHarness();
+        var start = new DateTimeOffset(2026, 10, 10, 23, 0, 0, TimeSpan.FromHours(7));
+        var error = await Assert.ThrowsAsync<ValidationException>(() =>
+            service.HoldAsync(customer.Id, new BookingHoldRequest(court.Id, new List<DateTimeOffset> { start })));
+        Assert.Equal(ErrorCodes.InvalidSlotSelection, error.Code);
+        Assert.Empty(db.Bookings);
+        Assert.Empty(db.BookingSlots);
+    }
+
     private class SimpleExpiredHoldService : IExpiredBookingHoldService
     {
         private readonly CourtGoDbContext _db;
