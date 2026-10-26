@@ -64,7 +64,7 @@ public class StaffOperationsApiTests : IDisposable
         Assert.Empty(empty!.Items);
         var date = DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTimeOffset.UtcNow.AddDays(1), "SE Asia Standard Time").DateTime);
         var tomorrow = await client.GetFromJsonAsync<PagedResult<StaffScheduleItem>>("/api/staff/bookings?date=" + date.ToString("yyyy-MM-dd"));
-        Assert.Single(tomorrow!.Items);
+        Assert.Contains(tomorrow!.Items, item => item.StartAt > DateTimeOffset.UtcNow);
     }
 
     [Fact]

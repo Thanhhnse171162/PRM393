@@ -315,8 +315,9 @@ public class BookingHoldApiTests : IClassFixture<BookingHoldApiTests.Factory>
     [Fact]
     public async Task Hold_DifferentCalendarDates_Returns400()
     {
-        var s1 = DateTimeOffset.UtcNow.AddDays(3).Date.AddHours(23);
-        var s2 = DateTimeOffset.UtcNow.AddDays(4).Date.AddHours(0);
+        var baseDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(3));
+        var s1 = new DateTimeOffset(baseDate.ToDateTime(new TimeOnly(23, 0)), TimeSpan.FromHours(7));
+        var s2 = new DateTimeOffset(baseDate.AddDays(1).ToDateTime(new TimeOnly(0, 0)), TimeSpan.FromHours(7));
         var body = new BookingHoldRequest(_factory.ActiveCourtId, new List<DateTimeOffset> { s1, s2 });
         var req = CreateRequest(HttpMethod.Post, "/api/bookings/hold", token: _factory.ActiveCustomerToken, body: body);
 
