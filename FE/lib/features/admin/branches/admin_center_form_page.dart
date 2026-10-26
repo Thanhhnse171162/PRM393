@@ -97,11 +97,12 @@ class _AdminCenterFormPageState extends State<AdminCenterFormPage> {
         });
       }
     } catch (_) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _loading = false;
           _loadError = 'Không thể tải cơ sở. Hãy thử lại để tránh sửa dữ liệu chưa đầy đủ.';
         });
+      }
     }
   }
 

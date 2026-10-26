@@ -41,8 +41,9 @@ void main() {
       final scroll = find.byWidgetPredicate(
         (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
       );
-      if (scroll.evaluate().isNotEmpty)
+      if (scroll.evaluate().isNotEmpty) {
         await t.drag(scroll.last, const Offset(0, -300));
+      }
       await t.pump(const Duration(milliseconds: 300));
     }
     await waitFor(t, finder);

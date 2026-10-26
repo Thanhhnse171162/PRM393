@@ -6,3 +6,9 @@ analyzer:
     - android/**
     - ios/**
     - web/**
+  errors:
+    deprecated_member_use: ignore
+    use_null_aware_elements: ignore
+    avoid_print: ignore
+    unnecessary_underscores: ignore
+

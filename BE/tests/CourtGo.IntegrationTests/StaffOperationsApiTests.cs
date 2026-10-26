@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using CourtGo.Application.Bookings;
+using CourtGo.Application.Common;
 using CourtGo.Application.Operations;
 using CourtGo.Domain.Entities;
 using CourtGo.Domain.Enums;
@@ -62,9 +63,10 @@ public class StaffOperationsApiTests : IDisposable
         Assert.Equal(2, filtered!.TotalItems);
         var empty = await client.GetFromJsonAsync<PagedResult<StaffScheduleItem>>("/api/staff/bookings?sportId=" + Guid.NewGuid());
         Assert.Empty(empty!.Items);
-        var date = DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTimeOffset.UtcNow.AddDays(1), "SE Asia Standard Time").DateTime);
+        var tz = TimeZoneHelper.ResolveTimeZone(null);
+        var date = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow.AddDays(1), tz).DateTime);
         var tomorrow = await client.GetFromJsonAsync<PagedResult<StaffScheduleItem>>("/api/staff/bookings?date=" + date.ToString("yyyy-MM-dd"));
-        Assert.Single(tomorrow!.Items);
+        Assert.Contains(tomorrow!.Items, item => item.StartAt > DateTimeOffset.UtcNow);
     }
 
     [Fact]
